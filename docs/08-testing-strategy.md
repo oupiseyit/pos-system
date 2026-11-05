@@ -1,0 +1,106 @@
+# 08 — Testing Strategy
+
+## 1. Principles
+- **Test where money and stock change.** `computeTotals`, `POST /sales`, voids, stock adjustments and the outbox carry most of the risk, so most of the tests go there.
+- **Integration over mocks.** API tests run against a real Postgres (the Compose service) because Prisma, transactions and constraints are part of the behaviour.
+- **One tool:** Vitest for the API and both React apps. There's no separate E2E framework in v1, and a manual checklist (§5) covers the browser + offline flow. Add Playwright once releases become frequent.
+
+## 2. Pyramid
+
+| Layer | Tool | Scope | Runs |
+|---|---|---|---|
+| Unit | Vitest | Pure functions: `computeTotals`, money formatting, outbox state machine, receipt-number generator, report date-range helpers | Every save / CI |
+| API integration | Vitest + Supertest + Postgres `pos_test` | Route → DB, including auth and roles | CI, locally before push |
+| Component | Vitest + React Testing Library (jsdom) | Pay dialog rules, cart line editor | CI |
+| Manual E2E | Checklist (§5) | Real browser, scanner, printer, offline | Before each release |
+
+## 3. Unit tests
+
+### `apps/api/src/totals.test.ts`
+| Case | Expect |
+|---|---|
+| 1 item, no tax, no discount | total = price × qty |
+| Tax 10 % on 6.50 × 2 − 1.00 | net 1200, tax 120, total 1320 |
+| Rounding: 3 × 0.33 at 7 % | tax per line rounded half-up, lines sum exactly to total |
+| Multiple lines with different tax rates | tax = Σ line taxes |
+| Discount equals line amount | net 0, tax 0 |
+| Empty cart | all zeros |
+
+### `apps/pos/src/outbox.test.ts`
+(localStorage via jsdom, `fetch` stubbed.)
+- `add()` persists the entry before returning.
+- `flush()` sends oldest first. A 2xx removes the entry, a network error keeps it with order preserved, a 401 stops the loop and keeps everything, and a 400 marks it `needsAttention` and continues with the next one.
+- A 200 for an already-existing sale (an idempotent replay) is treated as success.
+- `nextReceiptNo()` gives `T1-000001`, `T1-000002`, … and survives a reload.
+
+### Pay dialog (component)
+- Complete is disabled until remaining = 0.
+- Cash tendered < amount shows an error.
+- A split of cash 10.00 + card 6.50 completes a 16.50 sale.
+
+## 4. API integration tests
+Setup: `DATABASE_URL=postgres://…/pos_test`. `beforeAll` runs `prisma migrate reset --force --skip-seed`, and each test file seeds what it needs with helpers in `test/fixtures.ts` (`makeUser(role)`, `makeProduct()`, `tokenFor(user)`).
+
+| File | Cases |
+|---|---|
+| `auth.test.ts` | login ok/bad password/inactive user · PIN lockout after 5 failures returns 423, then unlock works · expired token → 401 · deactivated user with valid token → 401 |
+| `roles.test.ts` | table-driven: for each endpoint in [05 §12](05-api-spec.md#12-endpoint-summary), the role just below the minimum gets 403 and the minimum role gets non-403 |
+| `products.test.ts` | create, duplicate SKU/barcode → 409 · `PATCH` ignores `stockQty` · `updatedSince` returns changed and deactivated products |
+| `inventory.test.ts` | receive increases stock + writes `RECEIVE` · count 10→8 writes `ADJUST −2` · count with no change writes nothing · adjust without note → 400 |
+| `sales.test.ts` | **happy path:** sale created, stock decremented, `SALE` movements written · **idempotent:** same id twice → one sale, one decrement, second returns 200 · **totals mismatch** → 400, nothing written · **payments ≠ total** → 400 · cash tendered < amount → 400 · unknown product → 400 · same receiptNo, different id → 409 · **negative stock** allowed · deactivated cashier's offline sale accepted · cashier `GET /sales` sees only own sales from today |
+| `void.test.ts` | void restores stock with `RETURN` movements · second void → 409 · cashier → 403 · voided sale excluded from `/reports/daily` |
+| `reports.test.ts` | sales on both sides of midnight in `Setting.timezone` bucket into the right days · payment report sums cash/card · low-stock lists negatives first · CSV format returns `text/csv` |
+| `invariants.test.ts` | after a mixed scenario (receive, sales, void, adjust), every product's `stockQty = Σ qtyChange` |
+
+## 5. Manual release checklist
+Run on a real till browser (Chrome), with a barcode scanner and an 80mm printer.
+
+**Setup & auth**
+- [ ] Fresh device: device setup screen accepts a manager PIN and stores code `T1`.
+- [ ] Cashier PIN login, wrong PIN ×5 locks, and an admin unlocks in the back office.
+
+**Selling**
+- [ ] Scanning a barcode adds the item, scanning again increments it, and an unknown barcode shows a message while keeping focus.
+- [ ] Search, category filter, line discount and remove all work.
+- [ ] A cash sale with change prints a correct receipt (alignment, totals, footer).
+- [ ] A split cash + card sale works.
+- [ ] Attach an existing customer, and create a new one.
+- [ ] Reprint from Recent sales.
+
+**Offline**
+- [ ] DevTools → Network → Offline (or unplug the network). The badge turns amber.
+- [ ] Make 2 sales, and receipts print with sequential numbers.
+- [ ] Close the tab and reopen the POS while still offline. It loads, and "2 pending" shows.
+- [ ] Reconnect. Within 30 s the badge shows 0 pending, the sales appear in the back office with the "synced later" note, and stock is decremented.
+- [ ] Toggle the network quickly while syncing, and check that no duplicates appear.
+
+**Back office**
+- [ ] Create a product, and it appears on the POS within 5 min (or after "Sync now").
+- [ ] Receive stock and run a stock count, and the movements show the correct user and notes.
+- [ ] Void a sale: stock returns, reports exclude it, and the reprint shows VOID.
+- [ ] Each report matches a hand calculation for a small known day. CSV opens in a spreadsheet.
+- [ ] A manager can't see Staff/Settings, and a cashier is refused at back office login.
+
+**Deploy**
+- [ ] `GET /api/health` returns ok over HTTPS. A backup file was created last night, and the restore test passed this month.
+
+## 6. Test data
+- `apps/api/src/seed.ts` (dev): 2 categories, 10 products with real-looking barcodes, admin/manager/cashier (PIN `1234`), and 3 customers.
+- The test fixtures create everything per file, with no dependency on seed data.
+
+## 7. Commands & CI
+```bash
+docker compose up -d db                      # Postgres for dev + tests
+npm test -w apps/api                         # unit + integration (uses pos_test)
+npm test -w apps/pos                         # outbox + components
+npm test -w apps/backoffice
+npm run typecheck --workspaces               # tsc --noEmit
+```
+CI (GitHub Actions, on every push/PR): a Postgres 16 service container → `npm ci` → typecheck → tests → `npm audit --audit-level=high` → `docker build`.
+
+## 8. Definition of done (per feature)
+- The acceptance criteria in [02-user-stories.md](02-user-stories.md) are met.
+- Integration tests cover the happy path, the role check and each business-rule rejection.
+- Money and stock changes keep the invariants in [04 §4](04-database-schema.md#4-invariants-enforced-in-the-api-inside-one-transaction).
+- Typecheck is clean, and CI is green.
+- Docs are updated when an endpoint, table or screen changed.
