@@ -35,15 +35,10 @@ npm run dev          # api :3000 · pos :5173 · backoffice :5174
 | 07 | [Roles & Security](docs/07-roles-security.md) | Permission matrix, auth, threats and mitigations |
 | 08 | [Testing Strategy](docs/08-testing-strategy.md) | What we test, how, and the definition of done |
 | 09 | [Deployment Guide](docs/09-deployment.md) | Installing, updating, backing up, and troubleshooting on the Linux server |
+| 10 | [Roadmap](docs/10-roadmap.md) | Build phases, tasks and definition of done for each |
 
 ## Build order
-1. Scaffold the npm workspaces, docker-compose (Postgres), Prisma schema + migration + seed, auth + role middleware.
-2. Products, categories, inventory endpoints + back office pages.
-3. `computeTotals`, `POST /sales`, payments, POS sell/pay/receipt flow (online).
-4. Offline: PWA, catalog cache, outbox sync, device receipt numbers.
-5. Customers (API + attach in POS + back office).
-6. Reports + dashboard.
-7. Production Dockerfile and Linux server deploy (see [09](docs/09-deployment.md)).
+10 phases: foundation & docs → Claude Code harness → mockups → local Docker → database → API → back office → POS web front → testing → deploy. The [roadmap](docs/10-roadmap.md) has the tasks and definition of done for each phase.
 
 ## Glossary
 - **POS**: the cashier app (`apps/pos`), installed as a PWA on the shop's till device.
