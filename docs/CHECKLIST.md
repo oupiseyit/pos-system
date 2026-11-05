@@ -10,27 +10,27 @@ Exit gate: Docs approved
 
 - [x] Git repo with `CLAUDE.md` (stack + rules), `README.md`, pushed to GitHub.
 - [x] Docs 01–10 written in `docs/`.
-- [ ] The shop owner reviews 01 PRD and 02 User stories for scope, v1/later tags and success metrics.
-- [ ] A developer reviews 03 Architecture, 04 Schema, 05 API and 07 Security.
-- [ ] Resolve the PRD open questions (discount approval, price-difference report), recording either "v1" or "later".
+- [x] The shop owner reviews 01 PRD and 02 User stories for scope, v1/later tags and success metrics.
+- [x] A developer reviews 03 Architecture, 04 Schema, 05 API and 07 Security.
+- [x] Resolve the PRD open questions (discount approval, price-difference report), recording either "v1" or "later".
 
 ## Phase 1 — Claude Code Harness
 Exit gate: Hooks + rules active
 
-- [ ] Extend `CLAUDE.md` rules
+- [x] Extend `CLAUDE.md` rules
   - Never change the stack without asking (existing rule).
   - Money is `Decimal`, sent as strings, arithmetic only in `computeTotals`.
   - Never edit an applied migration. Add a new one.
   - Every API change needs a test and an update to `05-api-spec.md`.
   - Follow the roadmap phase order.
   - Commit only when asked.
-- [ ] `.claude/settings.json` hooks
+- [x] `.claude/settings.json` hooks
   - PreToolUse: block edits to `.env*` (except `.env.example`) and applied migrations.
   - PreToolUse (Bash): block `push --force`, `reset --hard`, `clean -f`, `branch -D`.
   - PostToolUse (Edit/Write): Prettier + ESLint on the edited file.
   - Stop: `npm run typecheck` when TypeScript files changed.
-- [ ] Permission allowlist: `npm test`, `npm run typecheck`, `docker compose ps/logs/up`, `npx prisma migrate dev/status`.
-- [ ] Commit `.claude/settings.json`; personal overrides in `.claude/settings.local.json` (gitignored).
+- [x] Permission allowlist: `npm test`, `npm run typecheck`, `docker compose ps/logs/up`, `npx prisma migrate dev/status`.
+- [x] Commit `.claude/settings.json`; personal overrides in `.claude/settings.local.json` (gitignored).
 
 ## Phase 2 — Mockups
 Exit gate: Screens approved
@@ -40,14 +40,14 @@ Exit gate: Screens approved
   - Back office: B1–B10.
   - Default set: `mockups/v2` (v1 archived).
 - [x] POS at 1024×768 with the online, offline and needs-attention header states.
-- [ ] An 80mm receipt print preview, test-printed on the real thermal printer.
+- [x] An 80mm receipt print preview, test-printed on the real thermal printer.
 - [ ] Walk through the 5 key flows with the owner: cash sale, split sale, offline sale, receive stock, end-of-day cash-up.
 
 ## Phase 3 — Local Docker
 Exit gate: All services healthy
 
 - [ ] npm workspaces `apps/api`, `apps/pos`, `apps/backoffice`, with TypeScript `strict`, ESLint and Prettier.
-- [ ] Minimal Express app with JSON request log, central error handler and `GET /api/health`.
+- [x] Minimal Express app with JSON request log, central error handler and `GET /api/health`.
 - [ ] Vite + React "hello" apps for POS and back office, with the dev proxy `/api` → api.
 - [ ] `docker-compose.yml` with four services, healthchecks and hot reload
   - `db` (Postgres 16, `pg_isready`)
