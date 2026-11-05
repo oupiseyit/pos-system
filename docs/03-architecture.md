@@ -54,18 +54,19 @@ npm workspaces. There's no shared package yet: the POS imports `apps/api/src/tot
 - **Layers:** route handler → zod validation → Prisma call(s) inside `prisma.$transaction` where several tables change. There is no service/repository layer, because the handlers are short.
 - **Auth middleware:** `requireAuth` verifies the JWT, and `requireRole('MANAGER')` checks rank (`CASHIER < MANAGER < ADMIN`).
 - **Errors:** a single error handler maps zod errors → 400, Prisma `P2002` (unique) → 409, `P2025` (not found) → 404, and anything else → 500 (logged, generic message to the client).
-- **Money:** integers in cents throughout. Floats never touch money.
+- **Money:** `Decimal(10,2)` in Postgres (`Decimal(8,2)` for product price/cost/tax rate), returned by Prisma as `Decimal` and sent as strings in JSON. Arithmetic happens in `computeTotals` only (§3.1). Floats never touch money.
 - **Time:** stored as UTC `timestamptz`. Reports bucket days in `Setting.timezone` using `AT TIME ZONE`.
 
 ### 3.1 `computeTotals` (shared)
 ```ts
-// input: [{ unitPriceCents, qty, discountCents, taxRateBp }]
-lineGross    = unitPriceCents * qty
-lineNet      = lineGross - discountCents
-lineTax      = Math.round(lineNet * taxRateBp / 10000)   // half-up, per line
+// input: [{ unitPrice: "6.50", qty: 2, discount: "1.00", taxRate: "10.00" }]   (decimal strings)
+// internally: toCents("6.50") = 650 by splitting the string (no parseFloat), integer maths, back to "x.yy"
+lineGross    = unitPrice * qty
+lineNet      = lineGross - discount
+lineTax      = Math.round(lineNet * toCents(taxRate) / 10000)  // rate "10.00" → 1000; half-up, per line
 lineTotal    = lineNet + lineTax
 subtotal     = Σ lineGross
-discount     = Σ discountCents
+discount     = Σ discount
 tax          = Σ lineTax
 total        = subtotal - discount + tax
 ```
@@ -87,7 +88,7 @@ Prices are tax-exclusive. Tax is rounded per line, so a receipt's lines always a
 | Duplicates | The client creates `Sale.id` as a UUID (`crypto.randomUUID()`). The server treats a repeated id as already done and returns the stored sale. |
 | Receipt numbers without the server | `<deviceCode>-<6-digit local counter>`, e.g. `T1-000123`, with the counter in localStorage. Unique per till. |
 | Stock conflicts | Stock may go negative, and the server never rejects a sale for stock. Negative stock surfaces in the low-stock report. |
-| Stale prices | A sale stores the price the till actually charged (`unitPriceCents` per line). The server accepts it and recomputes totals only to check the arithmetic. |
+| Stale prices | A sale stores the price the till actually charged (`unitPrice` per line). The server accepts it and recomputes totals only to check the arithmetic. |
 | Expired login offline | The cashier keeps selling, and sync resumes after the next PIN login. Logging *in* needs the server. |
 | Who synced | `Sale.syncedById` records the uploading user, which may differ from `cashierId` if another cashier logs in first. |
 

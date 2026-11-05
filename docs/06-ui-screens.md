@@ -146,7 +146,7 @@ Layout: a left nav (items hidden by role) and a top bar with the user name and l
 │ Products   │ │Today     │ │Sales     │ │Low stock │        │
 │ Categories │ │ 1,240.50 │ │ 86       │ │ 7  →     │        │
 │ Inventory  │ └──────────┘ └──────────┘ └──────────┘        │
-│ Sales      │ Last 7 days (bar chart, totalCents per day)   │
+│ Sales      │ Last 7 days (bar chart, total per day)   │
 │ Customers  │ Top products today (table, 5 rows)            │
 │ Reports    │ Payment methods today (cash / card / other)   │
 │ Staff  *   │                                               │
@@ -163,7 +163,7 @@ KPI tiles for today's net sales, number of sales and low-stock count (linking to
 
 ### B3. Products — MANAGER
 - **List:** search, a category filter, an Active/Inactive/All filter, and columns SKU, Name, Category, Price, Stock (red if ≤ reorder, bold red if negative), Active. Clicking a row opens the edit form.
-- **Form:** SKU*, Barcode, Name*, Category (select), Price*, Cost, Tax rate % (stored as bp), Reorder level and Active. Stock is shown read-only, with links to "Receive stock" and "Count stock". A field-level error shows on a 409 duplicate.
+- **Form:** SKU*, Barcode, Name*, Category (select), Price*, Cost, Tax rate % (e.g. 10.00), Reorder level and Active. Stock is shown read-only, with links to "Receive stock" and "Count stock". A field-level error shows on a 409 duplicate.
 
 ### B4. Categories — MANAGER
 An inline-editable list of names, with an add row. Delete is disabled with a tooltip when products use the category.

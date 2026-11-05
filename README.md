@@ -50,5 +50,5 @@ npm run dev          # api :3000 · pos :5173 · backoffice :5174
 - **Back office**: the manager app (`apps/backoffice`), served at `/admin`.
 - **Outbox**: the queue of completed sales on a POS device that hasn't been sent to the server yet.
 - **Device code**: a short label per till (e.g. `T1`) used as the prefix of receipt numbers.
-- **Cents**: all money is stored as integers in the currency's minor unit.
+- **Money**: stored as `Decimal(10,2)` (product price/cost/tax rate `Decimal(8,2)`), sent as strings like `"6.50"` in the API.
 - **Stock movement**: a ledger row recording every change to a product's stock.

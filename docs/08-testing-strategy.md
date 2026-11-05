@@ -20,11 +20,11 @@
 | Case | Expect |
 |---|---|
 | 1 item, no tax, no discount | total = price × qty |
-| Tax 10 % on 6.50 × 2 − 1.00 | net 1200, tax 120, total 1320 |
+| Tax 10 % on 6.50 × 2 − 1.00 | net 12.00, tax 1.20, total 13.20 |
 | Rounding: 3 × 0.33 at 7 % | tax per line rounded half-up, lines sum exactly to total |
 | Multiple lines with different tax rates | tax = Σ line taxes |
 | Discount equals line amount | net 0, tax 0 |
-| Empty cart | all zeros |
+| Empty cart | all "0.00" |
 
 ### `apps/pos/src/outbox.test.ts`
 (localStorage via jsdom, `fetch` stubbed.)

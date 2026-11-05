@@ -37,9 +37,9 @@ erDiagram
     string barcode UK "nullable"
     string name
     uuid categoryId FK "nullable"
-    int priceCents
-    int costCents
-    int taxRateBp
+    decimal price
+    decimal cost
+    decimal taxRate
     int stockQty
     int reorderLevel
     bool active
@@ -68,10 +68,10 @@ erDiagram
     string deviceCode
     uuid cashierId FK
     uuid customerId FK "nullable"
-    int subtotalCents
-    int discountCents
-    int taxCents
-    int totalCents
+    decimal subtotal
+    decimal discount
+    decimal tax
+    decimal total
     SaleStatus status
     timestamptz createdAt "client time"
     timestamptz syncedAt
@@ -85,19 +85,19 @@ erDiagram
     uuid saleId FK
     uuid productId FK
     string nameSnapshot
-    int unitPriceCents
+    decimal unitPrice
     int qty
-    int discountCents
-    int taxRateBp
-    int taxCents
-    int lineTotalCents
+    decimal discount
+    decimal taxRate
+    decimal tax
+    decimal lineTotal
   }
   Payment {
     uuid id PK
     uuid saleId FK
     PaymentMethod method
-    int amountCents
-    int tenderedCents "nullable, cash"
+    decimal amount
+    decimal tendered "nullable, cash"
     string reference "nullable"
   }
   Setting {
@@ -151,9 +151,9 @@ erDiagram
 | barcode | text? | unique when present |
 | name | text | |
 | categoryId | uuid? | FK → Category, `ON DELETE RESTRICT` |
-| priceCents | int | ≥ 0, tax-exclusive |
-| costCents | int | ≥ 0 |
-| taxRateBp | int | basis points, e.g. 1000 = 10 %. Range 0–10000 |
+| price | decimal(8,2) | ≥ 0, tax-exclusive |
+| cost | decimal(8,2) | ≥ 0 |
+| taxRate | decimal(8,2) | percent, e.g. 10.00 = 10 %. Range 0–100 |
 | stockQty | int | **can be negative**. Changed only alongside a StockMovement |
 | reorderLevel | int | default 0 |
 | active | bool | default true |
@@ -189,7 +189,7 @@ erDiagram
 | deviceCode | text | till that made the sale |
 | cashierId | uuid | FK → User |
 | customerId | uuid? | FK → Customer, `ON DELETE RESTRICT` |
-| subtotalCents, discountCents, taxCents, totalCents | int | as computed by `computeTotals` |
+| subtotal, discount, tax, total | decimal(10,2) | as computed by `computeTotals` |
 | status | SaleStatus | default `COMPLETED` |
 | createdAt | timestamptz | time on the till when paid. Index for reports |
 | syncedAt | timestamptz | default `now()` (server receipt time) |
@@ -203,11 +203,11 @@ erDiagram
 | saleId | uuid | FK → Sale, `ON DELETE CASCADE` |
 | productId | uuid | FK → Product |
 | nameSnapshot | text | product name at time of sale |
-| unitPriceCents | int | price charged |
+| unitPrice | decimal(8,2) | price charged |
 | qty | int | > 0 |
-| discountCents | int | 0 ≤ discount ≤ unitPrice × qty |
-| taxRateBp | int | rate at time of sale |
-| taxCents, lineTotalCents | int | |
+| discount | decimal(10,2) | 0 ≤ discount ≤ unitPrice × qty |
+| taxRate | decimal(8,2) | percent at time of sale |
+| tax, lineTotal | decimal(10,2) | |
 
 ### Payment
 | Column | Type | Notes |
@@ -215,8 +215,8 @@ erDiagram
 | id | uuid | PK |
 | saleId | uuid | FK → Sale, `ON DELETE CASCADE` |
 | method | PaymentMethod | |
-| amountCents | int | > 0, amount applied to the sale |
-| tenderedCents | int? | cash only, ≥ amount. Change = tendered − amount |
+| amount | decimal(10,2) | > 0, amount applied to the sale |
+| tendered | decimal(10,2)? | cash only, ≥ amount. Change = tendered − amount |
 | reference | text? | card last4/approval code, transfer ref |
 
 ### Setting
@@ -224,12 +224,12 @@ A single row with `id = 1`: `shopName`, `address`, `phone`, `taxId`, `currency` 
 
 ## 4. Invariants (enforced in the API, inside one transaction)
 1. `Product.stockQty = Σ StockMovement.qtyChange` for that product. Every stock change writes both.
-2. `Sale.totalCents = subtotal − discount + tax`, and lines are computed by `computeTotals` (see [03 §3.1](03-architecture.md#31-computetotals-shared)).
-3. `Σ Payment.amountCents = Sale.totalCents`.
+2. `Sale.total = subtotal − discount + tax`, and lines are computed by `computeTotals` (see [03 §3.1](03-architecture.md#31-computetotals-shared)).
+3. `Σ Payment.amount = Sale.total`.
 4. A voided sale has exactly one `RETURN` movement per item, so its stock is restored once.
 5. Products, users and customers with sales are never hard-deleted.
 
-DB-level `CHECK` constraints (added via a raw SQL migration): `priceCents >= 0`, `costCents >= 0`, `qty > 0`, `amountCents > 0`, `taxRateBp BETWEEN 0 AND 10000`.
+DB-level `CHECK` constraints (added via a raw SQL migration): `price >= 0`, `cost >= 0`, `qty > 0`, `amount > 0`, `taxRate BETWEEN 0 AND 100`.
 
 ## 5. Indexes
 - Unique: `User.email`, `Category.name`, `Product.sku`, `Product.barcode`, `Customer.phone`, `Sale.receiptNo`.
@@ -307,9 +307,9 @@ model Product {
   name         String
   categoryId   String?   @db.Uuid
   category     Category? @relation(fields: [categoryId], references: [id], onDelete: Restrict)
-  priceCents   Int
-  costCents    Int       @default(0)
-  taxRateBp    Int       @default(0)
+  price        Decimal   @db.Decimal(8, 2)
+  cost         Decimal   @default(0) @db.Decimal(8, 2)
+  taxRate      Decimal   @default(0) @db.Decimal(8, 2) // percent, 10.00 = 10%
   stockQty     Int       @default(0)
   reorderLevel Int       @default(0)
   active       Boolean   @default(true)
@@ -358,10 +358,10 @@ model Sale {
   cashier       User       @relation("cashier", fields: [cashierId], references: [id])
   customerId    String?    @db.Uuid
   customer      Customer?  @relation(fields: [customerId], references: [id], onDelete: Restrict)
-  subtotalCents Int
-  discountCents Int
-  taxCents      Int
-  totalCents    Int
+  subtotal      Decimal    @db.Decimal(10, 2)
+  discount      Decimal    @db.Decimal(10, 2)
+  tax           Decimal    @db.Decimal(10, 2)
+  total         Decimal    @db.Decimal(10, 2)
   status        SaleStatus @default(COMPLETED)
   createdAt     DateTime
   syncedAt      DateTime   @default(now())
@@ -388,12 +388,12 @@ model SaleItem {
   productId      String  @db.Uuid
   product        Product @relation(fields: [productId], references: [id])
   nameSnapshot   String
-  unitPriceCents Int
+  unitPrice      Decimal @db.Decimal(8, 2)
   qty            Int
-  discountCents  Int     @default(0)
-  taxRateBp      Int
-  taxCents       Int
-  lineTotalCents Int
+  discount       Decimal @default(0) @db.Decimal(10, 2)
+  taxRate        Decimal @db.Decimal(8, 2)
+  tax            Decimal @db.Decimal(10, 2)
+  lineTotal      Decimal @db.Decimal(10, 2)
 
   @@index([saleId])
   @@index([productId])
@@ -404,8 +404,8 @@ model Payment {
   saleId        String        @db.Uuid
   sale          Sale          @relation(fields: [saleId], references: [id], onDelete: Cascade)
   method        PaymentMethod
-  amountCents   Int
-  tenderedCents Int?
+  amount        Decimal       @db.Decimal(10, 2)
+  tendered      Decimal?      @db.Decimal(10, 2)
   reference     String?
 
   @@index([saleId])
