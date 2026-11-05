@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B1 · Back office login</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400..700&family=Onest:wght@400..700&family=Schibsted+Grotesk:wght@400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body style="display:grid;grid-template-columns:1fr 1fr">
+  <main style="display:grid;place-items:center;padding:40px;background:var(--surface)">
+    <form style="width:380px" class="stack" onsubmit="return false">
+      <div class="logo"><span class="logo-mark">M</span>My Shop</div>
+      <div style="margin-top:36px"><h1 style="font-size:28px">Sign in to back office</h1><p class="t2" style="margin:6px 0 0">For managers and admins.</p></div>
+      <div class="note bad" role="alert"><span class="ico s i-alert"></span>Invalid email or password</div>
+      <div class="field"><label for="e">Email</label><input id="e" class="input" style="height:44px" type="email" value="dara@myshop.com" autocomplete="username"></div>
+      <div class="field"><label for="p">Password</label><input id="p" class="input err" style="height:44px" type="password" value="nottheone" autocomplete="current-password"></div>
+      <button class="btn btn-primary btn-lg" style="width:100%">Sign in</button>
+      <p class="help" style="border-top:1px solid var(--border);padding-top:16px">A cashier who signs in sees: “The back office is for managers. Use the POS.”</p>
+    </form>
+  </main>
+  <aside style="background:linear-gradient(160deg,#0e6b4e,#0a3f30);color:#fff;padding:56px;display:flex;flex-direction:column;justify-content:center;gap:28px;position:relative;overflow:hidden">
+    <div style="position:absolute;inset:0;background:radial-gradient(600px 400px at 80% 10%,rgba(255,255,255,.12),transparent)"></div>
+    <h2 style="font-size:34px;line-height:1.15;max-width:15ch;position:relative">Today’s takings, stock and staff in one place.</h2>
+    <div class="card" style="position:relative;color:var(--text);max-width:380px;padding:18px 20px;transform:rotate(-1.5deg)">
+      <div class="t2 sm">Today · net sales</div>
+      <div class="num" style="font-size:30px;font-weight:650;letter-spacing:-.04em">1,240.50</div>
+      <div class="row sm"><span class="delta up num">+12.4%</span><span class="t3">vs last Thursday</span></div>
+    </div>
+    <div class="card" style="position:relative;color:var(--text);max-width:300px;padding:14px 18px;margin-left:80px;transform:rotate(1.5deg)">
+      <div class="between"><span class="sm t2">Low stock</span><span class="badge warn">7 items</span></div>
+    </div>
+  </aside>
+  <a class="mock-tag" href="index.html">B1 · Login</a>
+</body>
+</html>

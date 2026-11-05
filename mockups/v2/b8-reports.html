@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B8 · Reports</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400..700&family=Onest:wght@400..700&family=Schibsted+Grotesk:wght@400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .rep { display: grid; gap: 2px; }
+  .rep a { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 7px; color: var(--text-2); font-weight: 500; }
+  .rep a:hover { background: var(--surface-2); text-decoration: none; }
+  .rep a.on { background: var(--primary-50); color: var(--primary); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side" aria-label="Main">
+    <div class="logo"><span class="logo-mark">M</span>My Shop</div>
+    <a href="b2-dashboard.html"><span class="ico i-dash"></span>Dashboard</a>
+    <div class="sec">Catalog</div>
+    <a href="b3-products.html"><span class="ico i-box"></span>Products</a>
+    <a href="b4-categories.html"><span class="ico i-tag"></span>Categories</a>
+    <a href="b5-inventory.html"><span class="ico i-layers"></span>Inventory<span class="cnt">7</span></a>
+    <div class="sec">Sales</div>
+    <a href="b6-sales.html"><span class="ico i-receipt"></span>Sales</a>
+    <a href="b7-customers.html"><span class="ico i-users"></span>Customers</a>
+    <a href="b8-reports.html" class="on" aria-current="page"><span class="ico i-chart"></span>Reports</a>
+    <div class="sec">Admin</div>
+    <a href="b9-staff.html"><span class="ico i-shield"></span>Staff</a>
+    <a href="b10-settings.html"><span class="ico i-sliders"></span>Settings</a>
+    <a href="b1-login.html" style="margin-top:auto"><span class="ico i-lock"></span>Log out</a>
+  </aside>
+  <div class="main">
+    <header class="topbar"><div class="crumb">Sales / <b>Reports</b></div><div class="row"><span class="av" style="--c:#2459b3">DA</span><span style="font-weight:550">Dara</span><span class="ico s i-chev t3"></span></div></header>
+    <div class="page">
+      <div class="page-h"><div><h1>Payments</h1><p>Totals by payment method, with expected cash for cash-up.</p></div><a class="btn" href="#"><span class="ico s i-download"></span>Export CSV</a></div>
+      <div style="display:grid;grid-template-columns:200px 1fr;gap:20px;align-items:start">
+        <nav class="card rep" style="padding:8px" aria-label="Report">
+          <a href="#">Daily</a><a href="#">Products</a><a href="#">Cashiers</a><a href="#" class="on">Payments</a><a href="#">Low stock <span class="badge warn plain" style="margin-left:auto">7</span></a><a href="#">Inventory value</a>
+        </nav>
+        <div class="stack">
+          <div class="row" style="flex-wrap:wrap">
+            <div class="seg" role="group" aria-label="Date preset"><button class="on">Today</button><button>Yesterday</button><button>This week</button><button>This month</button><button>Custom</button></div>
+            <div class="grow"></div>
+            <input class="input" type="date" value="2026-11-05" style="width:auto" aria-label="From"><span class="t3">→</span><input class="input" type="date" value="2026-11-05" style="width:auto" aria-label="To">
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 280px;gap:16px;align-items:start;margin-top:16px">
+            <section class="card">
+              <table class="tbl">
+                <thead><tr><th class="sort">Method ↓</th><th class="r sort">Payments</th><th class="r sort">Taken</th><th class="r">Voided</th><th class="r sort">Net</th></tr></thead>
+                <tbody>
+                  <tr><td class="cell-main">Cash</td><td class="r num">51</td><td class="r num">729.10</td><td class="r num down">−9.60</td><td class="r num">719.50</td></tr>
+                  <tr><td class="cell-main">Card</td><td class="r num">31</td><td class="r num">421.00</td><td class="r num t3">0.00</td><td class="r num">421.00</td></tr>
+                  <tr><td class="cell-main">Other</td><td class="r num">4</td><td class="r num">100.00</td><td class="r num t3">0.00</td><td class="r num">100.00</td></tr>
+                </tbody>
+                <tfoot><tr><td>Total</td><td class="r num">86</td><td class="r num">1,250.10</td><td class="r num">−9.60</td><td class="r num">1,240.50</td></tr></tfoot>
+              </table>
+            </section>
+            <div class="card" style="padding:20px;background:linear-gradient(160deg,#0e6b4e,#0a4a37);color:#fff;border:0">
+              <div style="opacity:.8;font-weight:500">Expected cash in drawer</div>
+              <div class="num" style="font-size:36px;font-weight:650;letter-spacing:-.04em;margin:6px 0 10px">719.50</div>
+              <div class="sm" style="opacity:.75">Cash taken, minus change given and voided cash sales. All tills, today.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<a class="mock-tag" href="index.html">B8 · Reports</a>
+</body>
+</html>

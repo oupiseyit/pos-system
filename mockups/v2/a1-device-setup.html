@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A1 · Device setup</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400..700&family=Onest:wght@400..700&family=Schibsted+Grotesk:wght@400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body style="display:grid;place-items:center;padding:24px;background:radial-gradient(1200px 600px at 50% -10%, var(--primary-50), var(--bg))">
+  <main style="width:460px">
+    <div class="logo" style="justify-content:center;margin-bottom:24px"><span class="logo-mark">M</span>My Shop POS</div>
+    <form class="card" onsubmit="return false">
+      <div class="card-b stack" style="padding:28px">
+        <div>
+          <span class="badge info plain">First run · manager only</span>
+          <h1 style="margin-top:12px">Set up this till</h1>
+          <p class="t2" style="margin:6px 0 0">Give this device a short code. It prefixes every receipt number, e.g. <span class="num">T1-000124</span>.</p>
+        </div>
+        <div class="field">
+          <label for="code" class="req">Device code</label>
+          <input id="code" class="input num" value="T1" maxlength="4" style="height:52px;font-size:24px;width:140px;letter-spacing:.12em;text-transform:uppercase">
+          <span class="help">2–4 letters or digits</span>
+        </div>
+        <hr class="hr" style="margin:4px 0">
+        <div class="field"><label for="email" class="req">Manager email</label><input id="email" class="input" type="email" placeholder="manager@myshop.com" autocomplete="username"></div>
+        <div class="field"><label for="pin" class="req">Manager PIN</label><input id="pin" class="input num" type="password" inputmode="numeric" value="1234" style="letter-spacing:.35em"></div>
+      </div>
+      <div class="card-f" style="justify-content:space-between;align-items:center">
+        <span class="help row"><span class="ico s i-lock"></span>Checked online, role must be Manager or above</span>
+        <button class="btn btn-primary">Save and continue</button>
+      </div>
+    </form>
+  </main>
+  <a class="mock-tag" href="index.html">A1 · Device setup</a>
+</body>
+</html>

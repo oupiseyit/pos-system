@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B10 · Settings</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400..700&family=Onest:wght@400..700&family=Schibsted+Grotesk:wght@400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <aside class="side" aria-label="Main">
+    <div class="logo"><span class="logo-mark">M</span>My Shop</div>
+    <a href="b2-dashboard.html"><span class="ico i-dash"></span>Dashboard</a>
+    <div class="sec">Catalog</div>
+    <a href="b3-products.html"><span class="ico i-box"></span>Products</a>
+    <a href="b4-categories.html"><span class="ico i-tag"></span>Categories</a>
+    <a href="b5-inventory.html"><span class="ico i-layers"></span>Inventory<span class="cnt">7</span></a>
+    <div class="sec">Sales</div>
+    <a href="b6-sales.html"><span class="ico i-receipt"></span>Sales</a>
+    <a href="b7-customers.html"><span class="ico i-users"></span>Customers</a>
+    <a href="b8-reports.html"><span class="ico i-chart"></span>Reports</a>
+    <div class="sec">Admin</div>
+    <a href="b9-staff.html"><span class="ico i-shield"></span>Staff</a>
+    <a href="b10-settings.html" class="on" aria-current="page"><span class="ico i-sliders"></span>Settings</a>
+    <a href="b1-login.html" style="margin-top:auto"><span class="ico i-lock"></span>Log out</a>
+  </aside>
+  <div class="main">
+    <header class="topbar"><div class="crumb">Admin / <b>Settings</b></div><div class="row"><span class="av" style="--c:#2459b3">DA</span><span style="font-weight:550">Dara</span><span class="ico s i-chev t3"></span></div></header>
+    <div class="page">
+      <div class="page-h"><div><h1>Shop settings</h1><p>These details print on every receipt.</p></div></div>
+      <div style="display:grid;grid-template-columns:minmax(0,600px) auto;gap:32px;align-items:start">
+        <form class="card" id="f" onsubmit="return false">
+          <div class="card-h"><h2>Shop details</h2></div>
+          <div class="card-b" style="display:grid;gap:14px">
+            <div class="field"><label for="name" class="req">Shop name</label><input id="name" class="input" value="My Shop"></div>
+            <div class="field"><label for="addr">Address</label><input id="addr" class="input" value="12 Street 271, Phnom Penh"></div>
+            <div class="g2">
+              <div class="field"><label for="tel">Phone</label><input id="tel" class="input num" value="012 345 678"></div>
+              <div class="field"><label for="vat">Tax id</label><input id="vat" class="input num" value="1234567"></div>
+            </div>
+          </div>
+          <div class="card-h" style="border-top:1px solid var(--border)"><h2>Region</h2></div>
+          <div class="card-b g2">
+            <div class="field"><label for="cur">Currency</label><select id="cur" class="input"><option>USD</option><option>KHR</option><option>THB</option><option>EUR</option></select></div>
+            <div class="field"><label for="tz">Timezone</label><select id="tz" class="input"><option>Asia/Phnom_Penh</option><option>Asia/Bangkok</option><option>UTC</option></select></div>
+          </div>
+          <div class="card-h" style="border-top:1px solid var(--border)"><h2>Receipt</h2></div>
+          <div class="card-b"><div class="field"><label for="foot">Footer</label><textarea id="foot" class="input" rows="3">Thank you! Come again</textarea></div></div>
+          <div class="card-f"><button class="btn">Discard</button><button class="btn btn-primary">Save settings</button></div>
+        </form>
+        <div style="position:sticky;top:80px">
+          <div class="between" style="margin-bottom:10px"><span class="t2" style="font-weight:550">Live preview</span><span class="badge plain">80 mm</span></div>
+          <pre class="receipt" id="preview"></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  // Rebuilds the receipt from the form so the preview updates as you type.
+  const W = 42, $ = id => document.getElementById(id).value;
+  const center = s => s.split('\n').map(l => ' '.repeat(Math.max(0, (W - l.length) >> 1)) + l).join('\n');
+  const rule = '-'.repeat(W), lr = (a, b) => a + b.padStart(W - a.length);
+  function render() {
+    document.getElementById('preview').textContent = [
+      center($('name').toUpperCase()), center($('addr')), center(`Tel ${$('tel')} · VAT ${$('vat')}`), rule,
+      'Receipt: T1-000124', 'Date:    05/11/2026 16:30', rule,
+      'Coffee beans 250g', lr('  2 x 6.50', '13.00'), rule,
+      lr('TOTAL', `${$('cur')} 13.00`), rule, center($('foot'))
+    ].join('\n');
+  }
+  document.getElementById('f').addEventListener('input', render);
+  render();
+</script>
+<a class="mock-tag" href="index.html">B10 · Settings</a>
+</body>
+</html>

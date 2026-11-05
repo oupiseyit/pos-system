@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A8 · Needs attention</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .issue { background: var(--card); border: 1px solid var(--line); border-left: 5px solid var(--red); border-radius: var(--radius); padding: 16px 18px; }
+  .issue + .issue { margin-top: 12px; }
+  .err { font: 13px var(--mono); background: #fbeeec; color: var(--red); padding: 8px 10px; border-radius: 6px; margin: 10px 0 12px; }
+  details pre { font: 12px var(--mono); background: var(--paper-2); padding: 12px; border-radius: 6px; overflow: auto; margin: 10px 0 0; }
+</style>
+</head>
+<body class="pos">
+  <header class="pos-bar">
+    <a class="btn btn-sm" href="a3-sell.html">← Sell</a>
+    <div class="brand">Needs attention <span>· T1</span></div>
+    <div class="grow"></div>
+    <span class="status attn">⚠ 2 need attention</span>
+  </header>
+  <main class="catalog" style="flex:1;overflow:auto;padding:24px 32px">
+    <p class="muted" style="margin:0 0 16px;max-width:640px">The server rejected these sales. They stay on this till until someone retries or a manager discards them. Nothing is discarded automatically.</p>
+
+    <article class="issue">
+      <div class="spread"><b class="num" style="font-size:17px">T1-000117</b><span class="num" style="font-weight:700">12.40</span></div>
+      <div class="err">409 · Product SKU-0042 is inactive</div>
+      <div class="row">
+        <button class="btn btn-sm btn-dark">Retry</button>
+        <details class="grow">
+          <summary class="btn btn-sm" style="list-style:none;display:inline-flex">Show details</summary>
+          <pre>POST /sales  →  409
+{ "error": "Product SKU-0042 is inactive",
+  "id": "8f1c…e21", "createdAt": "2026-11-05T09:12:44Z" }</pre>
+        </details>
+        <button class="btn btn-sm btn-danger">Discard…</button>
+      </div>
+    </article>
+
+    <article class="issue">
+      <div class="spread"><b class="num" style="font-size:17px">T1-000109</b><span class="num" style="font-weight:700">3.00</span></div>
+      <div class="err">422 · discount exceeds line amount</div>
+      <div class="field" style="max-width:520px">
+        <label for="why" class="req">Reason for discarding</label>
+        <input id="why" class="input" value="Duplicate of T1-000110, customer paid once">
+        <span class="hint">Logged to the console. This cannot be undone.</span>
+      </div>
+      <div class="row" style="margin-top:12px">
+        <button class="btn btn-sm">Cancel</button>
+        <button class="btn btn-sm btn-primary" style="background:var(--red);border-color:var(--red)">Discard T1-000109</button>
+      </div>
+    </article>
+  </main>
+  <a class="mock-tag" href="index.html">A8 · Needs attention</a>
+</body>
+</html>

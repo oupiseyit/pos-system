@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A5 · Pay dialog</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="pos">
+  <iframe src="a3-sell.html" title="Sell screen behind the dialog" tabindex="-1" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;border:0"></iframe>
+  <div class="scrim">
+    <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="t" style="color:var(--ink);width:600px">
+      <div class="dialog-head spread" style="background:var(--ink);color:var(--paper)">
+        <span id="t" class="label" style="color:#a8a090">Amount due</span>
+        <span class="amount-due num">16.50</span>
+      </div>
+      <div class="dialog-body">
+        <div class="methods" role="radiogroup" aria-label="Payment method">
+          <button class="method is-on" role="radio" aria-checked="true">Cash</button>
+          <button class="method" role="radio" aria-checked="false">Card</button>
+          <button class="method" role="radio" aria-checked="false">Other</button>
+        </div>
+        <hr class="divider">
+        <div class="field">
+          <label for="tender">Cash tendered</label>
+          <input id="tender" class="input tender" value="20.00" inputmode="decimal" autofocus>
+        </div>
+        <div class="quick" style="margin-top:10px">
+          <button class="btn">Exact</button><button class="btn">17</button><button class="btn">20</button><button class="btn">50</button><button class="btn">100</button>
+        </div>
+        <div class="spread" style="margin-top:16px">
+          <span class="label">Change</span><span class="change">3.50</span>
+        </div>
+        <div class="row" style="justify-content:flex-end;margin-top:10px">
+          <button class="btn btn-sm">Add payment (split)</button>
+        </div>
+        <hr class="divider">
+        <div class="spread"><span class="label">Payments</span><span class="muted small">(none yet)</span></div>
+        <div class="spread" style="margin-top:8px"><span class="label">Remaining</span><span class="num" style="font-size:20px;font-weight:700">16.50</span></div>
+        <p class="hint" style="margin:14px 0 0">Card / Other: amount defaults to remaining, optional reference. “Run the card on the terminal first.”</p>
+      </div>
+      <div class="dialog-foot">
+        <a class="btn" href="a3-sell.html">Cancel</a>
+        <a class="btn btn-primary btn-lg" href="a6-receipt.html">Complete</a>
+      </div>
+    </div>
+  </div>
+  <a class="mock-tag" href="index.html">A5 · Pay</a>
+</body>
+</html>

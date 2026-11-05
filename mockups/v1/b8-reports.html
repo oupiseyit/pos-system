@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B8 · Reports</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="shell">
+  <nav class="nav" aria-label="Main">
+    <div class="brand">My Shop<small>Back office</small></div>
+    <a href="b2-dashboard.html">Dashboard</a>
+    <a href="b3-products.html">Products</a>
+    <a href="b4-categories.html">Categories</a>
+    <a href="b5-inventory.html">Inventory</a>
+    <a href="b6-sales.html">Sales</a>
+    <a href="b7-customers.html">Customers</a>
+    <a href="b8-reports.html" class="is-on">Reports</a>
+    <div class="sep"></div>
+    <a href="b9-staff.html">Staff <span class="pill">admin</span></a>
+    <a href="b10-settings.html">Settings <span class="pill">admin</span></a>
+  </nav>
+  <div class="main">
+    <header class="topbar"><h1>Reports</h1><div class="row"><a class="btn" href="#">↓ Export CSV</a><div class="user-menu"><span class="avatar">D</span>Dara ▾</div></div></header>
+    <div class="content">
+      <div class="row" style="flex-wrap:wrap;margin-bottom:18px" role="radiogroup" aria-label="Report">
+        <button class="chip">Daily</button><button class="chip">Products</button><button class="chip">Cashiers</button>
+        <button class="chip is-on" aria-checked="true" role="radio">Payments</button><button class="chip">Low stock</button><button class="chip">Inventory value</button>
+      </div>
+      <div class="toolbar">
+        <div class="row" role="group" aria-label="Date preset">
+          <button class="btn btn-sm btn-dark">Today</button><button class="btn btn-sm">Yesterday</button><button class="btn btn-sm">This week</button><button class="btn btn-sm">This month</button><button class="btn btn-sm">Custom</button>
+        </div>
+        <div class="grow"></div>
+        <div class="field"><label for="f">From</label><input id="f" class="input" type="date" value="2026-11-05"></div>
+        <div class="field"><label for="t">To</label><input id="t" class="input" type="date" value="2026-11-05"></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 300px;gap:22px;align-items:start">
+        <table class="table">
+          <thead><tr><th class="sortable">Method ▾</th><th class="r sortable">Payments</th><th class="r sortable">Amount</th><th class="r">Refunds (void)</th><th class="r">Net</th></tr></thead>
+          <tbody>
+            <tr><td>Cash</td><td class="r num">51</td><td class="r num">729.10</td><td class="r num neg">−9.60</td><td class="r num">719.50</td></tr>
+            <tr><td>Card</td><td class="r num">31</td><td class="r num">421.00</td><td class="r num">0.00</td><td class="r num">421.00</td></tr>
+            <tr><td>Other</td><td class="r num">4</td><td class="r num">100.00</td><td class="r num">0.00</td><td class="r num">100.00</td></tr>
+          </tbody>
+          <tfoot><tr><td>Total</td><td class="r num">86</td><td class="r num">1,250.10</td><td class="r num">−9.60</td><td class="r num">1,240.50</td></tr></tfoot>
+        </table>
+        <div class="card" style="background:var(--ink);color:var(--paper);border-color:var(--ink)">
+          <span class="label" style="color:#a8a090">Expected cash in drawer</span>
+          <div class="num" style="font-size:38px;font-weight:800;margin:6px 0">719.50</div>
+          <p class="small" style="margin:0;color:#cfc8b9">Cash taken minus change and voids, today, all tills. Use it for cash-up.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<a class="mock-tag" href="index.html">B8 · Reports</a>
+</body>
+</html>

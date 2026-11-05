@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B7 · Customers</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="shell">
+  <nav class="nav" aria-label="Main">
+    <div class="brand">My Shop<small>Back office</small></div>
+    <a href="b2-dashboard.html">Dashboard</a>
+    <a href="b3-products.html">Products</a>
+    <a href="b4-categories.html">Categories</a>
+    <a href="b5-inventory.html">Inventory</a>
+    <a href="b6-sales.html">Sales</a>
+    <a href="b7-customers.html" class="is-on">Customers</a>
+    <a href="b8-reports.html">Reports</a>
+    <div class="sep"></div>
+    <a href="b9-staff.html">Staff <span class="pill">admin</span></a>
+    <a href="b10-settings.html">Settings <span class="pill">admin</span></a>
+  </nav>
+  <div class="main">
+    <header class="topbar"><h1>Customers</h1><div class="row"><button class="btn btn-primary">+ Add customer</button><div class="user-menu"><span class="avatar">D</span>Dara ▾</div></div></header>
+    <div class="content">
+      <div class="toolbar"><div class="field grow"><label for="q">Search</label><input id="q" class="input" placeholder="Name, phone or email"></div></div>
+      <div class="split">
+        <table class="table">
+          <thead><tr><th>Name</th><th>Phone</th><th>Email</th><th class="r">Sales</th><th class="r">Total spent</th></tr></thead>
+          <tbody>
+            <tr class="is-selected"><td><b>Chan Dara</b></td><td class="num">012 345 678</td><td>chan.dara@mail.com</td><td class="r num">14</td><td class="r num">312.40</td></tr>
+            <tr><td><b>Srey Neang</b></td><td class="num">012 908 112</td><td class="muted">—</td><td class="r num">3</td><td class="r num">41.10</td></tr>
+            <tr><td><b>Vuthy Kim</b></td><td class="num">012 771 450</td><td>vuthy@mail.com</td><td class="r num">1</td><td class="r num">7.90</td></tr>
+            <tr><td><b>Bopha Lim</b></td><td class="muted">—</td><td>bopha.l@mail.com</td><td class="r num muted">0</td><td class="r num muted">0.00</td></tr>
+          </tbody>
+        </table>
+        <form class="drawer" onsubmit="return false" aria-labelledby="ct">
+          <div class="drawer-head"><h2 id="ct">Chan Dara</h2><span class="small muted">since 12/03/2026</span></div>
+          <div class="drawer-body">
+            <div class="field"><label for="n" class="req">Name</label><input id="n" class="input" value="Chan Dara"></div>
+            <div class="grid-2">
+              <div class="field"><label for="p">Phone</label><input id="p" class="input num" value="012 345 678"></div>
+              <div class="field"><label for="e">Email</label><input id="e" class="input" type="email" value="chan.dara@mail.com"></div>
+            </div>
+            <div class="grid-2">
+              <div class="card" style="padding:12px"><span class="label">Sales</span><div style="font:800 26px var(--display)">14</div></div>
+              <div class="card" style="padding:12px"><span class="label">Total spent</span><div class="num" style="font-size:22px;font-weight:700">312.40</div></div>
+            </div>
+            <div><span class="label">Recent sales</span>
+              <table class="table" style="margin-top:6px">
+                <tbody>
+                  <tr onclick="location='b6-sales.html'"><td class="num">T1-000124</td><td class="num muted">05/11</td><td class="r num">16.50</td></tr>
+                  <tr onclick="location='b6-sales.html'"><td class="num">T2-000041</td><td class="num muted">29/10</td><td class="r num">22.00</td></tr>
+                  <tr onclick="location='b6-sales.html'"><td class="num">T1-000087</td><td class="num muted">21/10</td><td class="r num">9.30</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="drawer-foot" style="justify-content:space-between">
+            <span class="tooltip" data-tip="Customer has sales"><button class="btn btn-danger" disabled>Delete</button></span>
+            <button class="btn btn-dark">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<a class="mock-tag" href="index.html">B7 · Customers</a>
+</body>
+</html>

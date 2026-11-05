@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A7 · Recent sales</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400..700&family=Onest:wght@400..700&family=Schibsted+Grotesk:wght@400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="pos">
+  <header class="pos-top">
+    <a class="btn" href="a3-sell.html"><span class="ico s i-back"></span>Sell</a>
+    <h2>Recent sales</h2><span class="till">T1 · today</span>
+    <div class="grow"></div>
+    <span class="badge info plain">Manager view · Dara</span>
+    <span class="conn on"><i></i>Online · 1 pending</span>
+  </header>
+  <div class="sell" style="grid-template-columns:1fr 440px">
+    <section class="catalog">
+      <div class="input-icon" style="max-width:420px"><span class="ico s i-search"></span><input class="input" style="height:44px" placeholder="Receipt number, e.g. T1-000124" aria-label="Search receipt number"></div>
+      <div class="card" style="overflow:auto">
+        <table class="tbl">
+          <thead><tr><th>Receipt</th><th>Time</th><th>Cashier</th><th class="r">Total</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr class="sel"><td class="num cell-main">T1-000124</td><td class="num t2">16:30</td><td>Sokha</td><td class="r num">16.50</td><td><span class="badge warn">Pending sync</span></td></tr>
+            <tr><td class="num cell-main">T1-000123</td><td class="num t2">16:12</td><td>Sokha</td><td class="r num">4.20</td><td><span class="badge ok">Completed</span></td></tr>
+            <tr><td class="num cell-main">T1-000122</td><td class="num t2">15:58</td><td>Dara</td><td class="r num">27.90</td><td><span class="badge ok">Completed</span></td></tr>
+            <tr><td class="num cell-main">T1-000121</td><td class="num t2">15:41</td><td>Sokha</td><td class="r num t3" style="text-decoration:line-through">9.60</td><td><span class="badge bad">Voided</span></td></tr>
+            <tr><td class="num cell-main">T1-000120</td><td class="num t2">15:20</td><td>Sokha</td><td class="r num">1.20</td><td><span class="badge ok">Completed</span></td></tr>
+            <tr><td class="num cell-main">T1-000119</td><td class="num t2">14:47</td><td>Dara</td><td class="r num">53.00</td><td><span class="badge ok">Completed</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <aside class="cart" style="background:var(--surface-2)">
+      <div class="cart-h between" style="background:var(--surface)"><div><h3 class="num">T1-000124</h3><span class="t3 sm">Sokha · 16:30</span></div><span class="badge warn">Pending sync</span></div>
+      <div style="flex:1;overflow:auto;display:grid;justify-items:center;padding:20px">
+<pre class="receipt sm">              MY SHOP
+------------------------------------------
+Receipt: T1-000124
+Date:    05/11/2026 16:30
+Cashier: Sokha
+------------------------------------------
+Coffee beans 250g
+  2 x 6.50                         13.00
+Water 500ml
+  6 x 0.50                          3.00
+------------------------------------------
+TOTAL                              16.50</pre>
+      </div>
+      <div class="cart-act" style="grid-template-columns:1fr 1fr;background:var(--surface);border-top:1px solid var(--border)">
+        <button class="btn btn-lg"><span class="ico s i-printer"></span>Reprint</button>
+        <span class="tip" data-tip="Manager only · online · reason required"><button class="btn btn-lg btn-danger" style="width:100%">Void sale</button></span>
+      </div>
+    </aside>
+  </div>
+  <a class="mock-tag" href="index.html">A7 · Recent sales</a>
+</body>
+</html>

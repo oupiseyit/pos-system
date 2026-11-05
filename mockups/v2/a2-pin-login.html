@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A2 · PIN login</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400..700&family=Onest:wght@400..700&family=Schibsted+Grotesk:wght@400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="pos">
+  <header class="pos-top">
+    <div class="logo"><span class="logo-mark">M</span>My Shop</div>
+    <span class="till">T1</span>
+    <div class="grow"></div>
+    <span class="conn on"><i></i>Online · 0 pending</span>
+  </header>
+  <main style="flex:1;display:grid;place-items:center">
+    <div style="display:grid;justify-items:center;gap:28px">
+      <div class="users" role="radiogroup" aria-label="Who is signing in">
+        <button class="user on" role="radio" aria-checked="true"><span class="av" style="--c:#0e6b4e">SO</span>Sokha</button>
+        <button class="user" role="radio" aria-checked="false"><span class="av" style="--c:#2459b3">DA</span>Dara</button>
+        <button class="user add"><span class="av"><span class="ico i-plus"></span></span>Other user</button>
+      </div>
+      <div style="text-align:center">
+        <div class="t2" style="font-weight:550;margin-bottom:14px">Enter PIN for Sokha</div>
+        <div class="dots bad shake" aria-label="2 of 4 digits entered"><i class="on"></i><i class="on"></i><i></i><i></i></div>
+        <div class="note bad" role="alert" style="margin-top:16px;justify-content:center"><span class="ico s i-alert"></span>Wrong PIN (3 tries left)</div>
+      </div>
+      <div class="pad" aria-label="PIN keypad">
+        <button class="key">1</button><button class="key">2</button><button class="key">3</button>
+        <button class="key">4</button><button class="key">5</button><button class="key">6</button>
+        <button class="key">7</button><button class="key">8</button><button class="key">9</button>
+        <button class="key" aria-label="Delete">⌫</button><button class="key">0</button><button class="key go" aria-label="Sign in">→</button>
+      </div>
+      <p class="sm t3" style="margin:0">Other states: <b>Locked until 14:32</b> · offline with no session: <b>Login needs a connection</b></p>
+    </div>
+  </main>
+  <a class="mock-tag" href="index.html">A2 · PIN login</a>
+</body>
+</html>

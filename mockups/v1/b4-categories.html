@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B4 · Categories</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .cat-input { border-color: transparent; background: transparent; font-weight: 600; }
+  .cat-input:hover { border-color: var(--line); }
+  .table tbody tr:hover { cursor: default; }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="nav" aria-label="Main">
+    <div class="brand">My Shop<small>Back office</small></div>
+    <a href="b2-dashboard.html">Dashboard</a>
+    <a href="b3-products.html">Products</a>
+    <a href="b4-categories.html" class="is-on">Categories</a>
+    <a href="b5-inventory.html">Inventory</a>
+    <a href="b6-sales.html">Sales</a>
+    <a href="b7-customers.html">Customers</a>
+    <a href="b8-reports.html">Reports</a>
+    <div class="sep"></div>
+    <a href="b9-staff.html">Staff <span class="pill">admin</span></a>
+    <a href="b10-settings.html">Settings <span class="pill">admin</span></a>
+  </nav>
+  <div class="main">
+    <header class="topbar"><h1>Categories</h1><div class="user-menu"><span class="avatar">D</span>Dara ▾</div></header>
+    <div class="content" style="max-width:720px">
+      <p class="muted" style="margin-top:0">Click a name to rename it. Changes save on Enter or when you leave the field.</p>
+      <table class="table">
+        <thead><tr><th>Name</th><th class="r">Products</th><th></th></tr></thead>
+        <tbody>
+          <tr><td><input class="input cat-input" value="Bakery" aria-label="Category name"></td><td class="r num">6</td><td class="r"><span class="tooltip" data-tip="6 products use this category"><button class="btn btn-sm btn-danger" disabled>Delete</button></span></td></tr>
+          <tr><td><input class="input cat-input" value="Coffee" aria-label="Category name"></td><td class="r num">4</td><td class="r"><span class="tooltip" data-tip="4 products use this category"><button class="btn btn-sm btn-danger" disabled>Delete</button></span></td></tr>
+          <tr><td><input class="input cat-input" value="Drinks" aria-label="Category name"></td><td class="r num">23</td><td class="r"><span class="tooltip" data-tip="23 products use this category"><button class="btn btn-sm btn-danger" disabled>Delete</button></span></td></tr>
+          <tr><td><input class="input cat-input" value="Household" aria-label="Category name"></td><td class="r num">11</td><td class="r"><span class="tooltip" data-tip="11 products use this category"><button class="btn btn-sm btn-danger" disabled>Delete</button></span></td></tr>
+          <tr><td><input class="input cat-input" value="Seasonal" aria-label="Category name"></td><td class="r num muted">0</td><td class="r"><button class="btn btn-sm btn-danger">Delete</button></td></tr>
+          <tr><td><input class="input cat-input" value="Snacks" aria-label="Category name"></td><td class="r num">17</td><td class="r"><span class="tooltip" data-tip="17 products use this category"><button class="btn btn-sm btn-danger" disabled>Delete</button></span></td></tr>
+        </tbody>
+        <tfoot>
+          <tr><td colspan="2"><input class="input" placeholder="New category name" aria-label="New category name"></td><td class="r"><button class="btn btn-sm btn-dark">+ Add</button></td></tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>
+<a class="mock-tag" href="index.html">B4 · Categories</a>
+</body>
+</html>

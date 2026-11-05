@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B9 · Staff</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="shell">
+  <nav class="nav" aria-label="Main">
+    <div class="brand">My Shop<small>Back office</small></div>
+    <a href="b2-dashboard.html">Dashboard</a>
+    <a href="b3-products.html">Products</a>
+    <a href="b4-categories.html">Categories</a>
+    <a href="b5-inventory.html">Inventory</a>
+    <a href="b6-sales.html">Sales</a>
+    <a href="b7-customers.html">Customers</a>
+    <a href="b8-reports.html">Reports</a>
+    <div class="sep"></div>
+    <a href="b9-staff.html" class="is-on">Staff <span class="pill">admin</span></a>
+    <a href="b10-settings.html">Settings <span class="pill">admin</span></a>
+  </nav>
+  <div class="main">
+    <header class="topbar"><h1>Staff</h1><div class="row"><button class="btn btn-primary">+ Add staff</button><div class="user-menu"><span class="avatar">D</span>Dara ▾</div></div></header>
+    <div class="content">
+      <div class="split">
+        <table class="table">
+          <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Active</th><th>PIN set</th><th>Locked</th></tr></thead>
+          <tbody>
+            <tr><td><b>Dara</b> <span class="small muted">(you)</span></td><td>dara@myshop.com</td><td><span class="pill dark">admin</span></td><td>✓</td><td>✓</td><td class="muted">—</td></tr>
+            <tr class="is-selected"><td><b>Sokha</b></td><td>sokha@myshop.com</td><td><span class="pill">cashier</span></td><td>✓</td><td>✓</td><td><span class="pill red">until 14:32</span></td></tr>
+            <tr><td><b>Rithy</b></td><td>rithy@myshop.com</td><td><span class="pill amber">manager</span></td><td>✓</td><td class="muted">—</td><td class="muted">—</td></tr>
+            <tr><td class="muted">Mealea</td><td class="muted">mealea@myshop.com</td><td><span class="pill">cashier</span></td><td class="muted">—</td><td>✓</td><td class="muted">—</td></tr>
+          </tbody>
+        </table>
+        <form class="drawer" onsubmit="return false" aria-labelledby="st">
+          <div class="drawer-head"><h2 id="st">Sokha</h2><button class="btn btn-sm btn-primary">Unlock</button></div>
+          <div class="drawer-body">
+            <div class="card" style="padding:10px 14px;background:#f5d9d5;border-color:#e9b8b1;color:var(--red);font-size:14px">Locked after 5 wrong PINs, until 14:32.</div>
+            <div class="field"><label for="n" class="req">Name</label><input id="n" class="input" value="Sokha"></div>
+            <div class="field"><label for="e" class="req">Email</label><input id="e" class="input" type="email" value="sokha@myshop.com"></div>
+            <div class="field"><label for="r">Role</label><select id="r" class="input"><option>CASHIER</option><option>MANAGER</option><option>ADMIN</option></select></div>
+            <div class="grid-2">
+              <button class="btn" type="button">Set new password</button>
+              <button class="btn" type="button">Set new PIN</button>
+            </div>
+            <label class="check"><input type="checkbox" checked> Active</label>
+            <p class="hint" style="margin:0">On your own account, role and Active are disabled. You can’t demote or deactivate yourself.</p>
+          </div>
+          <div class="drawer-foot"><button class="btn">Cancel</button><button class="btn btn-dark">Save</button></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<a class="mock-tag" href="index.html">B9 · Staff</a>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A1 · Device setup</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="pos" style="display:grid;place-items:center">
+  <main class="card stack" style="width:440px;color:var(--ink);padding:32px;box-shadow:12px 12px 0 var(--accent)">
+    <div>
+      <p class="label" style="margin:0 0 6px">First run</p>
+      <h1>Set up this till</h1>
+      <p class="muted" style="margin:6px 0 0">A manager enters this once. It names the till on every receipt.</p>
+    </div>
+    <form class="stack" onsubmit="return false">
+      <div class="field">
+        <label for="code" class="req">Device code</label>
+        <input id="code" class="input num" value="T1" maxlength="4" style="font-size:26px;width:120px;text-transform:uppercase;letter-spacing:.1em">
+        <span class="hint">2–4 letters or numbers, e.g. T1</span>
+      </div>
+      <div class="field">
+        <label for="email" class="req">Manager email</label>
+        <input id="email" class="input" type="email" placeholder="manager@myshop.com">
+      </div>
+      <div class="field">
+        <label for="pin" class="req">Manager PIN</label>
+        <input id="pin" class="input num" type="password" inputmode="numeric" value="1234" style="letter-spacing:.4em">
+      </div>
+      <div class="spread" style="padding-top:6px">
+        <span class="hint">Needs a connection</span>
+        <button class="btn btn-primary btn-lg">Save</button>
+      </div>
+    </form>
+  </main>
+  <a class="mock-tag" href="index.html">A1 · Device setup</a>
+</body>
+</html>

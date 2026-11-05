@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B4 · Categories</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400..700&family=Onest:wght@400..700&family=Schibsted+Grotesk:wght@400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .inl { border-color: transparent; background: transparent; box-shadow: none; font-weight: 550; }
+  .inl:hover { border-color: var(--border); }
+  .tbl tbody tr:hover { cursor: default; }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side" aria-label="Main">
+    <div class="logo"><span class="logo-mark">M</span>My Shop</div>
+    <a href="b2-dashboard.html"><span class="ico i-dash"></span>Dashboard</a>
+    <div class="sec">Catalog</div>
+    <a href="b3-products.html"><span class="ico i-box"></span>Products</a>
+    <a href="b4-categories.html" class="on" aria-current="page"><span class="ico i-tag"></span>Categories</a>
+    <a href="b5-inventory.html"><span class="ico i-layers"></span>Inventory<span class="cnt">7</span></a>
+    <div class="sec">Sales</div>
+    <a href="b6-sales.html"><span class="ico i-receipt"></span>Sales</a>
+    <a href="b7-customers.html"><span class="ico i-users"></span>Customers</a>
+    <a href="b8-reports.html"><span class="ico i-chart"></span>Reports</a>
+    <div class="sec">Admin</div>
+    <a href="b9-staff.html"><span class="ico i-shield"></span>Staff</a>
+    <a href="b10-settings.html"><span class="ico i-sliders"></span>Settings</a>
+    <a href="b1-login.html" style="margin-top:auto"><span class="ico i-lock"></span>Log out</a>
+  </aside>
+  <div class="main">
+    <header class="topbar"><div class="crumb">Catalog / <b>Categories</b></div><div class="row"><span class="av" style="--c:#2459b3">DA</span><span style="font-weight:550">Dara</span><span class="ico s i-chev t3"></span></div></header>
+    <div class="page" style="max-width:820px">
+      <div class="page-h"><div><h1>Categories</h1><p>Click a name to rename it. Saves on Enter or when you leave the field.</p></div></div>
+      <section class="card">
+        <table class="tbl">
+          <thead><tr><th>Name</th><th class="r">Products</th><th class="r" style="width:120px"></th></tr></thead>
+          <tbody>
+            <tr><td><input class="input inl" value="Bakery" aria-label="Category name"></td><td class="r num t2">6</td><td class="r"><span class="tip" data-tip="6 products use this category"><button class="btn btn-sm btn-danger" disabled>Delete</button></span></td></tr>
+            <tr><td><input class="input inl" value="Coffee" aria-label="Category name"></td><td class="r num t2">4</td><td class="r"><span class="tip" data-tip="4 products use this category"><button class="btn btn-sm btn-danger" disabled>Delete</button></span></td></tr>
+            <tr><td><input class="input inl" value="Drinks" aria-label="Category name" style="border-color:var(--primary);box-shadow:var(--focus);background:#fff"></td><td class="r num t2">14</td><td class="r"><span class="badge ok plain">Saved</span></td></tr>
+            <tr><td><input class="input inl" value="Household" aria-label="Category name"></td><td class="r num t2">11</td><td class="r"><span class="tip" data-tip="11 products use this category"><button class="btn btn-sm btn-danger" disabled>Delete</button></span></td></tr>
+            <tr><td><input class="input inl" value="Seasonal" aria-label="Category name"></td><td class="r num t3">0</td><td class="r"><button class="btn btn-sm btn-danger">Delete</button></td></tr>
+            <tr><td><input class="input inl" value="Snacks" aria-label="Category name"></td><td class="r num t2">9</td><td class="r"><span class="tip" data-tip="9 products use this category"><button class="btn btn-sm btn-danger" disabled>Delete</button></span></td></tr>
+          </tbody>
+          <tfoot><tr><td colspan="2"><input class="input" placeholder="New category name" aria-label="New category name"></td><td class="r"><button class="btn btn-sm btn-primary"><span class="ico s i-plus"></span>Add</button></td></tr></tfoot>
+        </table>
+      </section>
+    </div>
+  </div>
+</div>
+<a class="mock-tag" href="index.html">B4 · Categories</a>
+</body>
+</html>

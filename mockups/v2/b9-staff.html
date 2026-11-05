@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B9 · Staff</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400..700&family=Onest:wght@400..700&family=Schibsted+Grotesk:wght@400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <aside class="side" aria-label="Main">
+    <div class="logo"><span class="logo-mark">M</span>My Shop</div>
+    <a href="b2-dashboard.html"><span class="ico i-dash"></span>Dashboard</a>
+    <div class="sec">Catalog</div>
+    <a href="b3-products.html"><span class="ico i-box"></span>Products</a>
+    <a href="b4-categories.html"><span class="ico i-tag"></span>Categories</a>
+    <a href="b5-inventory.html"><span class="ico i-layers"></span>Inventory<span class="cnt">7</span></a>
+    <div class="sec">Sales</div>
+    <a href="b6-sales.html"><span class="ico i-receipt"></span>Sales</a>
+    <a href="b7-customers.html"><span class="ico i-users"></span>Customers</a>
+    <a href="b8-reports.html"><span class="ico i-chart"></span>Reports</a>
+    <div class="sec">Admin</div>
+    <a href="b9-staff.html" class="on" aria-current="page"><span class="ico i-shield"></span>Staff</a>
+    <a href="b10-settings.html"><span class="ico i-sliders"></span>Settings</a>
+    <a href="b1-login.html" style="margin-top:auto"><span class="ico i-lock"></span>Log out</a>
+  </aside>
+  <div class="main">
+    <header class="topbar"><div class="crumb">Admin / <b>Staff</b></div><div class="row"><span class="av" style="--c:#2459b3">DA</span><span style="font-weight:550">Dara</span><span class="ico s i-chev t3"></span></div></header>
+    <div class="page">
+      <div class="page-h"><div><h1>Staff</h1><p>4 people · 1 locked</p></div><button class="btn btn-primary"><span class="ico s i-plus"></span>Add staff</button></div>
+      <div class="split">
+        <section class="card">
+          <table class="tbl">
+            <thead><tr><th>Name</th><th>Role</th><th>Active</th><th>PIN set</th><th>Locked</th></tr></thead>
+            <tbody>
+              <tr><td><div class="row"><span class="av" style="--c:#2459b3">DA</span><div><div class="cell-main">Dara <span class="t3" style="font-weight:400">(you)</span></div><div class="cell-sub">dara@myshop.com</div></div></div></td><td><span class="badge info plain">Admin</span></td><td><span class="badge ok">Active</span></td><td>✓</td><td class="t3">—</td></tr>
+              <tr class="sel"><td><div class="row"><span class="av" style="--c:#0e6b4e">SO</span><div><div class="cell-main">Sokha</div><div class="cell-sub">sokha@myshop.com</div></div></div></td><td><span class="badge plain">Cashier</span></td><td><span class="badge ok">Active</span></td><td>✓</td><td><span class="badge bad"><span class="num">14:32</span></span></td></tr>
+              <tr><td><div class="row"><span class="av" style="--c:#a8670a">RI</span><div><div class="cell-main">Rithy</div><div class="cell-sub">rithy@myshop.com</div></div></div></td><td><span class="badge warn plain">Manager</span></td><td><span class="badge ok">Active</span></td><td class="t3">—</td><td class="t3">—</td></tr>
+              <tr><td><div class="row"><span class="av" style="--c:#8790a0">ME</span><div><div class="cell-main t3">Mealea</div><div class="cell-sub">mealea@myshop.com</div></div></div></td><td><span class="badge plain">Cashier</span></td><td><span class="badge">Inactive</span></td><td>✓</td><td class="t3">—</td></tr>
+            </tbody>
+          </table>
+        </section>
+        <form class="card panel" onsubmit="return false" aria-labelledby="st">
+          <div class="card-h"><div class="row"><span class="av" style="--c:#0e6b4e;width:40px;height:40px">SO</span><div><h2 id="st">Sokha</h2><span class="t3 sm">Cashier</span></div></div></div>
+          <div class="card-b" style="display:grid;gap:14px">
+            <div class="note bad between"><span class="row"><span class="ico s i-lock"></span>Locked after 5 wrong PINs, until 14:32</span><button class="btn btn-sm">Unlock</button></div>
+            <div class="field"><label for="n" class="req">Name</label><input id="n" class="input" value="Sokha"></div>
+            <div class="field"><label for="e" class="req">Email</label><input id="e" class="input" type="email" value="sokha@myshop.com"></div>
+            <div class="field"><label for="r">Role</label><select id="r" class="input"><option>Cashier</option><option>Manager</option><option>Admin</option></select></div>
+            <div class="g2"><button class="btn" type="button">Set new password</button><button class="btn" type="button">Set new PIN</button></div>
+            <label class="check"><input type="checkbox" class="switch" checked> Active</label>
+            <p class="help" style="margin:0">On your own account, Role and Active are disabled. You can’t demote or deactivate yourself.</p>
+          </div>
+          <div class="card-f"><button class="btn">Cancel</button><button class="btn btn-primary">Save changes</button></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<a class="mock-tag" href="index.html">B9 · Staff</a>
+</body>
+</html>
