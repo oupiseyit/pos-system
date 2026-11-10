@@ -1,0 +1,36 @@
+# Production stack (docs/09-deployment.md §4): Caddy (HTTPS) → api (Express + built SPAs) → db (Postgres 16).
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    env_file: .env
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}']
+      interval: 10s
+    # no ports: not reachable from outside the Docker network
+
+  api:
+    image: pos-api:${TAG:-latest}
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    # no ports: only Caddy may reach it. The auth rate limit trusts one X-Forwarded-For hop (07 §3),
+    # so a published port would let clients spoof their IP and skip the limit.
+    depends_on: { db: { condition: service_healthy } }
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:3000/api/health']
+      interval: 30s
+      start_period: 60s
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports: ['80:80', '443:443'] # HTTP-only test mode (DOMAIN=http://:3000): ['3000:3000']
+    env_file: .env
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+    depends_on: [api]
+
+volumes: { pgdata: {}, caddy_data: {} }

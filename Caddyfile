@@ -1,0 +1,16 @@
+# DOMAIN in .env picks the mode:
+#   pos.example.com    → HTTPS with a Let's Encrypt cert (needs ports 80/443 in docker-compose.prod.yml)
+#   http://:3000       → plain HTTP test mode. No offline mode or PWA install: browsers only run service workers over HTTPS.
+{
+	# an ACME email lets Caddy fall back to ZeroSSL when Let's Encrypt validation fails
+	email {$ACME_EMAIL}
+}
+
+{$DOMAIN} {
+	encode gzip
+	reverse_proxy api:3000 {
+		# ponytail: helmet's CSP upgrade-insecure-requests would push assets to https and blank the page in
+		# HTTP mode; harmless to strip under HTTPS (everything is already https). Drop when HTTP mode goes.
+		header_down Content-Security-Policy ";?\s*upgrade-insecure-requests" ""
+	}
+}
