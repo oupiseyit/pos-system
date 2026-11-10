@@ -10,7 +10,12 @@ export const body = z.object({ name: z.string().trim().min(1).max(100) });
 export const categoriesRouter = Router();
 
 categoriesRouter.get('/', async (_req, res) => {
-  res.json(await prisma.category.findMany({ orderBy: { name: 'asc' } }));
+  // productCount lets the back office disable Delete on categories in use (B4)
+  const rows = await prisma.category.findMany({
+    orderBy: { name: 'asc' },
+    include: { _count: { select: { products: true } } },
+  });
+  res.json(rows.map(({ _count, ...c }) => ({ ...c, productCount: _count.products })));
 });
 
 categoriesRouter.post('/', requireRole('MANAGER'), async (req, res) => {

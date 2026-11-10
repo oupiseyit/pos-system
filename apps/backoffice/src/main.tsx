@@ -1,24 +1,15 @@
-import { StrictMode, useEffect, useState } from 'react';
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-
-function App() {
-  const [api, setApi] = useState('checking…');
-  useEffect(() => {
-    fetch('/api/health')
-      .then((r) => r.json() as Promise<{ status: string }>)
-      .then((b) => setApi(b.status))
-      .catch(() => setApi('unreachable'));
-  }, []);
-  return (
-    <main>
-      <h1>Hello, Back office</h1>
-      <p>API: {api}</p>
-    </main>
-  );
-}
+// ponytail: the approved v2 mockup stylesheet is the app's stylesheet; one source of truth for tokens
+import '../../../mockups/v2/styles.css';
+import './app.css';
+import { App } from './App';
+import { ToastProvider } from './ui';
 
 createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>
-    <App />
+    <ToastProvider>
+      <App />
+    </ToastProvider>
   </StrictMode>,
 );

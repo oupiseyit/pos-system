@@ -88,17 +88,17 @@ Exit gate: Endpoints tested
 ## Phase 6 — Back office
 Exit gate: Admin flow works
 
-- [ ] App shell: layout, role-based nav, `api()` fetch wrapper (401 → login), toasts, loading/empty/error states.
-- [ ] B1 Login
-- [ ] B2 Dashboard
-- [ ] B3 Products
-- [ ] B4 Categories
-- [ ] B5 Inventory (Receive / Count / Movements)
-- [ ] B6 Sales (detail, reprint, void)
-- [ ] B7 Customers
-- [ ] B8 Reports (date presets, CSV)
-- [ ] B9 Staff
-- [ ] B10 Settings with receipt preview
+- [x] App shell: layout, role-based nav, `api()` fetch wrapper (401 → login), toasts, loading/empty/error states.
+- [x] B1 Login
+- [x] B2 Dashboard
+- [x] B3 Products
+- [x] B4 Categories
+- [x] B5 Inventory (Receive / Count / Movements)
+- [x] B6 Sales (detail, reprint, void)
+- [x] B7 Customers
+- [x] B8 Reports (date presets, CSV)
+- [x] B9 Staff
+- [x] B10 Settings with receipt preview
 
 ## Phase 7 — Web front (POS)
 Exit gate: A sale completes

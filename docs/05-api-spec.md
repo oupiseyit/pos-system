@@ -77,7 +77,7 @@ Rules: password ≥ 8 chars, PIN 4–6 digits. `409` on duplicate email. `400` i
 
 | Method | Path | Role | Body | Response |
 |---|---|---|---|---|
-| GET | `/categories` | CASHIER | | `Category[]` |
+| GET | `/categories` | CASHIER | | `Category[]`, each with `productCount` |
 | POST | `/categories` | MANAGER | `{ name }` | `201 Category` |
 | PATCH | `/categories/:id` | MANAGER | `{ name }` | `Category` |
 | DELETE | `/categories/:id` | MANAGER | | `204` · `409` if products use it |
@@ -134,7 +134,7 @@ Item: `{ "id", "productId", "productName", "qtyChange", "reason", "saleId", "rec
 
 | Method | Path | Role | Body / query | Response |
 |---|---|---|---|---|
-| GET | `/customers` | CASHIER | `?search=` (name/phone/email), `updatedSince`, `page`, `limit` | paginated `Customer[]` |
+| GET | `/customers` | CASHIER | `?search=` (name/phone/email), `updatedSince`, `page`, `limit` | paginated `Customer[]`, each with `salesCount` and `totalSpent` (completed sales) |
 | POST | `/customers` | CASHIER | `{ name, phone?, email?, notes? }` | `201 Customer` · `409` phone exists |
 | GET | `/customers/:id` | MANAGER | | `Customer` + `{ "stats": { "salesCount", "totalSpent", "lastSaleAt" }, "recentSales": [SaleSummary] }` |
 | PATCH | `/customers/:id` | MANAGER | any create field | `Customer` |
@@ -184,7 +184,7 @@ A CASHIER always gets only **their own sales from today** (other filters are ign
 Item (SaleSummary): `{ "id", "receiptNo", "createdAt", "cashierName", "customerName", "total", "status", "paymentMethods": ["CASH"] }`
 
 ### `GET /sales/:id` — CASHIER (own sales) / MANAGER
-Full sale: the Sale fields + `items[]` + `payments[]` (with `change` computed) + `cashier { id, name }` + `customer` + void info. A cashier asking for someone else's sale gets `404`.
+Full sale: the Sale fields + `items[]` + `payments[]` (with `change` computed) + `cashier { id, name }` + `syncedBy { id, name }` + `customer` + void info. A cashier asking for someone else's sale gets `404`.
 
 ### `POST /sales/:id/void` — MANAGER
 Body: `{ "reason": "Wrong items rung up" }` (required).

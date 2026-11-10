@@ -182,7 +182,7 @@ Set up the guardrails Claude Code works under *before* any app code is written.
   6. View the movements.
   7. View the reports, on seeded sales, and export a CSV.
 - A manager can't see Staff/Settings, and a cashier is refused at login.
-- Screens match the approved mockups.
+- Screens match the approved mockups in `mockups/v2/b*.html`.
 
 ---
 

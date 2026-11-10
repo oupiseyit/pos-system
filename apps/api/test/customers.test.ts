@@ -51,6 +51,8 @@ describe('customers', () => {
     expect(res.status).toBe(200);
     expect(res.body.stats).toMatchObject({ salesCount: 1, totalSpent: '14.30' });
     expect(res.body.recentSales[0]).toMatchObject({ receiptNo: sale.receiptNo, customerName: 'Dara', total: '14.30' });
+    const list = await api().get('/api/customers?search=Dara').set('Authorization', mgr);
+    expect(list.body.data[0]).toMatchObject({ id: cust.id, salesCount: 1, totalSpent: '14.30' });
 
     const patched = await api().patch(`/api/customers/${cust.id}`).set('Authorization', mgr).send({ notes: 'Regular' });
     expect(patched.body.notes).toBe('Regular');

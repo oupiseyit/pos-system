@@ -28,10 +28,23 @@ customersRouter.get('/', async (req, res) => {
       OR: ['name', 'phone', 'email'].map((f) => ({ [f]: { contains: q.search, mode: 'insensitive' } })),
     }),
   };
-  const [data, total] = await Promise.all([
+  const [rows, total] = await Promise.all([
     prisma.customer.findMany({ where, orderBy: [{ name: 'asc' }, { id: 'asc' }], ...pageArgs(q) }),
     prisma.customer.count({ where }),
   ]);
+  // Per-row sales count and spend for the back-office list (B7); completed sales only
+  const stats = await prisma.sale.groupBy({
+    by: ['customerId'],
+    where: { customerId: { in: rows.map((c) => c.id) }, status: 'COMPLETED' },
+    _count: true,
+    _sum: { total: true },
+  });
+  const byId = new Map(stats.map((s) => [s.customerId, s]));
+  const data = rows.map((c) => ({
+    ...c,
+    salesCount: byId.get(c.id)?._count ?? 0,
+    totalSpent: byId.get(c.id)?._sum.total ?? '0.00',
+  }));
   res.json({ data, page: q.page, limit: q.limit, total });
 });
 

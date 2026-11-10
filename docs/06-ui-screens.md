@@ -137,6 +137,8 @@ Outbox entries the server rejected with a 4xx. Each shows the receipt no, total 
 
 ## Part B — Back office
 
+**Design:** build every back-office screen to match its mockup in `mockups/v2/` (`b1-login.html` … `b10-settings.html`), reusing the tokens, fonts and components from `mockups/v2/styles.css`. `mockups/v1` is archived; don't use it. The ASCII sketches below show content and behaviour; the v2 mockups win on look and layout.
+
 Layout: a left nav (items hidden by role) and a top bar with the user name and logout.
 ```
 ┌────────────┬───────────────────────────────────────────────┐

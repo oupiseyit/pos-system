@@ -96,6 +96,8 @@ describe('categories', () => {
 
     const p = await create({ sku: 'CAT-1', name: 'x', price: '1.00', categoryId: c.body.id });
     expect((await api().delete(`/api/categories/${c.body.id}`).set('Authorization', mgr)).status).toBe(409);
+    const listed = await api().get('/api/categories').set('Authorization', cashier);
+    expect(listed.body.find((x: { id: string }) => x.id === c.body.id).productCount).toBe(1);
     await api().patch(`/api/products/${p.body.id}`).set('Authorization', mgr).send({ categoryId: null });
     expect((await api().delete(`/api/categories/${c.body.id}`).set('Authorization', mgr)).status).toBe(204);
     expect((await api().get('/api/categories').set('Authorization', cashier)).body).toEqual([]);

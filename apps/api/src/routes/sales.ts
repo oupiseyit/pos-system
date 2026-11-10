@@ -69,6 +69,7 @@ const fullInclude = {
   payments: true,
   cashier: { select: { id: true, name: true } },
   voidedBy: { select: { id: true, name: true } },
+  syncedBy: { select: { id: true, name: true } },
   customer: true,
 } satisfies Prisma.SaleInclude;
 
