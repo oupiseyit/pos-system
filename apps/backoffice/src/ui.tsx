@@ -146,13 +146,31 @@ export function Forbidden() {
 /* ---------- Dialog ---------- */
 export function Dialog(props: { title: string; onClose: () => void; children: ReactNode; footer: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
+  // Callers pass inline arrows: keep the latest in a ref so the effect below runs once per open,
+  // not on every keystroke (which used to move focus to the ✕ mid-typing).
   const { onClose } = props;
+  const close = useRef(onClose);
   useEffect(() => {
-    ref.current?.querySelector<HTMLElement>('input, textarea, select, button')?.focus();
-    const esc = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+    close.current = onClose;
+  });
+  // Read during the first render, before an autoFocus inside the dialog moves focus
+  const [opener] = useState(() => document.activeElement as HTMLElement | null);
+  useEffect(() => {
+    const d = ref.current;
+    // Keep an autoFocus the caller chose; else the first field, else the first footer button
+    if (!d?.contains(document.activeElement))
+      (
+        d?.querySelector<HTMLElement>('.card-b :is(input, textarea, select):not(:disabled)') ??
+        d?.querySelector<HTMLElement>('.card-f button:not(:disabled)')
+      )?.focus();
+    const esc = (e: KeyboardEvent) => e.key === 'Escape' && close.current();
     addEventListener('keydown', esc);
-    return () => removeEventListener('keydown', esc);
-  }, [onClose]);
+    return () => {
+      removeEventListener('keydown', esc);
+      // Back to the opener, unless something else already took focus (e.g. the receipt's New sale)
+      if (document.activeElement === document.body) opener?.focus();
+    };
+  }, [opener]);
   return (
     <div className="overlay" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
       <div className="dialog" role="dialog" aria-modal="true" aria-labelledby="dlg-t" ref={ref}>

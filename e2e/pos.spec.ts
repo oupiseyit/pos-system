@@ -171,7 +171,8 @@ test('split payment with a customer and a line discount', async ({ page }) => {
 
   await page.keyboard.press('F4');
   const cust = page.getByRole('dialog', { name: 'Attach customer' });
-  await cust.getByLabel('Search by name or phone').fill('Dara');
+  await expect(cust.getByLabel('Search by name or phone')).toBeFocused(); // F4 → straight to typing
+  await page.keyboard.type('Dara');
   await cust.getByLabel('Search by name or phone').press('Enter');
   await expect(page.getByRole('button', { name: /Dara Kim/ })).toBeVisible();
 

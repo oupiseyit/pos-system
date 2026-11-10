@@ -133,7 +133,10 @@ test('sales: find a sale, see its receipt, void it with a reason', async ({ page
 
   await page.getByRole('button', { name: 'Void sale…' }).click();
   const dlg = page.getByRole('dialog', { name: `Void ${receiptNo}?` });
-  await dlg.getByLabel('Reason').fill('Wrong item rung up');
+  // Focus starts in the reason box and stays there key by key (it used to jump to the ✕)
+  await expect(dlg.getByLabel('Reason')).toBeFocused();
+  await page.keyboard.type('Wrong item rung up');
+  await expect(dlg.getByLabel('Reason')).toHaveValue('Wrong item rung up');
   await dlg.getByRole('button', { name: 'Void sale' }).click();
   await expect(page.getByText(/Voided .* Wrong item rung up/)).toBeVisible();
   await expect(page.getByLabel(`Receipt ${receiptNo}`).first()).toContainText('*** VOID ***');
