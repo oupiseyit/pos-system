@@ -12,15 +12,66 @@ apps/pos          React cashier POS (PWA, offline)
 docs/             Documentation
 ```
 
-## Quickstart (local dev)
+## Setup (local dev)
+
+Requires Docker Desktop and Node.js 22+.
+
 ```bash
-cp .env.example .env
-docker compose up -d db
-npm install
-npm run db:migrate -w apps/api
-npm run db:seed -w apps/api
-npm run dev          # api :3000 · pos :5173 · backoffice :5174
+cp .env.example .env    # then change the change-me values
+npm install             # host deps: editor, lint, tests, prisma CLI
 ```
+
+### Option A: everything in Docker
+```bash
+docker compose up -d    # postgres, adminer, api, back-office, web-front
+docker compose ps       # wait until all are "healthy" (first start ~1-2 min: npm install in the container)
+npm run db:migrate      # create tables (runs on the host against localhost:5432)
+npm run db:seed         # admin from .env + dev data (cashier PIN 1234)
+```
+
+| Service | URL |
+|---|---|
+| API | http://localhost:3000/api/health |
+| API docs (Swagger UI, dev only) | http://localhost:3000/api/docs |
+| POS (web-front) | http://localhost:5173 |
+| Back office | http://localhost:5174 |
+| Adminer (DB UI) | http://localhost:8080 (server `postgres`, user/password/db from `.env`) |
+
+Source is mounted into the containers, so code changes hot-reload. There are no images to build.
+
+**Trying the API:** open the Swagger UI and call `POST /auth/pin` with `{ "email": "manager@shop.local", "pin": "1234" }` (seeded dev staff; `cashier@shop.local` works too). Then paste the returned `token` into **Authorize**. The admin logs in with `POST /auth/login`, using the email and password from `.env`. Swagger lists every endpoint with request bodies generated from the API's zod schemas. [05-api-spec.md](docs/05-api-spec.md) describes behaviour and response shapes.
+
+### Option B: only Postgres in Docker, apps on the host
+```bash
+docker compose up -d postgres
+npm run db:migrate
+npm run db:seed
+npm run dev             # api :3000 · pos :5173 · backoffice :5174
+```
+Don't run this alongside Option A: they use the same ports.
+
+## Rebuilding Docker
+
+| When | Command |
+|---|---|
+| Restart after editing `.env` or `docker-compose.yml` | `docker compose up -d --force-recreate` |
+| Added/changed npm dependencies | `docker compose down && docker volume rm pos-system_node_modules && docker compose up -d` |
+| Wipe the database and start fresh | `npm run db:reset` (drops, re-migrates and re-seeds) |
+| Full reset (containers, DB data, node_modules) | `docker compose down -v && docker compose up -d`, then `npm run db:migrate && npm run db:seed` |
+| Something is unhealthy | `docker compose logs -f api` (or `postgres`, `back-office`, `web-front`) |
+
+`down -v` deletes all local database data. Volume names start with the project folder name; check them with `docker volume ls`.
+
+## Common commands
+```bash
+npm run typecheck       # all workspaces
+npm run lint
+npm run format:check
+npm test                # Vitest in all apps (API tests need Postgres running)
+npm run db:test         # wipe and rebuild the pos_test database (rarely needed)
+```
+
+API tests run against a separate `pos_test` database, never your dev data. `npm test` creates it and applies migrations automatically, and each test file truncates and seeds its own data.
 
 ## Documentation
 

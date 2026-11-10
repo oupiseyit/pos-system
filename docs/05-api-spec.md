@@ -25,6 +25,8 @@
 | 429 | Rate limited (`POST /auth/login` and `POST /auth/pin`) |
 | 500 | Server error (generic message, logged server-side) |
 
+**Interactive docs (dev only):** Swagger UI at `/api/docs`, and the raw OpenAPI 3.1 document at `/api/openapi.json`. Neither is served when `NODE_ENV=production`. Request bodies and query parameters are generated from the same zod schemas the routes validate with (`apps/api/src/openapi.ts`), so they always match the code. This file stays the reference for behaviour and response shapes. To call protected endpoints, log in with `/auth/login` or `/auth/pin`, then paste the token into **Authorize**.
+
 Objects below show fields. Timestamps `createdAt`/`updatedAt` are returned on all entities and omitted from the examples for brevity.
 
 ---
