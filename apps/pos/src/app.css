@@ -1,0 +1,63 @@
+/* Styles the POS mockups kept inline in each screen's <style>; tokens come from mockups/v2/styles.css. */
+
+/* A3: the Total bumps when it changes (styles.css turns it off for prefers-reduced-motion) */
+.sum .total .bump {
+  display: inline-block;
+  transform-origin: right center;
+  animation: total-bump 0.38s cubic-bezier(0.2, 0.8, 0.3, 1.2);
+}
+@keyframes total-bump {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.1);
+    color: var(--primary);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* A8 */
+.err {
+  font: 12.5px var(--mono);
+  color: var(--danger);
+}
+.attn-pre {
+  font: 12px/1.6 var(--mono);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  padding: 12px;
+  border-radius: 8px;
+  margin: 12px 0 0;
+  overflow: auto;
+}
+
+.linkish {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: var(--primary);
+  cursor: pointer;
+}
+.linkish:hover {
+  text-decoration: underline;
+}
+
+/* Update prompt from the service worker */
+.update {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  z-index: 160;
+}
+
+@media print {
+  .toast,
+  .update {
+    display: none;
+  }
+}

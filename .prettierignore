@@ -1,0 +1,6 @@
+graphify-out/
+mockups/
+docs/
+prisma/migrations/
+package-lock.json
+*.md

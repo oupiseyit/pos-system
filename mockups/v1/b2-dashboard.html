@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B2 · Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="shell">
+  <nav class="nav" aria-label="Main">
+    <div class="brand">My Shop<small>Back office</small></div>
+    <a href="b2-dashboard.html" class="is-on">Dashboard</a>
+    <a href="b3-products.html">Products</a>
+    <a href="b4-categories.html">Categories</a>
+    <a href="b5-inventory.html">Inventory</a>
+    <a href="b6-sales.html">Sales</a>
+    <a href="b7-customers.html">Customers</a>
+    <a href="b8-reports.html">Reports</a>
+    <div class="sep"></div>
+    <a href="b9-staff.html">Staff <span class="pill">admin</span></a>
+    <a href="b10-settings.html">Settings <span class="pill">admin</span></a>
+  </nav>
+  <div class="main">
+    <header class="topbar"><h1>Dashboard</h1><div class="user-menu"><span class="avatar">D</span>Dara ▾</div></header>
+    <div class="content">
+      <div class="kpis">
+        <div class="kpi hot"><span class="label">Today · net sales</span><div class="value num">1,240.50</div><span class="small">+12% vs last Thu</span></div>
+        <div class="kpi"><span class="label">Sales today</span><div class="value">86</div><span class="delta">avg 14.42</span></div>
+        <a class="kpi" href="b8-reports.html"><span class="label">Low stock</span><div class="value" style="color:var(--red)">7 <span style="font-size:24px">→</span></div><span class="small muted">at or below reorder level</span></a>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:22px">
+        <section class="card">
+          <div class="spread"><h2>Last 7 days</h2><span class="muted small">net sales per day</span></div>
+          <div class="chart" role="img" aria-label="Net sales per day: 880 to 1,240">
+            <div class="bar" style="--h:62%"><span>910</span></div>
+            <div class="bar" style="--h:58%"><span>880</span></div>
+            <div class="bar" style="--h:71%"><span>1,020</span></div>
+            <div class="bar" style="--h:66%"><span>960</span></div>
+            <div class="bar" style="--h:80%"><span>1,130</span></div>
+            <div class="bar" style="--h:76%"><span>1,090</span></div>
+            <div class="bar today" style="--h:88%"><span>1,240</span></div>
+          </div>
+          <div class="chart-x"><span>Fri</span><span>Sat</span><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span style="color:var(--accent)">Today</span></div>
+        </section>
+
+        <section class="card">
+          <h2 style="margin-bottom:14px">Payment methods today</h2>
+          <div class="splitbar">
+            <div style="width:58%;background:var(--ink)">58%</div>
+            <div style="width:34%;background:var(--accent)">34%</div>
+            <div style="width:8%;background:var(--muted)"></div>
+          </div>
+          <table class="table" style="margin-top:16px;border:0">
+            <tbody>
+              <tr><td>■ Cash</td><td class="r num">719.50</td></tr>
+              <tr><td style="color:var(--accent)">■ <span style="color:var(--ink)">Card</span></td><td class="r num">421.00</td></tr>
+              <tr><td style="color:var(--muted)">■ <span style="color:var(--ink)">Other</span></td><td class="r num">100.00</td></tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+
+      <section style="margin-top:22px">
+        <h2 style="margin-bottom:12px">Top products today</h2>
+        <table class="table">
+          <thead><tr><th>#</th><th>Product</th><th class="r">Qty</th><th class="r">Net sales</th></tr></thead>
+          <tbody>
+            <tr><td class="num">1</td><td>Coffee beans 250g</td><td class="r num">31</td><td class="r num">201.50</td></tr>
+            <tr><td class="num">2</td><td>Rice 5kg</td><td class="r num">18</td><td class="r num">142.20</td></tr>
+            <tr><td class="num">3</td><td>Iced coffee</td><td class="r num">54</td><td class="r num">108.00</td></tr>
+            <tr><td class="num">4</td><td>Water 500ml</td><td class="r num">160</td><td class="r num">80.00</td></tr>
+            <tr><td class="num">5</td><td>Croissant</td><td class="r num">42</td><td class="r num">63.00</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+</div>
+<a class="mock-tag" href="index.html">B2 · Dashboard</a>
+</body>
+</html>

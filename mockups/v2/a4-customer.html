@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A4 · Customer dialog</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400..700&family=Onest:wght@400..700&family=Schibsted+Grotesk:wght@400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="pos">
+  <iframe src="a3-sell.html" title="Sell screen behind the dialog" tabindex="-1" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;border:0"></iframe>
+  <div class="overlay">
+    <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="t">
+      <div class="card-h"><h2 id="t">Attach customer</h2><button class="btn btn-ghost icon-btn" aria-label="Close (Esc)"><span class="ico s i-x"></span></button></div>
+      <div class="card-b" style="padding-bottom:12px">
+        <div class="input-icon"><span class="ico s i-search"></span><input class="input" style="height:44px;font-size:15px" value="012" autofocus aria-label="Search by name or phone"></div>
+        <p class="help" style="margin:8px 0 0">Searching 214 customers cached on this till</p>
+      </div>
+      <table class="tbl">
+        <tbody>
+          <tr class="sel"><td><div class="row"><span class="av" style="--c:#2459b3">CD</span><div><div class="cell-main">Chan Dara</div><div class="cell-sub">chan.dara@mail.com</div></div></div></td><td class="num t2">012 345 678</td><td class="r t3 sm">14 sales</td></tr>
+          <tr><td><div class="row"><span class="av" style="--c:#a8670a">SN</span><div class="cell-main">Srey Neang</div></div></td><td class="num t2">012 908 112</td><td class="r t3 sm">3 sales</td></tr>
+          <tr><td><div class="row"><span class="av" style="--c:#6b3f86">VK</span><div class="cell-main">Vuthy Kim</div></div></td><td class="num t2">012 771 450</td><td class="r t3 sm">1 sale</td></tr>
+        </tbody>
+      </table>
+      <div class="card-f" style="justify-content:space-between;align-items:center">
+        <span class="row"><button class="btn" disabled><span class="ico s i-plus"></span>New customer</button><span class="badge warn">Needs connection</span></span>
+        <button class="btn btn-primary">Attach Chan Dara</button>
+      </div>
+    </div>
+  </div>
+  <a class="mock-tag" href="index.html">A4 · Customer (offline)</a>
+</body>
+</html>

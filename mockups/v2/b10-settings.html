@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B10 · Settings</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400..700&family=Onest:wght@400..700&family=Schibsted+Grotesk:wght@400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <aside class="side" aria-label="Main">
+    <div class="logo"><span class="logo-mark">M</span>My Shop</div>
+    <a href="b2-dashboard.html"><span class="ico i-dash"></span>Dashboard</a>
+    <div class="sec">Catalog</div>
+    <a href="b3-products.html"><span class="ico i-box"></span>Products</a>
+    <a href="b4-categories.html"><span class="ico i-tag"></span>Categories</a>
+    <a href="b5-inventory.html"><span class="ico i-layers"></span>Inventory<span class="cnt">7</span></a>
+    <div class="sec">Sales</div>
+    <a href="b6-sales.html"><span class="ico i-receipt"></span>Sales</a>
+    <a href="b7-customers.html"><span class="ico i-users"></span>Customers</a>
+    <a href="b8-reports.html"><span class="ico i-chart"></span>Reports</a>
+    <div class="sec">Admin</div>
+    <a href="b9-staff.html"><span class="ico i-shield"></span>Staff</a>
+    <a href="b10-settings.html" class="on" aria-current="page"><span class="ico i-sliders"></span>Settings</a>
+    <a href="b1-login.html" style="margin-top:auto"><span class="ico i-lock"></span>Log out</a>
+  </aside>
+  <div class="main">
+    <header class="topbar"><div class="crumb">Admin / <b>Settings</b></div><div class="row"><span class="av" style="--c:#2459b3">DA</span><span style="font-weight:550">Dara</span><span class="ico s i-chev t3"></span></div></header>
+    <div class="page">
+      <div class="page-h"><div><h1>Shop settings</h1><p>These details print on every receipt.</p></div></div>
+      <div style="display:grid;grid-template-columns:minmax(0,600px) auto;gap:32px;align-items:start">
+        <form class="card" id="f" onsubmit="return false">
+          <div class="card-h"><h2>Shop details</h2></div>
+          <div class="card-b" style="display:grid;gap:14px">
+            <div class="field"><label for="name" class="req">Shop name</label><input id="name" class="input" value="My Shop"></div>
+            <div class="field"><label for="addr">Address</label><input id="addr" class="input" value="12 Street 271, Phnom Penh"></div>
+            <div class="g2">
+              <div class="field"><label for="tel">Phone</label><input id="tel" class="input num" value="012 345 678"></div>
+              <div class="field"><label for="vat">Tax id</label><input id="vat" class="input num" value="1234567"></div>
+            </div>
+          </div>
+          <div class="card-h" style="border-top:1px solid var(--border)"><h2>Region</h2></div>
+          <div class="card-b g2">
+            <div class="field"><label for="cur">Currency</label><select id="cur" class="input"><option>USD</option><option>KHR</option><option>THB</option><option>EUR</option></select></div>
+            <div class="field"><label for="tz">Timezone</label><select id="tz" class="input"><option>Asia/Phnom_Penh</option><option>Asia/Bangkok</option><option>UTC</option></select></div>
+          </div>
+          <div class="card-h" style="border-top:1px solid var(--border)"><h2>Receipt</h2></div>
+          <div class="card-b"><div class="field"><label for="foot">Footer</label><textarea id="foot" class="input" rows="3">Thank you! Come again</textarea></div></div>
+          <div class="card-f"><button class="btn">Discard</button><button class="btn btn-primary">Save settings</button></div>
+        </form>
+        <div style="position:sticky;top:80px">
+          <div class="between" style="margin-bottom:10px"><span class="t2" style="font-weight:550">Live preview</span><span class="badge plain">80 mm</span></div>
+          <div class="receipt-paper" id="preview"><div class="receipt " aria-label="Receipt T1-000124"><div class="r-head"><span class="r-logo" aria-hidden="true">M</span><b class="r-shop">My Shop</b><div>12 Street 271, Phnom Penh</div><div>Tel 012 345 678 · VAT 1234567</div></div><hr/><div class="r-row"><span>T1-000124</span><span>05/11/2026 16:30</span></div><div class="r-row"><span>Cashier</span><span>Sokha</span></div><hr/><div class="r-item"><div class="r-row"><span>2 × Coffee beans 250g</span><span>13.00</span></div><div class="r-row r-sub"><span>6.50 each</span><span>discount -1.00</span></div></div><div class="r-item"><div class="r-row"><span>6 × Water 500ml</span><span>3.00</span></div><div class="r-row r-sub"><span>0.50 each</span><span></span></div></div><hr/><div class="r-row"><span>Subtotal</span><span>16.00</span></div><div class="r-row"><span>Discount</span><span>-1.00</span></div><div class="r-row"><span>Tax</span><span>1.50</span></div><div class="r-row r-total"><span>TOTAL</span><span>$16.50</span></div><div class="r-row"><span>Cash</span><span>20.00</span></div><div class="r-row"><span>Change</span><span>3.50</span></div><hr/><svg class="r-bars" viewBox="0 0 154 1" preserveAspectRatio="none" role="img" aria-label="Barcode T1-000124"><rect x="10" width="2" height="1"></rect><rect x="13" width="1" height="1"></rect><rect x="16" width="1" height="1"></rect><rect x="21" width="2" height="1"></rect><rect x="24" width="3" height="1"></rect><rect x="30" width="1" height="1"></rect><rect x="32" width="1" height="1"></rect><rect x="35" width="3" height="1"></rect><rect x="40" width="2" height="1"></rect><rect x="43" width="1" height="1"></rect><rect x="46" width="2" height="1"></rect><rect x="49" width="3" height="1"></rect><rect x="54" width="1" height="1"></rect><rect x="57" width="3" height="1"></rect><rect x="61" width="2" height="1"></rect><rect x="65" width="1" height="1"></rect><rect x="68" width="3" height="1"></rect><rect x="72" width="2" height="1"></rect><rect x="76" width="1" height="1"></rect><rect x="79" width="3" height="1"></rect><rect x="83" width="2" height="1"></rect><rect x="87" width="1" height="1"></rect><rect x="90" width="3" height="1"></rect><rect x="95" width="2" height="1"></rect><rect x="98" width="2" height="1"></rect><rect x="102" width="3" height="1"></rect><rect x="107" width="1" height="1"></rect><rect x="109" width="2" height="1"></rect><rect x="113" width="1" height="1"></rect><rect x="116" width="3" height="1"></rect><rect x="120" width="4" height="1"></rect><rect x="126" width="1" height="1"></rect><rect x="129" width="1" height="1"></rect><rect x="131" width="2" height="1"></rect><rect x="136" width="3" height="1"></rect><rect x="140" width="1" height="1"></rect><rect x="142" width="2" height="1"></rect></svg><div class="r-code">T1-000124</div><div class="r-foot">Thank you! Come again</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  // Updates the receipt preview from the form as you type (same layout as the app's <Receipt>).
+  const $ = (id) => document.getElementById(id).value;
+  const r = document.getElementById('preview');
+  function render() {
+    r.querySelector('.r-shop').textContent = $('name');
+    r.querySelector('.r-logo').textContent = $('name').slice(0, 1).toUpperCase();
+    const [addr, tel] = r.querySelectorAll('.r-head > div');
+    addr.textContent = $('addr');
+    tel.textContent = [$('tel') && `Tel ${$('tel')}`, $('vat') && `VAT ${$('vat')}`].filter(Boolean).join(' · ');
+    r.querySelector('.r-total span:last-child').textContent =
+      new Intl.NumberFormat('en-US', { style: 'currency', currency: $('cur') }).format(16.5);
+    r.querySelector('.r-foot').textContent = $('foot');
+  }
+  document.getElementById('f').addEventListener('input', render);
+  render();
+</script>
+<a class="mock-tag" href="index.html">B10 · Settings</a>
+</body>
+</html>

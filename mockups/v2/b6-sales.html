@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B6 · Sales</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400..700&family=Onest:wght@400..700&family=Schibsted+Grotesk:wght@400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <aside class="side" aria-label="Main">
+    <div class="logo"><span class="logo-mark">M</span>My Shop</div>
+    <a href="b2-dashboard.html"><span class="ico i-dash"></span>Dashboard</a>
+    <div class="sec">Catalog</div>
+    <a href="b3-products.html"><span class="ico i-box"></span>Products</a>
+    <a href="b4-categories.html"><span class="ico i-tag"></span>Categories</a>
+    <a href="b5-inventory.html"><span class="ico i-layers"></span>Inventory<span class="cnt">7</span></a>
+    <div class="sec">Sales</div>
+    <a href="b6-sales.html" class="on" aria-current="page"><span class="ico i-receipt"></span>Sales</a>
+    <a href="b7-customers.html"><span class="ico i-users"></span>Customers</a>
+    <a href="b8-reports.html"><span class="ico i-chart"></span>Reports</a>
+    <div class="sec">Admin</div>
+    <a href="b9-staff.html"><span class="ico i-shield"></span>Staff</a>
+    <a href="b10-settings.html"><span class="ico i-sliders"></span>Settings</a>
+    <a href="b1-login.html" style="margin-top:auto"><span class="ico i-lock"></span>Log out</a>
+  </aside>
+  <div class="main">
+    <header class="topbar"><div class="crumb">Sales / <b>All sales</b></div><div class="row"><span class="av" style="--c:#2459b3">DA</span><span style="font-weight:550">Dara</span><span class="ico s i-chev t3"></span></div></header>
+    <div class="page">
+      <div class="page-h"><div><h1>Sales</h1><p>86 sales today · 1,240.50 net</p></div></div>
+      <div class="split">
+        <section class="card">
+          <div class="filters">
+            <input class="input" type="date" value="2026-11-05" aria-label="From"><span class="t3">→</span><input class="input" type="date" value="2026-11-05" aria-label="To">
+            <select class="input" aria-label="Cashier"><option>All cashiers</option><option>Sokha</option><option>Dara</option></select>
+            <select class="input" aria-label="Status"><option>Any status</option><option>Completed</option><option>Voided</option></select>
+            <input class="input" placeholder="Customer" aria-label="Customer" style="width:130px">
+            <input class="input num" placeholder="Receipt no" aria-label="Receipt no" style="width:120px">
+          </div>
+          <table class="tbl dense">
+            <thead><tr><th>Receipt</th><th>Time</th><th>Cashier</th><th>Customer</th><th>Payment</th><th class="r">Total</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr class="sel"><td class="num cell-main">T1-000124</td><td class="num t2">16:30</td><td>Sokha</td><td>Chan Dara</td><td class="t2">Cash</td><td class="r num">16.50</td><td><span class="badge ok">Completed</span></td></tr>
+              <tr><td class="num cell-main">T2-000057</td><td class="num t2">16:21</td><td>Dara</td><td class="t3">—</td><td class="t2">Card</td><td class="r num">8.40</td><td><span class="badge ok">Completed</span></td></tr>
+              <tr><td class="num cell-main">T1-000123</td><td class="num t2">16:12</td><td>Sokha</td><td class="t3">—</td><td class="t2">Split</td><td class="r num">4.20</td><td><span class="badge ok">Completed</span></td></tr>
+              <tr><td class="num cell-main">T1-000121</td><td class="num t2">15:41</td><td>Sokha</td><td>Srey Neang</td><td class="t2">Cash</td><td class="r num t3">9.60</td><td><span class="badge bad">Voided</span></td></tr>
+              <tr><td class="num cell-main">T2-000056</td><td class="num t2">15:30</td><td>Dara</td><td class="t3">—</td><td class="t2">Other</td><td class="r num">100.00</td><td><span class="badge ok">Completed</span></td></tr>
+            </tbody>
+          </table>
+          <div class="pager"><span>1–5 of 86</span><div class="row"><button class="btn btn-sm" disabled>Previous</button><button class="btn btn-sm">Next</button></div></div>
+        </section>
+
+        <aside class="card panel">
+          <div class="card-h"><div><h2 class="num">T1-000124</h2><span class="t3 sm">05/11/2026 16:30 · Till T1</span></div><span class="badge ok">Completed</span></div>
+          <div class="card-b" style="display:grid;gap:16px">
+            <div class="note warn"><span class="ico s i-refresh"></span><span>Synced 16:45 by Dara. This sale was made offline.</span></div>
+            <div class="g2 sm"><div><div class="t3">Cashier</div><div style="font-weight:550">Sokha</div></div><div><div class="t3">Customer</div><a href="b7-customers.html" style="font-weight:550">Chan Dara</a></div></div>
+            <div style="border:1px solid var(--border);border-radius:var(--r);overflow:hidden">
+              <table class="tbl">
+                <tbody>
+                  <tr><td><div class="cell-main">Coffee beans 250g</div><div class="cell-sub num">2 × 6.50 · discount −1.00</div></td><td class="r num">12.00</td></tr>
+                  <tr><td><div class="cell-main">Water 500ml</div><div class="cell-sub num">6 × 0.50</div></td><td class="r num">3.00</td></tr>
+                </tbody>
+                <tfoot><tr><td class="t2" style="font-weight:500">Tax</td><td class="r num">1.50</td></tr><tr><td>Total</td><td class="r num">16.50</td></tr></tfoot>
+              </table>
+            </div>
+            <div><div class="t3 sm" style="margin-bottom:6px">Payments</div><div class="between"><span>Cash</span><span class="num">20.00 <span class="t3">· change 3.50</span></span></div></div>
+          </div>
+          <div class="card-f"><a class="btn" href="a6-receipt.html"><span class="ico s i-printer"></span>Reprint</a><button class="btn btn-danger">Void sale…</button></div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</div>
+<a class="mock-tag" href="index.html">B6 · Sales</a>
+</body>
+</html>

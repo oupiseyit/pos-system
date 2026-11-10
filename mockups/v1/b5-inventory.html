@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B5 · Inventory</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* CSS-only tabs: the radios sit before the tab bar and panels */
+  .tabset > input { position: absolute; opacity: 0; pointer-events: none; }
+  .panel { display: none; }
+  #t-rec:checked ~ .p-rec, #t-cnt:checked ~ .p-cnt, #t-mov:checked ~ .p-mov { display: block; }
+  #t-rec:checked ~ .tabs [for=t-rec], #t-cnt:checked ~ .tabs [for=t-cnt], #t-mov:checked ~ .tabs [for=t-mov] { background: var(--ink); color: var(--paper); }
+  .tabset > input:focus-visible ~ .tabs { outline: 3px solid var(--focus); outline-offset: 2px; }
+  .table tbody tr:hover { cursor: default; }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="nav" aria-label="Main">
+    <div class="brand">My Shop<small>Back office</small></div>
+    <a href="b2-dashboard.html">Dashboard</a>
+    <a href="b3-products.html">Products</a>
+    <a href="b4-categories.html">Categories</a>
+    <a href="b5-inventory.html" class="is-on">Inventory</a>
+    <a href="b6-sales.html">Sales</a>
+    <a href="b7-customers.html">Customers</a>
+    <a href="b8-reports.html">Reports</a>
+    <div class="sep"></div>
+    <a href="b9-staff.html">Staff <span class="pill">admin</span></a>
+    <a href="b10-settings.html">Settings <span class="pill">admin</span></a>
+  </nav>
+  <div class="main">
+    <header class="topbar"><h1>Inventory</h1><div class="user-menu"><span class="avatar">D</span>Dara ▾</div></header>
+    <div class="content tabset">
+      <input type="radio" name="tab" id="t-rec" checked>
+      <input type="radio" name="tab" id="t-cnt">
+      <input type="radio" name="tab" id="t-mov">
+      <div class="tabs"><label for="t-rec">Receive</label><label for="t-cnt">Count</label><label for="t-mov">Movements</label></div>
+
+      <!-- Receive -->
+      <section class="panel p-rec" style="max-width:860px">
+        <div class="field" style="margin-bottom:14px"><label for="rn">Note</label><input id="rn" class="input" value="Delivery from Lucky Wholesale, invoice 8812"></div>
+        <table class="table">
+          <thead><tr><th>Product</th><th class="r" style="width:120px">Qty</th><th class="r" style="width:160px">New cost (optional)</th><th style="width:50px"></th></tr></thead>
+          <tbody>
+            <tr><td><input class="input" value="Coffee beans 250g · COF-250" aria-label="Product"></td><td><input class="input num" value="24" style="text-align:right" aria-label="Qty"></td><td><input class="input num" value="4.05" style="text-align:right" aria-label="New cost"></td><td><button class="btn btn-sm btn-ghost" aria-label="Remove row">✕</button></td></tr>
+            <tr><td><input class="input" value="Potato chips · CHP-001" aria-label="Product"></td><td><input class="input num" value="48" style="text-align:right" aria-label="Qty"></td><td><input class="input num" placeholder="—" style="text-align:right" aria-label="New cost"></td><td><button class="btn btn-sm btn-ghost" aria-label="Remove row">✕</button></td></tr>
+            <tr><td><input class="input" placeholder="Search or scan a product…" aria-label="Product" autofocus></td><td><input class="input num" style="text-align:right" aria-label="Qty"></td><td><input class="input num" style="text-align:right" aria-label="New cost"></td><td></td></tr>
+          </tbody>
+        </table>
+        <div class="spread" style="margin-top:14px"><button class="btn btn-sm">+ Add row</button><button class="btn btn-dark">Save receipt</button></div>
+        <div class="card" style="margin-top:18px;border-color:var(--green)">
+          <h3 style="margin-bottom:8px;color:var(--green)">Saved. New stock levels</h3>
+          <div class="row small num"><span>COF-250: 4 → <b>28</b></span><span class="muted">·</span><span>CHP-001: −3 → <b>45</b></span></div>
+        </div>
+      </section>
+
+      <!-- Count -->
+      <section class="panel p-cnt" style="max-width:560px">
+        <div class="card stack">
+          <div class="field"><label for="cp">Product</label><input id="cp" class="input" value="Water 500ml · WAT-500"></div>
+          <div class="spread"><span class="label">Current stock</span><span class="num" style="font-size:22px;font-weight:700">212</span></div>
+          <div class="field"><label for="cq" class="req">Counted qty</label><input id="cq" class="input num" value="210"></div>
+          <div class="field"><label for="cn" class="req">Note</label><input id="cn" class="input" value="Two bottles damaged"></div>
+          <div class="card spread" style="background:var(--paper);padding:12px 14px"><span>This will record <b class="neg num">−2</b></span><button class="btn btn-dark">Confirm</button></div>
+        </div>
+      </section>
+
+      <!-- Movements -->
+      <section class="panel p-mov">
+        <div class="toolbar">
+          <div class="field grow"><label for="mp">Product</label><input id="mp" class="input" placeholder="Any product"></div>
+          <div class="field"><label for="mr">Reason</label><select id="mr" class="input"><option>All reasons</option><option>Sale</option><option>Receive</option><option>Count</option><option>Void</option></select></div>
+          <div class="field"><label for="mf">From</label><input id="mf" class="input" type="date" value="2026-11-01"></div>
+          <div class="field"><label for="mt">To</label><input id="mt" class="input" type="date" value="2026-11-05"></div>
+        </div>
+        <table class="table">
+          <thead><tr><th>Date</th><th>Product</th><th class="r">Change</th><th>Reason</th><th>Receipt</th><th>User</th><th>Note</th></tr></thead>
+          <tbody>
+            <tr><td class="num">05/11 16:30</td><td>Coffee beans 250g</td><td class="r num neg">−2</td><td>Sale</td><td><a class="num" href="b6-sales.html">T1-000124</a></td><td>Sokha</td><td></td></tr>
+            <tr><td class="num">05/11 15:02</td><td>Water 500ml</td><td class="r num neg">−2</td><td>Count</td><td></td><td>Dara</td><td>Two bottles damaged</td></tr>
+            <tr><td class="num">05/11 09:15</td><td>Coffee beans 250g</td><td class="r num pos-chg">+24</td><td>Receive</td><td></td><td>Dara</td><td>Lucky Wholesale 8812</td></tr>
+            <tr><td class="num">04/11 18:40</td><td>Cola 330ml</td><td class="r num pos-chg">+1</td><td>Void</td><td><a class="num" href="b6-sales.html">T1-000098</a></td><td>Dara</td><td>Wrong item</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+</div>
+<a class="mock-tag" href="index.html">B5 · Inventory</a>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A7 · Recent sales</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="pos">
+  <header class="pos-bar">
+    <a class="btn btn-sm" href="a3-sell.html">← Sell</a>
+    <div class="brand">Recent sales <span>· T1 · today</span></div>
+    <div class="grow"></div>
+    <span class="muted small">Manager view: Dara</span>
+    <span class="status online">Online · 1 pending</span>
+  </header>
+  <div class="sell" style="grid-template-columns:1fr 420px">
+    <section class="catalog">
+      <label class="search" style="box-shadow:none">
+        <span aria-hidden="true">⌕</span><input placeholder="Receipt number, e.g. T1-000124" aria-label="Search receipt number">
+      </label>
+      <div style="overflow:auto">
+        <table class="table">
+          <thead><tr><th>Receipt</th><th>Time</th><th>Cashier</th><th class="r">Total</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr class="is-selected"><td class="num"><b>T1-000124</b></td><td class="num">16:30</td><td>Sokha</td><td class="r num">16.50</td><td><span class="pill amber">pending</span></td></tr>
+            <tr><td class="num"><b>T1-000123</b></td><td class="num">16:12</td><td>Sokha</td><td class="r num">4.20</td><td><span class="pill green">completed</span></td></tr>
+            <tr><td class="num"><b>T1-000122</b></td><td class="num">15:58</td><td>Dara</td><td class="r num">27.90</td><td><span class="pill green">completed</span></td></tr>
+            <tr><td class="num"><b>T1-000121</b></td><td class="num">15:41</td><td>Sokha</td><td class="r num" style="text-decoration:line-through">9.60</td><td><span class="pill red">voided</span></td></tr>
+            <tr><td class="num"><b>T1-000120</b></td><td class="num">15:20</td><td>Sokha</td><td class="r num">1.20</td><td><span class="pill green">completed</span></td></tr>
+            <tr><td class="num"><b>T1-000119</b></td><td class="num">14:47</td><td>Dara</td><td class="r num">53.00</td><td><span class="pill green">completed</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <aside class="cart" style="align-items:center;padding:20px;gap:16px;overflow:auto">
+<pre class="receipt sm">              MY SHOP
+------------------------------------------
+Receipt: T1-000124
+Date:    05/11/2026 16:30
+Cashier: Sokha
+------------------------------------------
+Coffee beans 250g
+  2 x 6.50                         13.00
+Water 500ml
+  6 x 0.50                          3.00
+------------------------------------------
+TOTAL                              16.50</pre>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%">
+        <button class="btn" style="justify-content:center">Reprint</button>
+        <span class="tooltip" data-tip="Online only · needs a reason">
+          <button class="btn btn-danger" style="width:100%;justify-content:center">Void…</button>
+        </span>
+      </div>
+      <p class="hint" style="color:#a8a090;margin:0">Void is manager-only and needs a connection.</p>
+    </aside>
+  </div>
+  <a class="mock-tag" href="index.html">A7 · Recent sales</a>
+</body>
+</html>

@@ -46,17 +46,17 @@ The manager credentials are checked via `POST /auth/pin` (role must be ≥ MANAG
 ### A3. Sell screen (main)
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
-│ My Shop · T1      Cashier: Sokha      ○ Offline · 2 pending   [Menu ▾] │
+│ My Shop · T1  Sokha          ○ Offline · 2 pending   16:30   [Menu ▾] │
 ├──────────────────────────────────────────┬─────────────────────────────┤
-│ [ Scan or search…                      ] │ Customer: [ + Add ]         │
-│ [All] [Drinks] [Snacks] [Household] …    │─────────────────────────────│
-│ ┌────────┐┌────────┐┌────────┐┌────────┐ │ Coffee beans 250g           │
-│ │Coffee  ││Tea     ││Water   ││Chips   │ │  2 × 6.50        13.00  [–] │
-│ │ 6.50   ││ 3.20   ││ 0.50   ││ 1.20   │ │  disc −1.00                 │
-│ └────────┘└────────┘└────────┘└────────┘ │ Water 500ml                 │
-│ ┌────────┐┌────────┐┌────────┐┌────────┐ │  6 × 0.50         3.00  [–] │
-│ │ …      ││ …      ││ …      ││ …      │ │                             │
-│ └────────┘└────────┘└────────┘└────────┘ │─────────────────────────────│
+│ [ Search products or scan…     ] [▥ Scan]│ Current sale     T1-000125  │
+│ [All 48] [Drinks 14] [Snacks 9] …        │─────────────────────────────│
+│ ┌────────┐┌────────┐┌────────┐┌────────┐ │ ☕ Coffee beans 250g        │
+│ │☕ 4 left││🍶38 left││🍶212 lft││▢  Out  │ │   6.50 each (–) 2 (+) 13.00│
+│ │Coffee  ││Tea     ││Water   ││Chips   │ │                       −1.00│
+│ │ 6.50   ││ 3.20   ││ 0.50   ││ 1.20   │ │ 🍶 Water 500ml              │
+│ └────────┘└────────┘└────────┘└────────┘ │   0.50 each (–) 6 (+)  3.00│
+│                                          │─────────────────────────────│
+│                                          │ [% Discount] [👤 Customer F4]│
 │                                          │ Subtotal            16.00   │
 │                                          │ Discount            −1.00   │
 │                                          │ Tax                  1.50   │
@@ -64,10 +64,13 @@ The manager credentials are checked via `POST /auth/pin` (role must be ≥ MANAG
 │                                          │ [ Clear ]   [  PAY 16.50  ] │
 └──────────────────────────────────────────┴─────────────────────────────┘
 ```
-- The **scan/search input always has focus** unless a dialog is open. When a scanner sends Enter after an exact barcode or SKU match, that product is added (or its qty incremented). Otherwise, typing filters the grid.
-- Tapping a tile adds 1. Tapping a cart line opens a line editor: qty stepper, discount (amount or %), remove.
+- The **scan/search input always has focus** unless a dialog is open. When a scanner sends Enter after an exact barcode or SKU match, that product is added (or its qty incremented). Otherwise, typing filters the grid. The **Scan** button just puts focus back in the box (same as `F2`).
+- Tiles show a **category icon** (picked from the category name: coffee → cup, tea → leaf, bakery/cake/bread → bread, drinks/water/juice → bottle, anything else → box), the stock as **"N left"** (amber at or below the reorder level, red **"Out"** at 0 or less) and the price.
+- Tapping a tile adds 1. The cart header shows **"Current sale"** and the receipt number this sale will get (the next device counter value; it's only claimed when the sale completes).
+- Each cart line has an icon, name, unit price, round **− / +** buttons (− at qty 1 removes the line) and the line amount with any discount under it. Tapping a line **selects** it (highlighted) and opens the line editor: qty stepper, discount (amount or %), remove. The last line added or touched is selected.
+- **Discount** opens the line editor for the selected line (disabled with an empty cart). **Customer** opens A4 (`F4`); when a customer is attached the button shows their name and the dialog lets you remove them.
 - Keyboard: `F2` focuses search, `F4` opens customer, `F9` or `Ctrl+Enter` pays, `Esc` closes dialogs.
-- Header badge: `● Online · 0 pending` (green), `○ Offline · N pending` (amber), `⚠ N need attention` (red, taps to a list).
+- Header: shop-local clock (`HH:MM`) and the connection badge: `● Online · 0 pending` (green), `○ Offline · N pending` (amber), `⚠ N need attention` (red, taps to a list).
 - Menu: Recent sales, Sync now, Lock (back to PIN), Logout.
 - Validation: discount ≤ line amount, qty ≥ 1, and PAY is disabled when the cart is empty.
 
@@ -95,37 +98,40 @@ Search by name or phone over the cached customers, and tap one to attach it. "Ne
 - Cash: tendered must be ≥ the amount. Quick buttons are exact, the next whole unit, and common notes.
 - **Complete:** builds the sale (UUID, receiptNo, totals), saves it to the outbox, opens A6 and triggers sync in the background.
 
-### A6. Receipt preview / print
-It opens after Complete and calls `window.print()` automatically. Buttons: **Print again** and **New sale** (Enter).
+### A6. Sale complete: receipt print-out
+After Complete, the receipt **slides down over the cart** like a slip coming out of the printer, on top of the dimmed sell screen, and `window.print()` runs automatically (once). Beside it: **Sale complete**, the change due, the receipt number and payments, then **New sale** (Enter) and **Print again**.
 
-80mm receipt layout (~42 chars per line in a monospace font, `@media print { @page { size: 80mm auto; margin: 0 } }`):
+The receipt is one shared design (`<Receipt>` in `apps/backoffice/src/receipt.tsx`) used here, in A7, in the back-office reprint (B6) and in the Settings preview (B10). It prints at 80mm (`@media print { @page { size: 80mm auto; margin: 0 } }`); on screen it has a torn-paper bottom edge.
 ```
-              MY SHOP
-     12 Street 271, Phnom Penh
-   Tel 012 345 678 · VAT 1234567
-------------------------------------------
-Receipt: T1-000124
-Date:    05/11/2026 16:30
-Cashier: Sokha
-Customer: Chan Dara
-------------------------------------------
-Coffee beans 250g
-  2 x 6.50                         13.00
-  Discount                         -1.00
-Water 500ml
-  6 x 0.50                          3.00
-------------------------------------------
-Subtotal                           16.00
-Discount                           -1.00
-Tax                                 1.50
-TOTAL                              16.50
-------------------------------------------
-Cash                               20.00
-Change                              3.50
-------------------------------------------
-           Thank you! Come again
+                 (M)
+               My Shop
+       12 Street 271, Phnom Penh
+     Tel 012 345 678 · VAT 1234567
+- - - - - - - - - - - - - - - - - - - - -
+T1-000124                05/11/2026 16:30
+Cashier                             Sokha
+Customer                        Chan Dara
+- - - - - - - - - - - - - - - - - - - - -
+2 × Coffee beans 250g               13.00
+    6.50 each            discount -1.00
+6 × Water 500ml                      3.00
+    0.50 each
+- - - - - - - - - - - - - - - - - - - - -
+Subtotal                            16.00
+Discount                            -1.00
+Tax                                  1.50
+TOTAL                              $16.50
+Cash                                20.00
+Change                               3.50
+- - - - - - - - - - - - - - - - - - - - -
+        ║▌║█║▌│║▌║█│║▌║║█║▌│║
+              T1-000124
+        Thank you! Come again
 ```
-A voided sale prints `*** VOID ***` under the header, with the void date and reason.
+- One line per item (`qty × name`, amount); a second line shows the unit price when qty > 1 and that line's discount, if any. The totals show one **Discount** line (the sum of line discounts) only when there is one.
+- **TOTAL** is in the shop currency (`$16.50` for USD).
+- The barcode is a real **Code 128** of the receipt number, so scanning a receipt types its number (e.g. into A7 or the back-office Sales search).
+- A voided sale prints a boxed `*** VOID ***` under the header, with the void date and reason.
 
 ### A7. Recent sales
 A list of today's sales on this till: receipt no, time, total, status, plus a "pending" tag for unsynced entries (shown from the outbox). Tap a sale to open its receipt and reprint it. There's a search box for receipt number. Managers see all cashiers' sales and a **Void** button (online only). Void needs a reason.
@@ -137,6 +143,8 @@ Outbox entries the server rejected with a 4xx. Each shows the receipt no, total 
 
 ## Part B — Back office
 
+**Design:** build every back-office screen to match its mockup in `mockups/v2/` (`b1-login.html` … `b10-settings.html`), reusing the tokens, fonts and components from `mockups/v2/styles.css`. `mockups/v1` is archived; don't use it. The ASCII sketches below show content and behaviour; the v2 mockups win on look and layout.
+
 Layout: a left nav (items hidden by role) and a top bar with the user name and logout.
 ```
 ┌────────────┬───────────────────────────────────────────────┐
@@ -146,7 +154,7 @@ Layout: a left nav (items hidden by role) and a top bar with the user name and l
 │ Products   │ │Today     │ │Sales     │ │Low stock │        │
 │ Categories │ │ 1,240.50 │ │ 86       │ │ 7  →     │        │
 │ Inventory  │ └──────────┘ └──────────┘ └──────────┘        │
-│ Sales      │ Last 7 days (bar chart, totalCents per day)   │
+│ Sales      │ Last 7 days (bar chart, total per day)   │
 │ Customers  │ Top products today (table, 5 rows)            │
 │ Reports    │ Payment methods today (cash / card / other)   │
 │ Staff  *   │                                               │
@@ -163,7 +171,7 @@ KPI tiles for today's net sales, number of sales and low-stock count (linking to
 
 ### B3. Products — MANAGER
 - **List:** search, a category filter, an Active/Inactive/All filter, and columns SKU, Name, Category, Price, Stock (red if ≤ reorder, bold red if negative), Active. Clicking a row opens the edit form.
-- **Form:** SKU*, Barcode, Name*, Category (select), Price*, Cost, Tax rate % (stored as bp), Reorder level and Active. Stock is shown read-only, with links to "Receive stock" and "Count stock". A field-level error shows on a 409 duplicate.
+- **Form:** SKU*, Barcode, Name*, Category (select), Price*, Cost, Tax rate % (e.g. 10.00), Reorder level and Active. Stock is shown read-only, with links to "Receive stock" and "Count stock". A field-level error shows on a 409 duplicate.
 
 ### B4. Categories — MANAGER
 An inline-editable list of names, with an add row. Delete is disabled with a tooltip when products use the category.

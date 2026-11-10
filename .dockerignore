@@ -1,0 +1,17 @@
+**/node_modules
+**/dist
+apps/api/public
+.git
+.github
+.claude
+.env
+.env.*
+!.env.example
+test-results
+playwright-report
+graphify-out
+mockups/**/shots
+mockups/v1
+docs
+notes.txt
+*.png

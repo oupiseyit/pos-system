@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A6 · Receipt</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="pos">
+  <header class="pos-bar">
+    <div class="brand">My Shop <span>· T1</span></div>
+    <div class="grow"></div>
+    <span class="status online">Online · 1 pending</span>
+  </header>
+  <main class="on-dark" style="flex:1;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:40px;padding:24px;overflow:auto">
+    <div style="justify-self:end;text-align:right">
+      <p class="label" style="color:#a8a090;margin:0">Sale complete</p>
+      <div style="font:800 64px var(--display);letter-spacing:-.04em;color:var(--green)">3.50</div>
+      <p style="margin:0" class="muted">change due</p>
+    </div>
+<pre class="receipt">              MY SHOP
+     12 Street 271, Phnom Penh
+   Tel 012 345 678 · VAT 1234567
+------------------------------------------
+Receipt: T1-000124
+Date:    05/11/2026 16:30
+Cashier: Sokha
+Customer: Chan Dara
+------------------------------------------
+Coffee beans 250g
+  2 x 6.50                         13.00
+  Discount                         -1.00
+Water 500ml
+  6 x 0.50                          3.00
+------------------------------------------
+Subtotal                           16.00
+Discount                           -1.00
+Tax                                 1.50
+TOTAL                              16.50
+------------------------------------------
+Cash                               20.00
+Change                              3.50
+------------------------------------------
+           Thank you! Come again</pre>
+    <div style="display:grid;gap:12px;justify-self:start;width:220px">
+      <button class="btn" onclick="print()">Print again</button>
+      <a class="btn btn-primary btn-lg" href="a3-sell.html" style="justify-content:center">New sale <span class="kbd">Enter</span></a>
+      <p class="hint" style="color:#a8a090">Opens after Complete and calls <code>window.print()</code>. Voided sales print <code>*** VOID ***</code> under the header.</p>
+    </div>
+  </main>
+  <a class="mock-tag" href="index.html">A6 · Receipt</a>
+</body>
+</html>

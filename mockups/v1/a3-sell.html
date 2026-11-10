@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A3 · Sell screen</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="pos">
+  <header class="pos-bar" style="position:relative">
+    <div class="brand">My Shop <span>· T1</span></div>
+    <div class="muted">Cashier: <b style="color:var(--paper)">Sokha</b></div>
+    <div class="grow"></div>
+    <span class="status offline">Offline · 2 pending</span>
+    <details>
+      <summary class="btn btn-sm" style="list-style:none">Menu ▾</summary>
+      <nav class="menu">
+        <a href="a7-recent-sales.html">Recent sales</a>
+        <a href="#">Sync now <span class="pill amber">Needs connection</span></a>
+        <a href="a2-pin-login.html">Lock</a>
+        <a href="a2-pin-login.html">Logout</a>
+      </nav>
+    </details>
+  </header>
+
+  <div class="sell">
+    <section class="catalog">
+      <label class="search">
+        <span aria-hidden="true" style="font-size:20px">⌕</span>
+        <input autofocus placeholder="Scan or search…" aria-label="Scan or search">
+        <span class="kbd">F2</span>
+      </label>
+      <div class="cats">
+        <button class="chip is-on">All</button><button class="chip">Drinks</button><button class="chip">Snacks</button>
+        <button class="chip">Household</button><button class="chip">Coffee</button><button class="chip">Bakery</button>
+      </div>
+      <div class="tiles">
+        <button class="tile" style="--swatch:#7a4b2a">Coffee beans 250g<span class="price">6.50</span></button>
+        <button class="tile" style="--swatch:#8aa45a">Green tea<span class="price">3.20</span></button>
+        <button class="tile" style="--swatch:#6fb3d9">Water 500ml<span class="price">0.50</span></button>
+        <button class="tile" style="--swatch:#e8b33a">Potato chips<span class="price">1.20</span></button>
+        <button class="tile" style="--swatch:#d9534f">Cola 330ml<span class="price">0.80</span></button>
+        <button class="tile" style="--swatch:#f0d9a8">Croissant<span class="price">1.50</span></button>
+        <button class="tile" style="--swatch:#b7c4cc">Dish soap<span class="price">2.40</span></button>
+        <button class="tile" style="--swatch:#e9e2d0">Rice 5kg<span class="price">7.90</span></button>
+        <button class="tile" style="--swatch:#c98a12">Iced coffee<span class="price">2.00</span></button>
+        <button class="tile" style="--swatch:#5a3a7a">Grape juice<span class="price">1.60</span></button>
+        <button class="tile" style="--swatch:#9c6b3f">Cookies<span class="price">1.10</span></button>
+        <button class="tile" style="--swatch:#7fbf9a">Tissues<span class="price">0.90</span></button>
+      </div>
+    </section>
+
+    <aside class="cart" aria-label="Cart">
+      <div class="cart-cust spread">
+        <span class="muted">Customer</span>
+        <button class="btn btn-sm">+ Add <span class="kbd">F4</span></button>
+      </div>
+      <div class="lines">
+        <div class="line" tabindex="0">
+          <div class="spread"><span class="name">Coffee beans 250g</span><button class="btn btn-sm btn-ghost" aria-label="Remove one">–</button></div>
+          <div class="meta"><span>2 × 6.50</span><span>13.00</span></div>
+          <div class="disc">disc −1.00</div>
+        </div>
+        <div class="line" tabindex="0">
+          <div class="spread"><span class="name">Water 500ml</span><button class="btn btn-sm btn-ghost" aria-label="Remove one">–</button></div>
+          <div class="meta"><span>6 × 0.50</span><span>3.00</span></div>
+        </div>
+      </div>
+      <div class="totals">
+        <div class="spread"><span>Subtotal</span><span>16.00</span></div>
+        <div class="spread"><span>Discount</span><span>−1.00</span></div>
+        <div class="spread"><span>Tax</span><span>1.50</span></div>
+        <div class="spread grand"><span>TOTAL</span><span class="money">$16.50</span></div>
+      </div>
+      <div class="cart-actions">
+        <button class="btn">Clear</button>
+        <a class="btn btn-primary pay-btn" href="a5-pay.html">PAY 16.50 <span class="kbd">F9</span></a>
+      </div>
+    </aside>
+  </div>
+  <a class="mock-tag" href="index.html">A3 · Sell screen</a>
+</body>
+</html>

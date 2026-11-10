@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A4 · Customer dialog</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="pos">
+  <iframe src="a3-sell.html" title="Sell screen behind the dialog" tabindex="-1" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;border:0"></iframe>
+  <div class="scrim">
+    <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="t" style="color:var(--ink)">
+      <div class="dialog-head spread">
+        <h2 id="t">Attach customer</h2>
+        <button class="btn btn-sm btn-ghost" aria-label="Close">Esc ✕</button>
+      </div>
+      <div class="dialog-body stack">
+        <label class="search" style="box-shadow:none;border-width:1.5px">
+          <span aria-hidden="true">⌕</span>
+          <input autofocus value="012" aria-label="Search name or phone">
+        </label>
+        <table class="table">
+          <tbody>
+            <tr class="is-selected"><td><b>Chan Dara</b></td><td class="num">012 345 678</td><td class="r small muted">14 sales</td></tr>
+            <tr><td><b>Srey Neang</b></td><td class="num">012 908 112</td><td class="r small muted">3 sales</td></tr>
+            <tr><td><b>Vuthy Kim</b></td><td class="num">012 771 450</td><td class="r small muted">1 sale</td></tr>
+          </tbody>
+        </table>
+        <p class="hint" style="margin:0">Searching cached customers on this till.</p>
+      </div>
+      <div class="dialog-foot" style="justify-content:space-between">
+        <span class="tooltip" data-tip="Needs connection">
+          <button class="btn" disabled>+ New customer</button>
+          <span class="hint" style="margin-left:6px">Needs connection</span>
+        </span>
+        <button class="btn btn-dark">Attach Chan Dara</button>
+      </div>
+    </div>
+  </div>
+  <a class="mock-tag" href="index.html">A4 · Customer (offline)</a>
+</body>
+</html>

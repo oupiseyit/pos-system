@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B1 · Back office login</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body style="display:grid;grid-template-columns:1.1fr 1fr">
+  <section style="background:var(--ink);color:var(--paper);padding:56px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden">
+    <div style="font:800 22px var(--display)">My Shop</div>
+    <div>
+      <p class="label" style="color:var(--accent)">Back office</p>
+      <h1 style="font-size:64px;line-height:.95;max-width:9ch">Every sale, counted.</h1>
+    </div>
+<pre class="receipt sm" aria-hidden="true" style="position:absolute;right:-30px;top:90px;transform:rotate(8deg);opacity:.9">TOTAL                              16.50
+Cash                               20.00
+Change                              3.50</pre>
+    <p class="muted small" style="margin:0">For managers and admins. Cashiers use the POS.</p>
+  </section>
+  <main style="display:grid;place-items:center;padding:40px">
+    <form class="stack" style="width:360px" onsubmit="return false">
+      <h2 style="font-size:30px">Sign in</h2>
+      <div class="toast" role="alert" style="position:static;transform:none;animation:none">Invalid email or password</div>
+      <div class="field"><label for="e" class="req">Email</label><input id="e" class="input" type="email" value="dara@myshop.com" autocomplete="username"></div>
+      <div class="field"><label for="p" class="req">Password</label><input id="p" class="input" type="password" value="nottheone" autocomplete="current-password"></div>
+      <button class="btn btn-dark btn-lg" style="width:100%;justify-content:center">Sign in</button>
+      <p class="hint">If a cashier signs in: <i>“The back office is for managers. Use the POS.”</i></p>
+    </form>
+  </main>
+  <a class="mock-tag" href="index.html">B1 · Login</a>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B5 · Inventory</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400..700&family=Onest:wght@400..700&family=Schibsted+Grotesk:wght@400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* CSS-only tabs */
+  .tabset > input { position: absolute; opacity: 0; pointer-events: none; }
+  .pane { display: none; }
+  #t1:checked ~ .p1, #t2:checked ~ .p2, #t3:checked ~ .p3 { display: block; }
+  #t1:checked ~ .tabs [for=t1], #t2:checked ~ .tabs [for=t2], #t3:checked ~ .tabs [for=t3] { color: var(--primary); border-bottom-color: var(--primary); }
+  .tabset > input:focus-visible ~ .tabs { box-shadow: var(--focus); border-radius: 6px; }
+  .tbl tbody tr:hover { cursor: default; }
+  .tbl td .input { height: 34px; }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side" aria-label="Main">
+    <div class="logo"><span class="logo-mark">M</span>My Shop</div>
+    <a href="b2-dashboard.html"><span class="ico i-dash"></span>Dashboard</a>
+    <div class="sec">Catalog</div>
+    <a href="b3-products.html"><span class="ico i-box"></span>Products</a>
+    <a href="b4-categories.html"><span class="ico i-tag"></span>Categories</a>
+    <a href="b5-inventory.html" class="on" aria-current="page"><span class="ico i-layers"></span>Inventory<span class="cnt">7</span></a>
+    <div class="sec">Sales</div>
+    <a href="b6-sales.html"><span class="ico i-receipt"></span>Sales</a>
+    <a href="b7-customers.html"><span class="ico i-users"></span>Customers</a>
+    <a href="b8-reports.html"><span class="ico i-chart"></span>Reports</a>
+    <div class="sec">Admin</div>
+    <a href="b9-staff.html"><span class="ico i-shield"></span>Staff</a>
+    <a href="b10-settings.html"><span class="ico i-sliders"></span>Settings</a>
+    <a href="b1-login.html" style="margin-top:auto"><span class="ico i-lock"></span>Log out</a>
+  </aside>
+  <div class="main">
+    <header class="topbar"><div class="crumb">Catalog / <b>Inventory</b></div><div class="row"><span class="av" style="--c:#2459b3">DA</span><span style="font-weight:550">Dara</span><span class="ico s i-chev t3"></span></div></header>
+    <div class="page tabset">
+      <div class="page-h"><div><h1>Inventory</h1><p>Receive deliveries, count shelves and review every stock movement.</p></div></div>
+      <input type="radio" name="tab" id="t1" checked><input type="radio" name="tab" id="t2"><input type="radio" name="tab" id="t3">
+      <div class="tabs"><label for="t1">Receive</label><label for="t2">Count</label><label for="t3">Movements</label></div>
+
+      <section class="pane p1" style="max-width:900px">
+        <div class="card">
+          <div class="card-b" style="padding-bottom:14px"><div class="field"><label for="rn">Note</label><input id="rn" class="input" value="Delivery from Lucky Wholesale, invoice 8812"></div></div>
+          <table class="tbl">
+            <thead><tr><th>Product</th><th class="r" style="width:120px">Qty</th><th class="r" style="width:170px">New cost <span class="t3">(optional)</span></th><th style="width:48px"></th></tr></thead>
+            <tbody>
+              <tr><td><div class="input-icon"><span class="ico s i-search"></span><input class="input" value="Coffee beans 250g · COF-250" aria-label="Product"></div></td><td><input class="input num r" value="24" aria-label="Qty"></td><td><input class="input num r" value="4.05" aria-label="New cost"></td><td><button class="btn btn-ghost icon-btn" aria-label="Remove row"><span class="ico s i-x"></span></button></td></tr>
+              <tr><td><div class="input-icon"><span class="ico s i-search"></span><input class="input" value="Potato chips · CHP-001" aria-label="Product"></div></td><td><input class="input num r" value="48" aria-label="Qty"></td><td><input class="input num r" placeholder="—" aria-label="New cost"></td><td><button class="btn btn-ghost icon-btn" aria-label="Remove row"><span class="ico s i-x"></span></button></td></tr>
+              <tr><td><div class="input-icon"><span class="ico s i-search"></span><input class="input" placeholder="Search or scan a product" aria-label="Product"></div></td><td><input class="input num r" aria-label="Qty"></td><td><input class="input num r" aria-label="New cost"></td><td></td></tr>
+            </tbody>
+          </table>
+          <div class="card-f" style="justify-content:space-between"><button class="btn"><span class="ico s i-plus"></span>Add row</button><button class="btn btn-primary">Save receipt</button></div>
+        </div>
+        <div class="note info" style="margin-top:16px;display:block"><b>Saved.</b> New stock: <span class="num">COF-250 4 → 28</span> · <span class="num">CHP-001 −3 → 45</span></div>
+      </section>
+
+      <section class="pane p2" style="max-width:560px">
+        <div class="card">
+          <div class="card-b stack">
+            <div class="field"><label for="cp">Product</label><div class="input-icon"><span class="ico s i-search"></span><input id="cp" class="input" value="Water 500ml · WAT-500"></div></div>
+            <div class="between" style="padding:12px 14px;background:var(--surface-2);border-radius:var(--r)"><span class="t2">Current stock</span><span class="num" style="font-size:22px;font-weight:650">212</span></div>
+            <div class="g2">
+              <div class="field"><label for="cq" class="req">Counted qty</label><input id="cq" class="input num" value="210"></div>
+              <div class="field"><label for="cn" class="req">Note</label><input id="cn" class="input" value="Two bottles damaged"></div>
+            </div>
+          </div>
+          <div class="card-f" style="justify-content:space-between;align-items:center"><span>This will record <b class="num down">−2</b></span><button class="btn btn-primary">Confirm count</button></div>
+        </div>
+      </section>
+
+      <section class="pane p3">
+        <div class="card">
+          <div class="filters">
+            <div class="input-icon grow"><span class="ico s i-search"></span><input class="input" style="width:100%" placeholder="Any product" aria-label="Product"></div>
+            <select class="input" aria-label="Reason"><option>All reasons</option><option>Sale</option><option>Receive</option><option>Count</option><option>Void</option></select>
+            <input class="input" type="date" value="2026-11-01" aria-label="From"><span class="t3">→</span><input class="input" type="date" value="2026-11-05" aria-label="To">
+          </div>
+          <table class="tbl">
+            <thead><tr><th>Date</th><th>Product</th><th class="r">Change</th><th>Reason</th><th>Receipt</th><th>User</th><th>Note</th></tr></thead>
+            <tbody>
+              <tr><td class="num t2">05/11 16:30</td><td class="cell-main">Coffee beans 250g</td><td class="r num down">−2</td><td><span class="badge plain">Sale</span></td><td><a class="num" href="b6-sales.html">T1-000124</a></td><td>Sokha</td><td class="t3">—</td></tr>
+              <tr><td class="num t2">05/11 15:02</td><td class="cell-main">Water 500ml</td><td class="r num down">−2</td><td><span class="badge warn plain">Count</span></td><td class="t3">—</td><td>Dara</td><td>Two bottles damaged</td></tr>
+              <tr><td class="num t2">05/11 09:15</td><td class="cell-main">Coffee beans 250g</td><td class="r num up">+24</td><td><span class="badge ok plain">Receive</span></td><td class="t3">—</td><td>Dara</td><td>Lucky Wholesale 8812</td></tr>
+              <tr><td class="num t2">04/11 18:40</td><td class="cell-main">Cola 330ml</td><td class="r num up">+1</td><td><span class="badge bad plain">Void</span></td><td><a class="num" href="b6-sales.html">T1-000098</a></td><td>Dara</td><td>Wrong item</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+<a class="mock-tag" href="index.html">B5 · Inventory</a>
+</body>
+</html>

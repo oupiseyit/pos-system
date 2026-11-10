@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B3 · Products</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400..700&family=Onest:wght@400..700&family=Schibsted+Grotesk:wght@400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <aside class="side" aria-label="Main">
+    <div class="logo"><span class="logo-mark">M</span>My Shop</div>
+    <a href="b2-dashboard.html"><span class="ico i-dash"></span>Dashboard</a>
+    <div class="sec">Catalog</div>
+    <a href="b3-products.html" class="on" aria-current="page"><span class="ico i-box"></span>Products</a>
+    <a href="b4-categories.html"><span class="ico i-tag"></span>Categories</a>
+    <a href="b5-inventory.html"><span class="ico i-layers"></span>Inventory<span class="cnt">7</span></a>
+    <div class="sec">Sales</div>
+    <a href="b6-sales.html"><span class="ico i-receipt"></span>Sales</a>
+    <a href="b7-customers.html"><span class="ico i-users"></span>Customers</a>
+    <a href="b8-reports.html"><span class="ico i-chart"></span>Reports</a>
+    <div class="sec">Admin</div>
+    <a href="b9-staff.html"><span class="ico i-shield"></span>Staff</a>
+    <a href="b10-settings.html"><span class="ico i-sliders"></span>Settings</a>
+    <a href="b1-login.html" style="margin-top:auto"><span class="ico i-lock"></span>Log out</a>
+  </aside>
+  <div class="main">
+    <header class="topbar"><div class="crumb">Catalog / <b>Products</b></div><div class="row"><span class="av" style="--c:#2459b3">DA</span><span style="font-weight:550">Dara</span><span class="ico s i-chev t3"></span></div></header>
+    <div class="page">
+      <div class="page-h"><div><h1>Products</h1><p>48 products · 7 at or below reorder level</p></div><button class="btn btn-primary"><span class="ico s i-plus"></span>Add product</button></div>
+      <div class="split">
+        <section class="card">
+          <div class="filters">
+            <div class="input-icon grow"><span class="ico s i-search"></span><input class="input" style="width:100%" placeholder="Search name, SKU or barcode" aria-label="Search"></div>
+            <select class="input" aria-label="Category"><option>All categories</option><option>Drinks</option><option>Snacks</option></select>
+            <div class="seg" role="group" aria-label="Status"><button class="on">Active</button><button>Inactive</button><button>All</button></div>
+          </div>
+          <table class="tbl">
+            <thead><tr><th class="sort">SKU</th><th class="sort">Name ↑</th><th>Category</th><th class="r">Price</th><th class="r">Stock</th><th>Active</th></tr></thead>
+            <tbody>
+              <tr><td class="num t2">CRS-001</td><td class="cell-main">Croissant</td><td class="t2">Bakery</td><td class="r num">1.50</td><td class="r num low">6</td><td><span class="badge ok plain">Yes</span></td></tr>
+              <tr class="sel"><td class="num t2">COF-250</td><td class="cell-main">Coffee beans 250g</td><td class="t2">Coffee</td><td class="r num">6.50</td><td class="r num low">4</td><td><span class="badge ok plain">Yes</span></td></tr>
+              <tr><td class="num t2">SOAP-DS</td><td class="cell-main">Dish soap</td><td class="t2">Household</td><td class="r num">2.40</td><td class="r num">15</td><td><span class="badge ok plain">Yes</span></td></tr>
+              <tr><td class="num t2">TEA-GRN</td><td class="cell-main">Green tea</td><td class="t2">Drinks</td><td class="r num">3.20</td><td class="r num">38</td><td><span class="badge ok plain">Yes</span></td></tr>
+              <tr><td class="num t2">CHP-001</td><td class="cell-main">Potato chips</td><td class="t2">Snacks</td><td class="r num">1.20</td><td class="r num neg">−3</td><td><span class="badge ok plain">Yes</span></td></tr>
+              <tr><td class="num t2">RIC-5KG</td><td class="cell-main">Rice 5kg</td><td class="t2">Household</td><td class="r num">7.90</td><td class="r num">22</td><td><span class="badge ok plain">Yes</span></td></tr>
+              <tr><td class="num t2">WAT-500</td><td class="cell-main">Water 500ml</td><td class="t2">Drinks</td><td class="r num">0.50</td><td class="r num">212</td><td><span class="badge ok plain">Yes</span></td></tr>
+            </tbody>
+          </table>
+          <div class="pager"><span>1–7 of 48</span><div class="row"><button class="btn btn-sm" disabled>Previous</button><button class="btn btn-sm">Next</button></div></div>
+        </section>
+
+        <form class="card panel" onsubmit="return false" aria-labelledby="ft">
+          <div class="card-h"><div><h2 id="ft">Coffee beans 250g</h2><span class="t3 sm">Edit product</span></div><button class="btn btn-ghost icon-btn" aria-label="Close"><span class="ico s i-x"></span></button></div>
+          <div class="card-b" style="display:grid;gap:14px">
+            <div class="g2">
+              <div class="field"><label for="sku" class="req">SKU</label><input id="sku" class="input num err" value="WAT-500" aria-describedby="skuerr"><span id="skuerr" class="ferr"><span class="ico s i-alert"></span>Already used by Water 500ml</span></div>
+              <div class="field"><label for="bc">Barcode</label><input id="bc" class="input num" value="8850999220017"></div>
+            </div>
+            <div class="field"><label for="nm" class="req">Name</label><input id="nm" class="input" value="Coffee beans 250g"></div>
+            <div class="field"><label for="cat">Category</label><select id="cat" class="input"><option>Coffee</option><option>Drinks</option></select></div>
+            <div class="g2">
+              <div class="field"><label for="pr" class="req">Price</label><input id="pr" class="input num" value="6.50"></div>
+              <div class="field"><label for="co">Cost</label><input id="co" class="input num" value="4.10"></div>
+              <div class="field"><label for="tx">Tax rate %</label><input id="tx" class="input num" value="10.00"></div>
+              <div class="field"><label for="ro">Reorder level</label><input id="ro" class="input num" value="10"></div>
+            </div>
+            <div class="between" style="padding:12px 14px;background:var(--warn-50);border-radius:var(--r)">
+              <div><div class="sm" style="color:var(--warn);font-weight:550">Stock on hand</div><div class="num" style="font-size:22px;font-weight:650;color:var(--warn)">4</div></div>
+              <div class="row"><a class="btn btn-sm" href="b5-inventory.html">Receive stock</a><a class="btn btn-sm" href="b5-inventory.html">Count stock</a></div>
+            </div>
+            <label class="check"><input type="checkbox" class="switch" checked> Active</label>
+          </div>
+          <div class="card-f"><button class="btn">Cancel</button><button class="btn btn-primary">Save changes</button></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast" role="status"><span class="ico s i-alert"></span>SKU already exists</div>
+<a class="mock-tag" href="index.html">B3 · Products</a>
+</body>
+</html>

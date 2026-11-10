@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env: { POSTGRES_USER: pos, POSTGRES_PASSWORD: pos, POSTGRES_DB: pos_test }
+        ports: ['5432:5432']
+        options: --health-cmd pg_isready --health-interval 5s --health-retries 10
+    env:
+      TEST_DATABASE_URL: postgresql://pos:pos@localhost:5432/pos_test
+      E2E_DATABASE_URL: postgresql://pos:pos@localhost:5432/pos_e2e
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx prisma generate # typed client for apps/api; needs no database
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npm run typecheck
+      - run: npm test
+      - run: npx playwright install --with-deps chromium
+      - run: npm run e2e # starts its own API + both Vite apps on pos_e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with: { name: playwright-traces, path: test-results/ }
+      - run: npm audit --audit-level=high
+      - run: docker build -t pos-api:ci . # production image (09 §4)
+      - name: Run the image (production mode) and smoke-test it
+        run: |
+          docker run -d --name pos-api --network host \
+            -e NODE_ENV=production -e PORT=3300 -e JWT_SECRET=ci-only-not-a-secret-32-chars-long \
+            -e DATABASE_URL=postgresql://pos:pos@localhost:5432/pos_ci_image pos-api:ci
+          for i in $(seq 30); do curl -fs localhost:3300/api/health && break; sleep 1; done
+          curl -fs localhost:3300/api/health | grep -q '"db":true'
+          curl -fs -o /dev/null localhost:3300/              # POS
+          curl -fs -o /dev/null localhost:3300/admin/        # back office
+          curl -fsI localhost:3300/ | grep -qi '^content-security-policy:.*connect-src'
+          [ "$(curl -s -o /dev/null -w '%{http_code}' localhost:3300/api/docs)" != 200 ] # no docs in prod
+      - if: always()
+        run: docker logs pos-api 2>&1 | tail -50; docker rm -f pos-api || true

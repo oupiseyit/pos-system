@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B10 · Settings</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="shell">
+  <nav class="nav" aria-label="Main">
+    <div class="brand">My Shop<small>Back office</small></div>
+    <a href="b2-dashboard.html">Dashboard</a>
+    <a href="b3-products.html">Products</a>
+    <a href="b4-categories.html">Categories</a>
+    <a href="b5-inventory.html">Inventory</a>
+    <a href="b6-sales.html">Sales</a>
+    <a href="b7-customers.html">Customers</a>
+    <a href="b8-reports.html">Reports</a>
+    <div class="sep"></div>
+    <a href="b9-staff.html">Staff <span class="pill">admin</span></a>
+    <a href="b10-settings.html" class="is-on">Settings <span class="pill">admin</span></a>
+  </nav>
+  <div class="main">
+    <header class="topbar"><h1>Settings</h1><div class="user-menu"><span class="avatar">D</span>Dara ▾</div></header>
+    <div class="content" style="display:grid;grid-template-columns:minmax(0,560px) auto;gap:40px;align-items:start">
+      <form class="card stack" id="f" onsubmit="return false">
+        <div class="field"><label for="name" class="req">Shop name</label><input id="name" class="input" value="My Shop"></div>
+        <div class="field"><label for="addr">Address</label><input id="addr" class="input" value="12 Street 271, Phnom Penh"></div>
+        <div class="grid-2">
+          <div class="field"><label for="tel">Phone</label><input id="tel" class="input num" value="012 345 678"></div>
+          <div class="field"><label for="vat">Tax id</label><input id="vat" class="input num" value="1234567"></div>
+          <div class="field"><label for="cur">Currency</label><select id="cur" class="input"><option>USD</option><option>KHR</option><option>THB</option><option>EUR</option></select></div>
+          <div class="field"><label for="tz">Timezone</label><select id="tz" class="input"><option>Asia/Phnom_Penh</option><option>Asia/Bangkok</option><option>UTC</option></select></div>
+        </div>
+        <div class="field"><label for="foot">Receipt footer</label><textarea id="foot" class="input" rows="3">Thank you! Come again</textarea></div>
+        <div class="row" style="justify-content:flex-end"><button class="btn btn-dark">Save settings</button></div>
+      </form>
+      <div style="position:sticky;top:20px">
+        <span class="label">Live 80mm preview</span>
+        <pre class="receipt" id="preview" style="margin-top:10px"></pre>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  // Rebuilds the receipt header and footer from the form so the preview updates as you type.
+  const W = 42, $ = id => document.getElementById(id).value;
+  const center = s => s.split('\n').map(l => ' '.repeat(Math.max(0, (W - l.length) >> 1)) + l).join('\n');
+  const rule = '-'.repeat(W);
+  const lr = (a, b) => a + b.padStart(W - a.length);
+  function render() {
+    document.getElementById('preview').textContent = [
+      center($('name').toUpperCase()), center($('addr')), center(`Tel ${$('tel')} · VAT ${$('vat')}`), rule,
+      'Receipt: T1-000124', 'Date:    05/11/2026 16:30', rule,
+      'Coffee beans 250g', lr('  2 x 6.50', '13.00'), rule,
+      lr('TOTAL', `${$('cur')} 13.00`), rule, center($('foot'))
+    ].join('\n');
+  }
+  document.getElementById('f').addEventListener('input', render);
+  render();
+</script>
+<a class="mock-tag" href="index.html">B10 · Settings</a>
+</body>
+</html>

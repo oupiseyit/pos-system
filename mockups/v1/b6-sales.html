@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B6 · Sales</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="shell">
+  <nav class="nav" aria-label="Main">
+    <div class="brand">My Shop<small>Back office</small></div>
+    <a href="b2-dashboard.html">Dashboard</a>
+    <a href="b3-products.html">Products</a>
+    <a href="b4-categories.html">Categories</a>
+    <a href="b5-inventory.html">Inventory</a>
+    <a href="b6-sales.html" class="is-on">Sales</a>
+    <a href="b7-customers.html">Customers</a>
+    <a href="b8-reports.html">Reports</a>
+    <div class="sep"></div>
+    <a href="b9-staff.html">Staff <span class="pill">admin</span></a>
+    <a href="b10-settings.html">Settings <span class="pill">admin</span></a>
+  </nav>
+  <div class="main">
+    <header class="topbar"><h1>Sales</h1><div class="user-menu"><span class="avatar">D</span>Dara ▾</div></header>
+    <div class="content">
+      <div class="toolbar">
+        <div class="field"><label for="f">From</label><input id="f" class="input" type="date" value="2026-11-05"></div>
+        <div class="field"><label for="t">To</label><input id="t" class="input" type="date" value="2026-11-05"></div>
+        <div class="field"><label for="ca">Cashier</label><select id="ca" class="input"><option>All</option><option>Sokha</option><option>Dara</option></select></div>
+        <div class="field"><label for="cu">Customer</label><input id="cu" class="input" placeholder="Any"></div>
+        <div class="field"><label for="st">Status</label><select id="st" class="input"><option>All</option><option>Completed</option><option>Voided</option></select></div>
+        <div class="field"><label for="rn">Receipt no</label><input id="rn" class="input num" placeholder="T1-…"></div>
+      </div>
+      <div class="split">
+        <table class="table">
+          <thead><tr><th>Receipt</th><th>Date</th><th>Cashier</th><th>Customer</th><th>Payment</th><th class="r">Total</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr class="is-selected"><td class="num">T1-000124</td><td class="num">05/11 16:30</td><td>Sokha</td><td>Chan Dara</td><td>Cash</td><td class="r num">16.50</td><td><span class="pill green">completed</span></td></tr>
+            <tr><td class="num">T2-000057</td><td class="num">05/11 16:21</td><td>Dara</td><td class="muted">—</td><td>Card</td><td class="r num">8.40</td><td><span class="pill green">completed</span></td></tr>
+            <tr><td class="num">T1-000123</td><td class="num">05/11 16:12</td><td>Sokha</td><td class="muted">—</td><td>Split</td><td class="r num">4.20</td><td><span class="pill green">completed</span></td></tr>
+            <tr><td class="num">T1-000121</td><td class="num">05/11 15:41</td><td>Sokha</td><td>Srey Neang</td><td>Cash</td><td class="r num">9.60</td><td><span class="pill red">voided</span></td></tr>
+            <tr><td class="num">T2-000056</td><td class="num">05/11 15:30</td><td>Dara</td><td class="muted">—</td><td>Other</td><td class="r num">100.00</td><td><span class="pill green">completed</span></td></tr>
+          </tbody>
+        </table>
+
+        <aside class="drawer" aria-labelledby="dt">
+          <div class="drawer-head">
+            <div><h2 id="dt" class="num">T1-000124</h2><span class="small muted">05/11/2026 16:30 · Till T1 · Sokha · Chan Dara</span></div>
+            <span class="pill green">completed</span>
+          </div>
+          <div class="drawer-body">
+            <div class="card" style="padding:10px 14px;background:#f6e8c7;border-color:#e6cf93;font-size:14px">⏱ Synced 16:45 by Dara. Sold offline.</div>
+            <table class="table" style="border:0">
+              <tbody>
+                <tr><td>Coffee beans 250g<div class="small muted num">2 × 6.50 · disc −1.00</div></td><td class="r num">12.00</td></tr>
+                <tr><td>Water 500ml<div class="small muted num">6 × 0.50</div></td><td class="r num">3.00</td></tr>
+              </tbody>
+              <tfoot>
+                <tr><td>Tax</td><td class="r num">1.50</td></tr>
+                <tr><td>Total</td><td class="r num">16.50</td></tr>
+              </tfoot>
+            </table>
+            <div><span class="label">Payments</span>
+              <div class="spread num" style="margin-top:6px"><span>Cash</span><span>20.00 · change 3.50</span></div>
+            </div>
+          </div>
+          <div class="drawer-foot"><a class="btn" href="a6-receipt.html">Reprint</a><button class="btn btn-danger">Void…</button></div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</div>
+<a class="mock-tag" href="index.html">B6 · Sales</a>
+</body>
+</html>

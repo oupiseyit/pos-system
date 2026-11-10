@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B7 · Customers</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400..700&family=Onest:wght@400..700&family=Schibsted+Grotesk:wght@400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <aside class="side" aria-label="Main">
+    <div class="logo"><span class="logo-mark">M</span>My Shop</div>
+    <a href="b2-dashboard.html"><span class="ico i-dash"></span>Dashboard</a>
+    <div class="sec">Catalog</div>
+    <a href="b3-products.html"><span class="ico i-box"></span>Products</a>
+    <a href="b4-categories.html"><span class="ico i-tag"></span>Categories</a>
+    <a href="b5-inventory.html"><span class="ico i-layers"></span>Inventory<span class="cnt">7</span></a>
+    <div class="sec">Sales</div>
+    <a href="b6-sales.html"><span class="ico i-receipt"></span>Sales</a>
+    <a href="b7-customers.html" class="on" aria-current="page"><span class="ico i-users"></span>Customers</a>
+    <a href="b8-reports.html"><span class="ico i-chart"></span>Reports</a>
+    <div class="sec">Admin</div>
+    <a href="b9-staff.html"><span class="ico i-shield"></span>Staff</a>
+    <a href="b10-settings.html"><span class="ico i-sliders"></span>Settings</a>
+    <a href="b1-login.html" style="margin-top:auto"><span class="ico i-lock"></span>Log out</a>
+  </aside>
+  <div class="main">
+    <header class="topbar"><div class="crumb">Sales / <b>Customers</b></div><div class="row"><span class="av" style="--c:#2459b3">DA</span><span style="font-weight:550">Dara</span><span class="ico s i-chev t3"></span></div></header>
+    <div class="page">
+      <div class="page-h"><div><h1>Customers</h1><p>214 customers</p></div><button class="btn btn-primary"><span class="ico s i-plus"></span>Add customer</button></div>
+      <div class="split">
+        <section class="card">
+          <div class="filters"><div class="input-icon grow"><span class="ico s i-search"></span><input class="input" style="width:100%" placeholder="Search name, phone or email" aria-label="Search"></div></div>
+          <table class="tbl">
+            <thead><tr><th>Name</th><th>Phone</th><th>Email</th><th class="r">Sales</th><th class="r">Total spent</th></tr></thead>
+            <tbody>
+              <tr class="sel"><td><div class="row"><span class="av" style="--c:#2459b3">CD</span><span class="cell-main">Chan Dara</span></div></td><td class="num t2">012 345 678</td><td class="t2">chan.dara@mail.com</td><td class="r num">14</td><td class="r num">312.40</td></tr>
+              <tr><td><div class="row"><span class="av" style="--c:#a8670a">SN</span><span class="cell-main">Srey Neang</span></div></td><td class="num t2">012 908 112</td><td class="t3">—</td><td class="r num">3</td><td class="r num">41.10</td></tr>
+              <tr><td><div class="row"><span class="av" style="--c:#6b3f86">VK</span><span class="cell-main">Vuthy Kim</span></div></td><td class="num t2">012 771 450</td><td class="t2">vuthy@mail.com</td><td class="r num">1</td><td class="r num">7.90</td></tr>
+              <tr><td><div class="row"><span class="av" style="--c:#0e6b4e">BL</span><span class="cell-main">Bopha Lim</span></div></td><td class="t3">—</td><td class="t2">bopha.l@mail.com</td><td class="r num t3">0</td><td class="r num t3">0.00</td></tr>
+            </tbody>
+          </table>
+        </section>
+        <form class="card panel" onsubmit="return false" aria-labelledby="ct">
+          <div class="card-h"><div class="row"><span class="av" style="--c:#2459b3;width:40px;height:40px;font-size:14px">CD</span><div><h2 id="ct">Chan Dara</h2><span class="t3 sm">Customer since 12/03/2026</span></div></div></div>
+          <div class="card-b" style="display:grid;gap:14px">
+            <div class="g2">
+              <div style="padding:12px 14px;background:var(--surface-2);border-radius:var(--r)"><div class="t3 sm">Sales</div><div class="num" style="font-size:22px;font-weight:650">14</div></div>
+              <div style="padding:12px 14px;background:var(--surface-2);border-radius:var(--r)"><div class="t3 sm">Total spent</div><div class="num" style="font-size:22px;font-weight:650">312.40</div></div>
+            </div>
+            <div class="field"><label for="n" class="req">Name</label><input id="n" class="input" value="Chan Dara"></div>
+            <div class="g2">
+              <div class="field"><label for="p">Phone</label><input id="p" class="input num" value="012 345 678"></div>
+              <div class="field"><label for="e">Email</label><input id="e" class="input" type="email" value="chan.dara@mail.com"></div>
+            </div>
+            <div>
+              <div class="t3 sm" style="margin-bottom:6px">Recent sales</div>
+              <div style="border:1px solid var(--border);border-radius:var(--r);overflow:hidden">
+                <table class="tbl"><tbody>
+                  <tr onclick="location='b6-sales.html'"><td class="num"><a href="b6-sales.html">T1-000124</a></td><td class="num t3">05/11</td><td class="r num">16.50</td></tr>
+                  <tr onclick="location='b6-sales.html'"><td class="num"><a href="b6-sales.html">T2-000041</a></td><td class="num t3">29/10</td><td class="r num">22.00</td></tr>
+                  <tr onclick="location='b6-sales.html'"><td class="num"><a href="b6-sales.html">T1-000087</a></td><td class="num t3">21/10</td><td class="r num">9.30</td></tr>
+                </tbody></table>
+              </div>
+            </div>
+          </div>
+          <div class="card-f" style="justify-content:space-between">
+            <span class="tip" data-tip="This customer has sales"><button class="btn btn-danger" disabled>Delete</button></span>
+            <button class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<a class="mock-tag" href="index.html">B7 · Customers</a>
+</body>
+</html>
