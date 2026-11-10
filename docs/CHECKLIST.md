@@ -149,7 +149,7 @@ Exit gate: Everything green
 ## Phase 9 — Deploy
 Exit gate: Live on HTTPS
 
-- [ ] Multi-stage `Dockerfile`, `docker-compose.prod.yml` and `Caddyfile`.
+- [x] Multi-stage `Dockerfile`, `docker-compose.prod.yml` and `Caddyfile`.
 - [ ] Provision the Linux server: Docker, ufw, key-only SSH, unattended-upgrades.
 - [ ] First deploy and seed, plus `backup.sh` with a nightly cron and an off-server copy.
 - [ ] Set up the tills: install the PWA, set device codes, configure the printer (no margins/headers, kiosk printing). LAN-only: install the Caddy root CA.
