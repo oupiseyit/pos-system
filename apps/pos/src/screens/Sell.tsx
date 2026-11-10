@@ -99,7 +99,8 @@ export function Sell(props: {
   }, [dialog, menu, finished]);
 
   // Keyboard: F2 search, F4 customer, F9 / Ctrl+Enter pay (Esc is handled by the dialogs)
-  const canPay = lines.length > 0 && totalCents >= 0;
+  // A 0.00 bill can't be paid: the server needs every payment amount > 0
+  const canPay = lines.length > 0 && totalCents > 0;
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (dialog || finished) return;

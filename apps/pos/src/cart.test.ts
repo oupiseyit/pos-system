@@ -41,6 +41,13 @@ describe('pay', () => {
     expect(payState(1650, [], 'CARD', '16.50').canComplete).toBe(true);
   });
 
+  it('an amount above the server ceiling (e.g. a scanned barcode) is refused', () => {
+    const s = payState(1650, [], 'CASH', '4006381333931');
+    expect(s).toMatchObject({ canComplete: false, canAdd: false, final: null });
+    expect(s.error).toMatch(/too large/);
+    expect(payState(1650, [], 'CASH', '999999.99').canComplete).toBe(true);
+  });
+
   it('cash tendered < amount shows an error (but can be a part payment)', () => {
     const s = payState(1650, [], 'CASH', '10.00');
     expect(s.canComplete).toBe(false);

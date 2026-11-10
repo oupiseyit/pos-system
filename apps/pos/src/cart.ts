@@ -57,6 +57,8 @@ export interface Payment {
   reference?: string;
 }
 
+const MAX_CENTS = 99_999_999; // 999,999.99
+
 const parse = (s: string) => {
   try {
     return s.trim() ? toCents(s) : 0;
@@ -84,6 +86,9 @@ export function payState(dueCents: number, payments: Payment[], method: Method, 
   };
   if (remaining <= 0) return out;
   if (Number.isNaN(amt)) return { ...out, error: 'Enter an amount like 12.50' };
+  // The server's money ceiling (http.ts): above it the sale could never upload. Also catches a
+  // barcode scanned into the tender box by mistake.
+  if (amt > MAX_CENTS) return { ...out, error: 'That amount is too large. Check the cash tendered.' };
   out.canAdd = amt > 0 && amt < remaining;
   if (method === 'CASH') {
     if (amt >= remaining) {
