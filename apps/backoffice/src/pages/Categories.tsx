@@ -21,7 +21,8 @@ export function Categories() {
     }
   }
 
-  async function rename(c: Category, value: string) {
+  async function rename(c: Category, input: HTMLInputElement) {
+    const value = input.value;
     if (value.trim() === c.name) return;
     try {
       await api(`/categories/${c.id}`, 'PATCH', { name: value });
@@ -29,7 +30,7 @@ export function Categories() {
       list.reload();
     } catch (err) {
       toast((err as Error).message);
-      list.reload(); // put the old name back
+      input.value = c.name; // put the old name back (the row doesn't re-render: its name didn't change)
     }
   }
 
@@ -70,7 +71,7 @@ export function Categories() {
                       defaultValue={c.name}
                       aria-label="Category name"
                       onFocus={() => setSaved(null)}
-                      onBlur={(e) => rename(c, e.target.value)}
+                      onBlur={(e) => rename(c, e.currentTarget)}
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                           e.preventDefault();
