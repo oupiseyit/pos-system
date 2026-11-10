@@ -99,6 +99,8 @@ services:
     build: .
     restart: unless-stopped
     env_file: .env
+    # no ports: only Caddy may reach it. The auth rate limit trusts one X-Forwarded-For hop (07 §3),
+    # so a published port would let clients spoof their IP and skip the limit.
     depends_on: { db: { condition: service_healthy } }
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]

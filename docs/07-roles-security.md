@@ -71,7 +71,7 @@ export const requireRole = (min: Role) => (req, res, next) =>
 | SQL injection | Prisma parameterised queries, and `$queryRaw` used only with tagged templates (never string concat) |
 | XSS | React escaping, and no `dangerouslySetInnerHTML`. CSP via `helmet`: `default-src 'self'; script-src 'self'; object-src 'none'; frame-ancestors 'none'` |
 | Headers | `helmet()` defaults (HSTS, no-sniff, referrer policy) |
-| CORS | Off in production (same origin). Dev allows the Vite ports only |
+| CORS | None: no CORS headers are sent, so other origins are refused. Production is same-origin, and in dev the Vite servers proxy `/api` |
 | Transport | HTTPS only via Caddy, HTTP redirected. Required anyway for the service worker |
 | Errors | No stack traces or SQL in responses, and details are logged server-side |
 | Passwords | ≥ 8 chars, bcrypt cost 12, never logged or returned |
