@@ -44,8 +44,8 @@ it('stock and money invariants hold after receive, sales, void and adjust', asyn
   const badSales = await prisma.$queryRaw<unknown[]>`
     SELECT s.id FROM "Sale" s
     WHERE s.total <> s.subtotal - s.discount + s.tax
-       OR s.total <> (SELECT sum(amount) FROM "Payment" WHERE "saleId" = s.id)
-       OR s.total <> (SELECT sum("lineTotal") FROM "SaleItem" WHERE "saleId" = s.id)`;
+       OR s.total <> (SELECT coalesce(sum(amount), 0) FROM "Payment" WHERE "saleId" = s.id)
+       OR s.total <> (SELECT coalesce(sum("lineTotal"), 0) FROM "SaleItem" WHERE "saleId" = s.id)`;
   expect(badSales).toEqual([]);
 
   // A voided sale has exactly one RETURN per item

@@ -25,7 +25,7 @@ export default defineConfig({
   // One shared database and one seeded shop: specs run in order, never in parallel
   workers: 1,
   fullyParallel: false,
-  retries: process.env.CI ? 1 : 0,
+  retries: 0, // a retry re-posts the same device's receipt numbers on the same pos_e2e (409), so it can't pass
   reporter: process.env.CI ? 'github' : 'list',
   use: {
     ...devices['Desktop Chrome'],
