@@ -15,3 +15,7 @@ apps/api/public/
 
 # Local server notes with credentials: never commit
 Deploy_infor.md
+
+# Local server notes: credentials and host details, never commit
+Deploy_infor.md
+deploy_plan.md
