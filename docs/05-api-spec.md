@@ -46,7 +46,7 @@ Body: `{ "email": "owner@shop.com", "password": "••••••" }`
 ```json
 { "token": "eyJ…", "user": { "id": "…", "name": "Dara", "email": "owner@shop.com", "role": "ADMIN" } }
 ```
-Errors: `401` invalid credentials or inactive user · `429` more than 10 attempts per minute per IP (shared with `/auth/pin`; `/auth/me` is not limited).
+Errors: `401` invalid credentials or inactive user · `429` more than `AUTH_RATE_LIMIT` (default 10) attempts per minute per IP (shared with `/auth/pin`; `/auth/me` is not limited).
 
 ### `POST /auth/pin` — public
 Body: `{ "email": "cashier@shop.com", "pin": "1234" }`

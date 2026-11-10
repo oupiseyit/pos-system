@@ -18,6 +18,12 @@ export default defineConfig({
     globalSetup: './test/global-setup.ts',
     // One shared database: files run one at a time, each truncating at start
     fileParallelism: false,
-    env: { DATABASE_URL: url, JWT_SECRET: 'test-secret-at-least-32-bytes-long!!', NODE_ENV: 'test' },
+    env: {
+      DATABASE_URL: url,
+      JWT_SECRET: 'test-secret-at-least-32-bytes-long!!',
+      NODE_ENV: 'test',
+      // .env may raise this for dev; the rate-limit tests expect the production value
+      AUTH_RATE_LIMIT: '10',
+    },
   },
 });

@@ -89,7 +89,10 @@ export function createApp() {
   }
 
   // A fresh limiter per app, so each test app starts with a clean counter
-  const authLimit = rateLimit({ windowMs: 60_000, limit: 10, message: { error: 'Too many requests' } });
+  // Requests per minute per IP on /auth/login + /auth/pin (07: brute-force guard). Keep 10 in production.
+  const limit = Number(process.env.AUTH_RATE_LIMIT ?? 10);
+  if (!Number.isInteger(limit) || limit < 1) throw new Error('AUTH_RATE_LIMIT must be a whole number ≥ 1');
+  const authLimit = rateLimit({ windowMs: 60_000, limit, message: { error: 'Too many requests' } });
   app.use(['/api/auth/login', '/api/auth/pin'], authLimit);
   app.use('/api/auth', authRouter);
 

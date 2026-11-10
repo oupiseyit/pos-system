@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { beforeAll, describe, expect, it } from 'vitest';
+import { createApp } from '../src/app.js';
 import { api, makeUser, PASSWORD, PIN, prisma, resetDb, tokenFor } from './fixtures.js';
 
 beforeAll(() => resetDb());
@@ -40,6 +41,29 @@ describe('POST /auth/login', () => {
     for (let i = 0; i < 11; i++) codes.push((await app.post('/api/auth/login').send({})).status);
     expect(codes.slice(0, 10).every((c) => c === 400)).toBe(true);
     expect(codes[10]).toBe(429);
+  });
+});
+
+describe('AUTH_RATE_LIMIT', () => {
+  const withLimit = (v: string, fn: () => unknown) => {
+    const old = process.env.AUTH_RATE_LIMIT;
+    process.env.AUTH_RATE_LIMIT = v;
+    try {
+      return fn();
+    } finally {
+      process.env.AUTH_RATE_LIMIT = old;
+    }
+  };
+
+  it('sets the per-minute limit', async () => {
+    const app = withLimit('3', () => api()) as ReturnType<typeof api>;
+    const codes = [];
+    for (let i = 0; i < 4; i++) codes.push((await app.post('/api/auth/login').send({})).status);
+    expect(codes).toEqual([400, 400, 400, 429]);
+  });
+
+  it('rejects a value that is not a whole number ≥ 1', () => {
+    for (const v of ['0', 'abc', '2.5']) expect(() => withLimit(v, () => createApp())).toThrow(/AUTH_RATE_LIMIT/);
   });
 });
 

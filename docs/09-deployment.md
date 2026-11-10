@@ -40,6 +40,7 @@ sudo ufw allow OpenSSH && sudo ufw allow 80,443/tcp && sudo ufw enable
 | `JWT_SECRET` | *(≥ 32 random bytes)* | `openssl rand -hex 32` |
 | `NODE_ENV` | `production` | |
 | `PORT` | `3000` | API port inside the network |
+| `AUTH_RATE_LIMIT` | `10` | Login/PIN requests per minute per IP (keep 10 in production) |
 | `SEED_ADMIN_EMAIL` | `owner@shop.com` | First admin (seed only) |
 | `SEED_ADMIN_PASSWORD` | *(temporary)* | Change it after first login |
 | `BACKUP_PASSPHRASE` | *(random)* | Encrypts nightly dumps |
