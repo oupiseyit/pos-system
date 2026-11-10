@@ -179,7 +179,7 @@ A `receiptNo` already used by **another** sale id → `409` (two tills share a d
 Prices are **not** compared to the current catalog. The till's price is what was charged.
 
 ### `GET /sales` — CASHIER
-Query: `from`, `to`, `cashierId`, `customerId`, `status`, `receiptNo`, `page`, `limit`.
+Query: `from`, `to`, `cashierId`, `customerId`, `status`, `receiptNo`, `deviceCode`, `page`, `limit`. With `deviceCode`, results are ordered by `receiptNo` descending (a till's newest receipt first; the POS uses this at set-up to continue its counter).
 A CASHIER always gets only **their own sales from today** (other filters are ignored). A MANAGER gets all.
 Item (SaleSummary): `{ "id", "receiptNo", "createdAt", "cashierName", "customerName", "total", "status", "paymentMethods": ["CASH"] }`
 

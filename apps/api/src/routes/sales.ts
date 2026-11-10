@@ -60,6 +60,7 @@ export const listQuery = pageQuery.extend({
   customerId: id.optional(),
   status: z.enum(SaleStatus).optional(),
   receiptNo: z.string().trim().min(1).optional(),
+  deviceCode: z.string().trim().min(1).max(20).optional(),
 });
 
 export const voidBody = z.object({ reason: z.string().trim().min(1).max(500) });
@@ -196,6 +197,7 @@ salesRouter.get('/', async (req, res) => {
       customerId: q.customerId,
       status: q.status,
       receiptNo: q.receiptNo,
+      deviceCode: q.deviceCode,
       createdAt: days && { ...(q.from && { gte: days.gte }), ...(q.to && { lt: days.lt }) },
     };
   }
@@ -203,7 +205,9 @@ salesRouter.get('/', async (req, res) => {
     prisma.sale.findMany({
       where,
       include: summaryInclude,
-      orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+      // One till's sales: newest receipt number first (zero-padded, so it sorts like the counter),
+      // which is what a re-set-up till continues from. Otherwise newest first by time.
+      orderBy: q.deviceCode ? [{ receiptNo: 'desc' }] : [{ createdAt: 'desc' }, { id: 'desc' }],
       ...pageArgs(q),
     }),
     prisma.sale.count({ where }),

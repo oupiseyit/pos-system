@@ -195,6 +195,21 @@ describe('GET /sales', () => {
     expect(old.body.total).toBe(1);
   });
 
+  it('deviceCode filters to one till, newest receipt number first', async () => {
+    const q = await makeProduct();
+    for (const n of ['000009', '000011', '000010'])
+      await post(
+        saleBody(other.id, [{ productId: q.id, unitPrice: '1.00', qty: 1 }], {
+          receiptNo: `Z7-${n}`,
+          deviceCode: 'Z7',
+        }),
+        other,
+      ).expect(201);
+    const res = await api().get('/api/sales?deviceCode=Z7&limit=1').set('Authorization', mgr);
+    expect(res.body.total).toBe(3);
+    expect(res.body.data.map((s: { receiptNo: string }) => s.receiptNo)).toEqual(['Z7-000011']);
+  });
+
   it('GET /sales/:id: own sale ok, someone else’s → 404 for a cashier, any for a manager', async () => {
     const s = await prisma.sale.findFirstOrThrow({ where: { cashierId: cashier.id } });
     expect((await api().get(`/api/sales/${s.id}`).set('Authorization', tokenFor(cashier))).status).toBe(200);

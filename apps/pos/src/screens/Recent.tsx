@@ -46,7 +46,7 @@ export function Recent({ session, go }: { session: Session; go: (v: View) => voi
     let live = true;
     const today = isoDay();
     // A cashier gets only their own sales today; a manager gets everyone's (05 §9)
-    api<{ data: SaleSummary[] }>(`/sales?from=${today}&to=${today}&limit=200`).then(
+    api<{ data: SaleSummary[] }>(`/sales?from=${today}&to=${today}&deviceCode=${code}&limit=200`).then(
       (r) => {
         if (!live) return;
         setLoadError('');

@@ -20,7 +20,16 @@ export function Setup() {
       // Checked online; the manager's session is used only for this check and then dropped
       const s = await api<Session>('/auth/pin', 'POST', { email, pin });
       if (RANK[s.user.role] < RANK.MANAGER) return setError('Only a manager or admin can set up a till.');
-      write(K.counter, 0);
+      // Continue after this code's last receipt on the server, so a re-set-up till (cleared browser,
+      // new hardware) never re-issues T1-000001… and gets 409s (03 §5).
+      // ponytail: sales stuck in a wiped till's outbox are invisible here; a clash still lands in A8.
+      const last = await api<{ data: { receiptNo: string }[] }>(
+        `/sales?deviceCode=${encodeURIComponent(code)}&limit=1`,
+        'GET',
+        undefined,
+        s.token,
+      );
+      write(K.counter, Number(last.data[0]?.receiptNo.split('-')[1] ?? 0) || 0);
       write(K.device, { code });
     } catch (err) {
       setError(
