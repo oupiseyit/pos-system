@@ -12,3 +12,6 @@ test-results/
 playwright-report/
 docs/how-to-use-graphify.md
 apps/api/public/
+
+# Local server notes with credentials: never commit
+Deploy_infor.md
