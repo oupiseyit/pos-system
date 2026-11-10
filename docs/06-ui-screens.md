@@ -46,17 +46,17 @@ The manager credentials are checked via `POST /auth/pin` (role must be ≥ MANAG
 ### A3. Sell screen (main)
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
-│ My Shop · T1      Cashier: Sokha      ○ Offline · 2 pending   [Menu ▾] │
+│ My Shop · T1  Sokha          ○ Offline · 2 pending   16:30   [Menu ▾] │
 ├──────────────────────────────────────────┬─────────────────────────────┤
-│ [ Scan or search…                      ] │ Customer: [ + Add ]         │
-│ [All] [Drinks] [Snacks] [Household] …    │─────────────────────────────│
-│ ┌────────┐┌────────┐┌────────┐┌────────┐ │ Coffee beans 250g           │
-│ │Coffee  ││Tea     ││Water   ││Chips   │ │  2 × 6.50        13.00  [–] │
-│ │ 6.50   ││ 3.20   ││ 0.50   ││ 1.20   │ │  disc −1.00                 │
-│ └────────┘└────────┘└────────┘└────────┘ │ Water 500ml                 │
-│ ┌────────┐┌────────┐┌────────┐┌────────┐ │  6 × 0.50         3.00  [–] │
-│ │ …      ││ …      ││ …      ││ …      │ │                             │
-│ └────────┘└────────┘└────────┘└────────┘ │─────────────────────────────│
+│ [ Search products or scan…     ] [▥ Scan]│ Current sale     T1-000125  │
+│ [All 48] [Drinks 14] [Snacks 9] …        │─────────────────────────────│
+│ ┌────────┐┌────────┐┌────────┐┌────────┐ │ ☕ Coffee beans 250g        │
+│ │☕ 4 left││🍶38 left││🍶212 lft││▢  Out  │ │   6.50 each (–) 2 (+) 13.00│
+│ │Coffee  ││Tea     ││Water   ││Chips   │ │                       −1.00│
+│ │ 6.50   ││ 3.20   ││ 0.50   ││ 1.20   │ │ 🍶 Water 500ml              │
+│ └────────┘└────────┘└────────┘└────────┘ │   0.50 each (–) 6 (+)  3.00│
+│                                          │─────────────────────────────│
+│                                          │ [% Discount] [👤 Customer F4]│
 │                                          │ Subtotal            16.00   │
 │                                          │ Discount            −1.00   │
 │                                          │ Tax                  1.50   │
@@ -64,10 +64,13 @@ The manager credentials are checked via `POST /auth/pin` (role must be ≥ MANAG
 │                                          │ [ Clear ]   [  PAY 16.50  ] │
 └──────────────────────────────────────────┴─────────────────────────────┘
 ```
-- The **scan/search input always has focus** unless a dialog is open. When a scanner sends Enter after an exact barcode or SKU match, that product is added (or its qty incremented). Otherwise, typing filters the grid.
-- Tapping a tile adds 1. Tapping a cart line opens a line editor: qty stepper, discount (amount or %), remove.
+- The **scan/search input always has focus** unless a dialog is open. When a scanner sends Enter after an exact barcode or SKU match, that product is added (or its qty incremented). Otherwise, typing filters the grid. The **Scan** button just puts focus back in the box (same as `F2`).
+- Tiles show a **category icon** (picked from the category name: coffee → cup, tea → leaf, bakery/cake/bread → bread, drinks/water/juice → bottle, anything else → box), the stock as **"N left"** (amber at or below the reorder level, red **"Out"** at 0 or less) and the price.
+- Tapping a tile adds 1. The cart header shows **"Current sale"** and the receipt number this sale will get (the next device counter value; it's only claimed when the sale completes).
+- Each cart line has an icon, name, unit price, round **− / +** buttons (− at qty 1 removes the line) and the line amount with any discount under it. Tapping a line **selects** it (highlighted) and opens the line editor: qty stepper, discount (amount or %), remove. The last line added or touched is selected.
+- **Discount** opens the line editor for the selected line (disabled with an empty cart). **Customer** opens A4 (`F4`); when a customer is attached the button shows their name and the dialog lets you remove them.
 - Keyboard: `F2` focuses search, `F4` opens customer, `F9` or `Ctrl+Enter` pays, `Esc` closes dialogs.
-- Header badge: `● Online · 0 pending` (green), `○ Offline · N pending` (amber), `⚠ N need attention` (red, taps to a list).
+- Header: shop-local clock (`HH:MM`) and the connection badge: `● Online · 0 pending` (green), `○ Offline · N pending` (amber), `⚠ N need attention` (red, taps to a list).
 - Menu: Recent sales, Sync now, Lock (back to PIN), Logout.
 - Validation: discount ≤ line amount, qty ≥ 1, and PAY is disabled when the cart is empty.
 

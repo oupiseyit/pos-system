@@ -13,6 +13,7 @@
     <span class="who"><span class="av" style="--c:#0e6b4e;width:26px;height:26px;font-size:10px">SO</span>Sokha</span>
     <div class="grow"></div>
     <span class="conn off"><i></i>Offline · 2 pending</span>
+    <span class="clock" aria-label="Shop time">16:30</span>
     <details style="position:relative">
       <summary class="btn" style="list-style:none">Menu <span class="ico s i-chev"></span></summary>
       <nav class="menu">
@@ -29,40 +30,46 @@
     <section class="catalog">
       <label class="scan">
         <span class="ico i-search"></span>
-        <input autofocus placeholder="Scan barcode or search products" aria-label="Scan or search">
-        <span class="scan-hint">F2</span>
+        <input autofocus placeholder="Search products or scan a barcode" aria-label="Scan or search">
+        <button type="button" class="scan-btn" title="Focus the scan box (F2)"><span class="ico i-scan"></span>Scan</button>
       </label>
       <div class="cats">
         <button class="cat on">All <b>48</b></button><button class="cat">Drinks <b>14</b></button><button class="cat">Snacks <b>9</b></button>
         <button class="cat">Household <b>11</b></button><button class="cat">Coffee <b>4</b></button><button class="cat">Bakery <b>6</b></button>
       </div>
       <div class="tiles">
-        <button class="tile"><div class="thumb" style="--c:#7a4a2b">CB<span class="stock lo">4</span></div><div class="nm">Coffee beans 250g</div><div class="pr">6.50</div></button>
-        <button class="tile"><div class="thumb" style="--c:#5f8a3c">GT<span class="stock">38</span></div><div class="nm">Green tea</div><div class="pr">3.20</div></button>
-        <button class="tile"><div class="thumb" style="--c:#3b86b8">W5<span class="stock">212</span></div><div class="nm">Water 500ml</div><div class="pr">0.50</div></button>
-        <button class="tile"><div class="thumb" style="--c:#d39b1f">PC<span class="stock lo">0</span></div><div class="nm">Potato chips</div><div class="pr">1.20</div></button>
-        <button class="tile"><div class="thumb" style="--c:#c2413a">CO<span class="stock">96</span></div><div class="nm">Cola 330ml</div><div class="pr">0.80</div></button>
-        <button class="tile"><div class="thumb" style="--c:#c98d4b">CR<span class="stock lo">6</span></div><div class="nm">Croissant</div><div class="pr">1.50</div></button>
-        <button class="tile"><div class="thumb" style="--c:#6b7f99">DS<span class="stock">15</span></div><div class="nm">Dish soap</div><div class="pr">2.40</div></button>
-        <button class="tile"><div class="thumb" style="--c:#9a8f6d">R5<span class="stock">22</span></div><div class="nm">Rice 5kg</div><div class="pr">7.90</div></button>
-        <button class="tile"><div class="thumb" style="--c:#8a5a2e">IC<span class="stock">40</span></div><div class="nm">Iced coffee</div><div class="pr">2.00</div></button>
-        <button class="tile"><div class="thumb" style="--c:#6b3f86">GJ<span class="stock">27</span></div><div class="nm">Grape juice 1L</div><div class="pr">1.60</div></button>
+        <button class="tile"><div class="top"><span class="cat-ic t-cup"><span class="ico i-cup"></span></span><span class="left lo">4 left</span></div><div class="nm">Coffee beans 250g</div><div class="pr">6.50</div></button>
+        <button class="tile"><div class="top"><span class="cat-ic t-bottle"><span class="ico i-bottle"></span></span><span class="left">38 left</span></div><div class="nm">Green tea</div><div class="pr">3.20</div></button>
+        <button class="tile"><div class="top"><span class="cat-ic t-bottle"><span class="ico i-bottle"></span></span><span class="left">212 left</span></div><div class="nm">Water 500ml</div><div class="pr">0.50</div></button>
+        <button class="tile"><div class="top"><span class="cat-ic t-box"><span class="ico i-box"></span></span><span class="left out">Out</span></div><div class="nm">Potato chips</div><div class="pr">1.20</div></button>
+        <button class="tile"><div class="top"><span class="cat-ic t-bottle"><span class="ico i-bottle"></span></span><span class="left">96 left</span></div><div class="nm">Cola 330ml</div><div class="pr">0.80</div></button>
+        <button class="tile"><div class="top"><span class="cat-ic t-bread"><span class="ico i-bread"></span></span><span class="left lo">6 left</span></div><div class="nm">Croissant</div><div class="pr">1.50</div></button>
+        <button class="tile"><div class="top"><span class="cat-ic t-box"><span class="ico i-box"></span></span><span class="left">15 left</span></div><div class="nm">Dish soap</div><div class="pr">2.40</div></button>
+        <button class="tile"><div class="top"><span class="cat-ic t-box"><span class="ico i-box"></span></span><span class="left">22 left</span></div><div class="nm">Rice 5kg</div><div class="pr">7.90</div></button>
+        <button class="tile"><div class="top"><span class="cat-ic t-cup"><span class="ico i-cup"></span></span><span class="left">40 left</span></div><div class="nm">Iced coffee</div><div class="pr">2.00</div></button>
+        <button class="tile"><div class="top"><span class="cat-ic t-bottle"><span class="ico i-bottle"></span></span><span class="left">27 left</span></div><div class="nm">Grape juice 1L</div><div class="pr">1.60</div></button>
       </div>
     </section>
 
     <aside class="cart" aria-label="Current sale">
-      <div class="cart-h"><button class="cust-btn"><span class="ico i-user"></span>Add customer<span class="kbd">F4</span></button></div>
+      <div class="cart-h"><h2>Current sale</h2><span class="order" title="Receipt number this sale will get">T1-000125</span></div>
       <div class="lines">
-        <div class="line" tabindex="0">
-          <span class="cell-main">Coffee beans 250g</span><span class="amt">13.00</span>
-          <span class="cell-sub num">6.50 each</span><span class="disc">−1.00</span>
-          <span class="q"><button aria-label="Decrease">−</button><span>2</span><button aria-label="Increase">+</button></span>
+        <div class="line on" tabindex="0">
+          <span class="cat-ic t-cup"><span class="ico i-cup"></span></span>
+          <span><span class="nm" style="display:block">Coffee beans 250g</span><span class="each">6.50 each</span></span>
+          <span class="q"><button aria-label="Decrease">−</button><span>2</span><button class="plus" aria-label="Increase">+</button></span>
+          <span class="amt">13.00<span class="disc">−1.00</span></span>
         </div>
         <div class="line" tabindex="0">
-          <span class="cell-main">Water 500ml</span><span class="amt">3.00</span>
-          <span class="cell-sub num">0.50 each</span><span></span>
-          <span class="q"><button aria-label="Decrease">−</button><span>6</span><button aria-label="Increase">+</button></span>
+          <span class="cat-ic t-bottle"><span class="ico i-bottle"></span></span>
+          <span><span class="nm" style="display:block">Water 500ml</span><span class="each">0.50 each</span></span>
+          <span class="q"><button aria-label="Decrease">−</button><span>6</span><button class="plus" aria-label="Increase">+</button></span>
+          <span class="amt">3.00</span>
         </div>
+      </div>
+      <div class="cart-tools">
+        <button class="btn" title="Discount on the selected line"><span class="ico s i-percent"></span>Discount</button>
+        <button class="btn" title="Attach a customer (F4)"><span class="ico s i-user"></span>Customer <span class="kbd">F4</span></button>
       </div>
       <div class="sum">
         <div class="between"><span>Subtotal</span><span>16.00</span></div>
@@ -76,6 +83,6 @@
       </div>
     </aside>
   </div>
-  <a class="mock-tag" href="index.html">A3 · Sell</a>
+<a class="mock-tag" href="index.html">A3 · Sell</a>
 </body>
 </html>
