@@ -11,7 +11,8 @@
     "db:migrate": "npm run prisma -- migrate dev",
     "db:seed": "npm run prisma -- db seed",
     "db:reset": "npm run prisma -- migrate reset --force",
-    "db:test": "node --env-file-if-exists=../../.env scripts/db-test-reset.mjs"
+    "db:test": "node --env-file-if-exists=../../.env scripts/db-test-reset.mjs",
+    "build": "tsc -p tsconfig.build.json"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
@@ -20,6 +21,7 @@
     "express-rate-limit": "^8.7.4",
     "helmet": "^8.3.0",
     "jsonwebtoken": "^9.0.3",
+    "prisma": "^6.19.3",
     "swagger-ui-express": "^5.0.1",
     "zod": "^4.6.7"
   },
@@ -29,7 +31,6 @@
     "@types/node": "^22.15.0",
     "@types/supertest": "^7.2.1",
     "@types/swagger-ui-express": "^4.1.8",
-    "prisma": "^6.19.3",
     "supertest": "^7.3.2",
     "tsx": "^4.20.0",
     "typescript": "^5.8.0",

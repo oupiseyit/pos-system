@@ -34,4 +34,5 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: failure()
         with: { name: playwright-traces, path: test-results/ }
-# ponytail: Phase 8 adds npm audit and docker build.
+      - run: npm audit --audit-level=high
+      - run: docker build -t pos-api:ci . # production image (09 §4)

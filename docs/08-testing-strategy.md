@@ -111,7 +111,7 @@ npm test -w apps/backoffice
 npm run typecheck                            # tsc --noEmit, all apps + e2e
 npm run e2e                                  # Playwright; first time: npx playwright install chromium
 ```
-CI (GitHub Actions, on every push/PR): a Postgres 16 service container → `npm ci` → typecheck → tests → Playwright E2E → `npm audit --audit-level=high` → `docker build`.
+CI (GitHub Actions, on every push/PR): a Postgres 16 service container → `npm ci` → typecheck → tests → Playwright E2E → `npm audit --audit-level=high` → `docker build`. The audit passes thanks to one npm `overrides` entry in the root `package.json`: `deepmerge-ts` ^8 under Prisma 6's CLI (the high advisory's own fix is Prisma 7, a major upgrade). Drop the override when upgrading Prisma.
 
 ## 8. Definition of done (per feature)
 - The acceptance criteria in [02-user-stories.md](02-user-stories.md) are met.

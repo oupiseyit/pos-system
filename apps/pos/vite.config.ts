@@ -22,7 +22,7 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg}'],
-        navigateFallbackDenylist: [/^\/api\//],
+        navigateFallbackDenylist: [/^\/api\//, /^\/admin/], // the back office shares the origin in production
         // Fonts from Google: cache on first use so receipts and screens look the same offline
         runtimeCaching: [
           {

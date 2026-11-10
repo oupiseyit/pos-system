@@ -1,6 +1,9 @@
 // Express app (no listen, so tests can drive it with supertest). Conventions: docs/05-api-spec.md §1.
 import { Prisma } from '@prisma/client';
 import express, { type ErrorRequestHandler } from 'express';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import swaggerUi from 'swagger-ui-express';
@@ -108,6 +111,14 @@ export function createApp() {
   app.use('/api', (_req, res) => {
     res.status(404).json({ error: 'Not found' });
   });
+
+  // Production image (09 §4): the built back office at /admin and the POS at /. Both route in the
+  // browser (hash / state), so plain static files are enough. Absent in dev, where Vite serves them.
+  const pub = fileURLToPath(new URL('../public', import.meta.url));
+  if (existsSync(pub)) {
+    app.use('/admin', express.static(join(pub, 'admin')));
+    app.use(express.static(join(pub, 'pos')));
+  }
 
   // Central error handler: `{ error, details }`, never a stack trace or SQL
   const onError: ErrorRequestHandler = (err, _req, res, _next) => {

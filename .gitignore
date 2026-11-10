@@ -10,3 +10,4 @@ graphify-out/
 # Playwright
 test-results/
 playwright-report/
+apps/api/public/

@@ -29,5 +29,8 @@
     "globals": "^17.14.0",
     "prettier": "^3.9.10",
     "typescript-eslint": "^8.72.1"
+  },
+  "overrides": {
+    "deepmerge-ts": "^8.0.0"
   }
 }
