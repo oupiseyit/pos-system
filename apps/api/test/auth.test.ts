@@ -145,5 +145,6 @@ describe('health + security headers', () => {
     expect(res.status).toBe(200);
     expect(res.body).toMatchObject({ ok: true, db: true });
     expect(res.headers['content-security-policy']).toContain("frame-ancestors 'none'");
+    expect(res.headers['content-security-policy']).toContain("connect-src 'self' https://fonts.googleapis.com");
   });
 });

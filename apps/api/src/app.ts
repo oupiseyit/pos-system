@@ -47,6 +47,9 @@ export function createApp() {
           defaultSrc: ["'self'"],
           scriptSrc: ["'self'"],
           objectSrc: ["'none'"],
+          // The POS service worker caches Google Fonts with fetch(); without this it falls back to
+          // default-src 'self' and the fonts never cache for offline use
+          connectSrc: ["'self'", 'https://fonts.googleapis.com', 'https://fonts.gstatic.com'],
           frameAncestors: ["'none'"],
           // Dev is plain http://localhost; upgrading would break the docs' script loads
           ...(process.env.NODE_ENV !== 'production' && { upgradeInsecureRequests: null }),
