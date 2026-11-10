@@ -103,15 +103,15 @@ Exit gate: Admin flow works
 ## Phase 7 — Web front (POS)
 Exit gate: A sale completes
 
-- [ ] A1 Device setup
-- [ ] A2 PIN login
-- [ ] A3 Sell screen: scan/search, cart, line discount, keyboard shortcuts
-- [ ] A4 Customer dialog
-- [ ] A5 Pay dialog: cash with change, card, split
-- [ ] A6 Receipt with 80mm print CSS
-- [ ] A7 Recent sales
-- [ ] Import `computeTotals` from `apps/api/src/totals.ts`.
-- [ ] Offline
+- [x] A1 Device setup
+- [x] A2 PIN login
+- [x] A3 Sell screen: scan/search, cart, line discount, keyboard shortcuts
+- [x] A4 Customer dialog
+- [x] A5 Pay dialog: cash with change, card, split
+- [x] A6 Receipt with 80mm print CSS
+- [x] A7 Recent sales
+- [x] Import `computeTotals` from `apps/api/src/totals.ts`.
+- [x] Offline
   - `vite-plugin-pwa` app shell with an update-on-reload prompt.
   - `catalog.ts`: localStorage cache with delta sync.
   - `outbox.ts`: save before print, flush every 30 s and on `online`, pause on 401, other 4xx → needs attention.

@@ -1,0 +1,59 @@
+/* Styles the POS mockups kept inline in each screen's <style>; tokens come from mockups/v2/styles.css. */
+
+/* A6 */
+.done {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 48px;
+  align-items: center;
+  padding: 24px;
+  overflow: auto;
+}
+
+/* A8 */
+.err {
+  font: 12.5px var(--mono);
+  color: var(--danger);
+}
+.attn-pre {
+  font: 12px/1.6 var(--mono);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  padding: 12px;
+  border-radius: 8px;
+  margin: 12px 0 0;
+  overflow: auto;
+}
+
+.linkish {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: var(--primary);
+  cursor: pointer;
+}
+.linkish:hover {
+  text-decoration: underline;
+}
+
+/* Update prompt from the service worker */
+.update {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  z-index: 160;
+}
+
+@media print {
+  /* A7's small receipt prints at full size */
+  .receipt.sm {
+    font-size: 12.5px;
+  }
+  .toast,
+  .update {
+    display: none;
+  }
+}

@@ -27,7 +27,7 @@
 | Empty cart | all "0.00" |
 
 ### `apps/pos/src/outbox.test.ts`
-(localStorage via jsdom, `fetch` stubbed.)
+(localStorage as an in-memory stub, `fetch` stubbed; no jsdom needed.)
 - `add()` persists the entry before returning.
 - `flush()` sends oldest first. A 2xx removes the entry, a network error keeps it with order preserved, a 401 stops the loop and keeps everything, and a 400 marks it `needsAttention` and continues with the next one.
 - A 200 for an already-existing sale (an idempotent replay) is treated as success.
