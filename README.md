@@ -168,6 +168,12 @@ npm run lint
 npm run format:check
 npm test                # Vitest in all apps (API tests need Postgres running)
 npm run db:test         # wipe and rebuild the pos_test database (rarely needed)
+npm run e2e             # Playwright E2E on its own stack (first time: npx playwright install chromium)
+```
+
+Before pushing, run the same checks as CI:
+```bash
+npm run typecheck && npm run lint && npm test && npm run e2e
 ```
 
 API tests run against a separate `pos_test` database, never your dev data. `npm test` creates it and applies migrations automatically, and each test file truncates and seeds its own data.
