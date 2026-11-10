@@ -85,7 +85,9 @@ test('catalog: category → product → receive stock → movement; duplicate SK
   await page.getByRole('link', { name: 'Categories' }).click();
   await page.getByLabel('New category name').fill(cat);
   await page.getByRole('button', { name: 'Add' }).click();
-  await expect(page.getByLabel('Category name').filter({ hasText: '' }).last()).toHaveValue(cat);
+  // Saved: the add box clears and a row holds the name (getByLabel would substring-match the add box)
+  await expect(page.getByLabel('New category name')).toHaveValue('');
+  await expect(page.locator(`input[aria-label="Category name"][value="${cat}"]`)).toHaveCount(1);
 
   await page.getByRole('link', { name: 'Products' }).click();
   await page.getByRole('link', { name: 'Add product' }).click();
