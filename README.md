@@ -48,6 +48,50 @@ npm run dev             # api :3000 · pos :5173 · backoffice :5174
 ```
 Don't run this alongside Option A: they use the same ports.
 
+## Routes
+
+### Apps (local dev)
+
+| App | URL | Sign in with |
+|---|---|---|
+| POS (cashier) | http://localhost:5173 | First run: set up the till (device code, e.g. `T1`), then cashier/manager PIN `1234` |
+| Back office | http://localhost:5174 | Admin `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD` from `.env`, or `manager@shop.local` with the same password |
+| API | http://localhost:3000/api | Bearer token from `/api/auth/login` or `/api/auth/pin` |
+| API docs (dev only) | http://localhost:3000/api/docs | — |
+| Adminer (DB UI) | http://localhost:8080 | user/password/db from `.env` |
+
+Both Vite dev servers proxy `/api` to the API, so http://localhost:5174/api/health works too.
+
+### Back office pages
+
+Hash routes, so they work as plain links (e.g. http://localhost:5174/#/products).
+
+| Page | Route | Role |
+|---|---|---|
+| Dashboard | `#/` | Manager |
+| Products | `#/products` · `#/products/new` · `#/products/{id}` | Manager |
+| Categories | `#/categories` | Manager |
+| Inventory | `#/inventory/receive` · `#/inventory/count` · `#/inventory/movements` | Manager |
+| Sales | `#/sales` · `#/sales/{id}` (receipt, void) | Manager |
+| Customers | `#/customers` · `#/customers/new` · `#/customers/{id}` | Manager |
+| Reports | `#/reports/{daily, products, cashiers, payments, low-stock, inventory-value}` | Manager |
+| Staff | `#/staff` · `#/staff/new` · `#/staff/{id}` | Admin |
+| Settings | `#/settings` (shop name, timezone, receipt) | Admin |
+
+The POS has no URLs: it's one screen (sell → pay → receipt) with dialogs, and **Recent sales** / **Needs attention** opened from its header.
+
+### Production (one container, see [09](docs/09-deployment.md))
+
+| What | Path |
+|---|---|
+| POS | `https://<your-domain>/` |
+| Back office | `https://<your-domain>/admin/` |
+| API | `https://<your-domain>/api` (no `/api/docs` in production) |
+
+### E2E test stack (`npm run e2e`)
+
+Runs on its own ports and `pos_e2e` database, so it never touches dev data: API :3100 · POS :5183 · back office :5184.
+
 ## Using the API with Swagger
 
 Swagger UI lets you call every API endpoint from the browser. It's available in dev only and is turned off when `NODE_ENV=production`.
