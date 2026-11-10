@@ -46,26 +46,26 @@ Exit gate: Screens approved
 ## Phase 3 — Local Docker
 Exit gate: All services healthy
 
-- [ ] npm workspaces `apps/api`, `apps/pos`, `apps/backoffice`, with TypeScript `strict`, ESLint and Prettier.
+- [x] npm workspaces `apps/api`, `apps/pos`, `apps/backoffice`, with TypeScript `strict`, ESLint and Prettier.
 - [x] Minimal Express app with JSON request log, central error handler and `GET /api/health`.
-- [ ] Vite + React "hello" apps for POS and back office, with the dev proxy `/api` → api.
-- [ ] `docker-compose.yml` with four services, healthchecks and hot reload
+- [x] Vite + React "hello" apps for POS and back office, with the dev proxy `/api` → api.
+- [x] `docker-compose.yml` with four services, healthchecks and hot reload
   - `db` (Postgres 16, `pg_isready`)
   - `api` (`/api/health`)
   - `pos` (:5173)
   - `backoffice` (:5174)
-- [ ] `.env.example` (variables from 09 §3).
-- [ ] Vitest in all three apps, `npm run typecheck --workspaces`, and a GitHub Actions CI skeleton.
+- [x] `.env.example` (variables from 09 §3).
+- [x] Vitest in all three apps, `npm run typecheck --workspaces`, and a GitHub Actions CI skeleton.
 
 ## Phase 4 — Database
 Exit gate: Migrated + seeded
 
-- [ ] `apps/api/prisma/schema.prisma` from 04 §6, using Decimal money columns.
-- [ ] Initial migration, plus a raw-SQL migration for the `CHECK` constraints.
-- [ ] `src/seed.ts`
+- [x] `apps/api/prisma/schema.prisma` from 04 §6, using Decimal money columns.
+- [x] Initial migration, plus a raw-SQL migration for the `CHECK` constraints.
+- [x] `src/seed.ts`
   - The Setting row and the admin from env.
   - Dev data: 2 categories, 10 products with barcodes, a manager and a cashier (PIN `1234`), 3 customers.
-- [ ] `npm run db:migrate`, `db:seed`, `db:reset` scripts, and a `pos_test` database for tests.
+- [x] `npm run db:migrate`, `db:seed`, `db:reset` scripts, and a `pos_test` database for tests.
 
 ## Phase 5 — API
 Exit gate: Endpoints tested
