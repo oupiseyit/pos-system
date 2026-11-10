@@ -1,6 +1,6 @@
 // A6 Sale complete — mockups/v2/a6-receipt.html. The receipt prints out over the sell screen
 // (slides down over the cart) and prints automatically once. Enter starts the next sale.
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { methodLabel, money, moneyCents } from '../../../backoffice/src/format';
 import { PrintSlip, Receipt } from '../../../backoffice/src/receipt';
 import { settings } from '../catalog';
@@ -11,11 +11,27 @@ export function Done({ sale, onNew }: { sale: Finished; onNew: () => void }) {
   const shop = settings();
   const s = sale.entry.sale;
 
+  // Every sale prints exactly once: automatically after the slide-in, or, if New sale is pressed
+  // before that, right before leaving. No settings cached yet → nothing to print (blank page).
+  const printed = useRef(!shop);
+  const printOnce = () => {
+    if (printed.current) return;
+    printed.current = true;
+    print();
+  };
+  const next = () => {
+    printOnce();
+    onNew();
+  };
   useEffect(() => {
     // Timer + cleanup so React's dev double-mount still prints only once
-    const id = setTimeout(() => print(), 300);
+    const id = setTimeout(printOnce, 300);
     return () => clearTimeout(id);
   }, []);
+  const nextRef = useRef(next);
+  useEffect(() => {
+    nextRef.current = next;
+  });
   useEffect(() => {
     // The Enter that completed the sale in the Pay dialog is still bubbling to window when this
     // mounts; only a later key press may start the next sale (else no receipt is printed).
@@ -23,12 +39,12 @@ export function Done({ sale, onNew }: { sale: Finished; onNew: () => void }) {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Enter' && e.timeStamp > mounted) {
         e.preventDefault();
-        onNew();
+        nextRef.current();
       }
     };
     addEventListener('keydown', onKey);
     return () => removeEventListener('keydown', onKey);
-  }, [onNew]);
+  }, []);
 
   const pay = s.payments.map((p) => `${methodLabel(p.method)} ${money(p.tendered ?? p.amount)}`).join(' + ');
   return (
@@ -43,7 +59,7 @@ export function Done({ sale, onNew }: { sale: Finished; onNew: () => void }) {
           {s.receiptNo} · {pay}
         </div>
         <div className="acts">
-          <button className="btn btn-primary btn-xl" autoFocus onClick={onNew}>
+          <button className="btn btn-primary btn-xl" autoFocus onClick={next}>
             New sale{' '}
             <span className="kbd" style={{ borderColor: '#fff' }}>
               Enter

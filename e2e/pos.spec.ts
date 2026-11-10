@@ -190,6 +190,10 @@ test('split payment with a customer and a line discount', async ({ page }) => {
   await expect(receipt).toContainText('discount -0.18');
   await expect(receipt).toContainText('Cash');
   await expect(receipt).toContainText('Card');
+
+  // New sale straight away (before the auto-print fires) still prints this receipt, once
+  await page.getByRole('button', { name: /New sale/ }).click();
+  await expect.poll(() => prints(page)).toBe(1);
 });
 
 test('offline: the sale is kept on the till and uploads when the network returns', async ({ page, context }) => {
