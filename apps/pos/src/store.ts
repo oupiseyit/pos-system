@@ -14,6 +14,7 @@ export const K = {
   customers: 'pos.customers',
   settings: 'pos.settings',
   sync: 'pos.sync', // { productsSince, customersSince, at }
+  signIn: 'pos.signIn', // true once the server refused the token: uploads wait for a PIN login
 } as const;
 
 let version = 0;

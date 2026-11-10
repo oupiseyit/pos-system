@@ -34,6 +34,7 @@ export function Recent({ session, go }: { session: Session; go: (v: View) => voi
   const code = read<{ code: string }>(K.device, { code: '' }).code;
   const manager = RANK[session.user.role] >= RANK.MANAGER;
   const [server, setServer] = useState<SaleSummary[] | null>(null);
+  const [loadError, setLoadError] = useState('');
   const [n, setN] = useState(0);
   const [q, setQ] = useState('');
   const [sel, setSel] = useState<string | null>(null);
@@ -46,8 +47,12 @@ export function Recent({ session, go }: { session: Session; go: (v: View) => voi
     const today = isoDay();
     // A cashier gets only their own sales today; a manager gets everyone's (05 §9)
     api<{ data: SaleSummary[] }>(`/sales?from=${today}&to=${today}&limit=200`).then(
-      (r) => live && setServer(r.data.filter((s) => s.receiptNo.startsWith(`${code}-`))),
-      () => {},
+      (r) => {
+        if (!live) return;
+        setLoadError('');
+        setServer(r.data.filter((s) => s.receiptNo.startsWith(`${code}-`)));
+      },
+      (e: Error) => live && setLoadError(`Couldn’t load sales from the server: ${e.message}`),
     );
     return () => {
       live = false;
@@ -150,11 +155,13 @@ export function Recent({ session, go }: { session: Session; go: (v: View) => voi
               </table>
             ) : (
               <p className="t2" style={{ padding: 20, margin: 0 }}>
-                {server === null && online
-                  ? 'Loading…'
-                  : q
-                    ? 'No sale matches that receipt number.'
-                    : 'No sales on this till today.'}
+                {loadError && server === null
+                  ? loadError
+                  : server === null && online
+                    ? 'Loading…'
+                    : q
+                      ? 'No sale matches that receipt number.'
+                      : 'No sales on this till today.'}
               </p>
             )}
           </div>

@@ -11,7 +11,7 @@ import { Pin } from './screens/Pin';
 import { Recent } from './screens/Recent';
 import { Sell } from './screens/Sell';
 import { Setup } from './screens/Setup';
-import { K, read, useOnline, useStore } from './store';
+import { K, read, useOnline, useStore, write } from './store';
 
 export type View = 'sell' | 'recent' | 'attention';
 export interface Cust {
@@ -100,6 +100,19 @@ export function Conn({ onAttention }: { onAttention?: () => void }) {
   const list = entries();
   const attn = list.filter((e) => e.state === 'attention').length;
   const pending = list.length - attn;
+  // Sync stopped on a 401 (token older than 12 h): say so, or sales pile up unseen (03 §5)
+  if (read(K.signIn, false) && online)
+    return (
+      <button
+        className="conn attn"
+        style={{ border: 0, cursor: 'pointer' }}
+        onClick={() => write(K.session, null)}
+        title="Your session expired. Sign in with your PIN to upload sales."
+      >
+        <span className="ico s i-lock" />
+        Sign in to sync · {pending} pending
+      </button>
+    );
   if (attn)
     return (
       <button

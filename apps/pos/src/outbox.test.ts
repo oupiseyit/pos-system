@@ -1,7 +1,7 @@
 // 08 §3: outbox state machine and receipt numbers. localStorage is an in-memory stub, fetch is stubbed.
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { add, discard, entries, flush, nextReceiptNo, peekReceiptNo, retry, type SaleBody } from './outbox';
-import { K, write } from './store';
+import { K, read, write } from './store';
 import { memoryStorage } from './test-storage';
 
 const sale = (n: number): SaleBody => ({
@@ -58,6 +58,12 @@ describe('outbox', () => {
     expect(fetchMock).toHaveBeenCalledTimes(1);
     expect(ids()).toEqual(['T1-000001', 'T1-000002']);
     expect(entries().every((e) => e.state === 'pending')).toBe(true);
+    expect(read(K.signIn, false)).toBe(true); // the header asks for a PIN login
+
+    // After a fresh login the queue drains and the flag clears
+    fetchMock.mockImplementation(() => reply(201));
+    expect(await flush()).toBe('done');
+    expect(read(K.signIn, false)).toBe(false);
   });
 
   it('a 400 marks needsAttention and continues with the next', async () => {

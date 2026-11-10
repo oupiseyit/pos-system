@@ -62,7 +62,10 @@ async function run(): Promise<FlushResult> {
   // Re-read each round: sales made during a flush join the queue behind the current one
   for (;;) {
     const next = entries().find((e) => e.state === 'pending');
-    if (!next) return 'done';
+    if (!next) {
+      if (read(K.signIn, false)) write(K.signIn, false);
+      return 'done';
+    }
     let res: Response;
     try {
       res = await fetch('/api/sales', {
@@ -75,8 +78,10 @@ async function run(): Promise<FlushResult> {
     }
     // 201 created, or 200 for a replay of a sale the server already has: both mean done
     if (res.ok) remove(next.sale.id);
-    else if (res.status === 401) return 'unauthorized';
-    else if (res.status >= 500)
+    else if (res.status === 401) {
+      write(K.signIn, true); // expired or revoked token: the header badge asks for a PIN login
+      return 'unauthorized';
+    } else if (res.status >= 500)
       return 'offline'; // server trouble: try again later
     else {
       const body: unknown = await res.json().catch(() => null);
