@@ -14,17 +14,17 @@ services:
   postgres:
     image: postgres:16-alpine
     env_file: .env # POSTGRES_USER / POSTGRES_PASSWORD / POSTGRES_DB
-    ports: ["5432:5432"]
+    ports: ['5432:5432']
     volumes: [pgdata:/var/lib/postgresql/data]
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}']
       interval: 5s
       retries: 10
     restart: unless-stopped
 
   adminer:
     image: adminer:4
-    ports: ["8080:8080"]
+    ports: ['8080:8080']
     environment:
       ADMINER_DEFAULT_SERVER: postgres
     depends_on:
@@ -38,11 +38,11 @@ services:
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
       PORT: 3000
-    ports: ["3000:3000"]
+    ports: ['3000:3000']
     depends_on:
       postgres: { condition: service_healthy }
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:3000/api/health']
       interval: 10s
       start_period: 120s
       retries: 5
@@ -52,11 +52,11 @@ services:
     command: npm run dev -w apps/backoffice -- --host 0.0.0.0 --port 5174
     environment:
       API_URL: http://api:3000 # Vite dev proxy target for /api
-    ports: ["5174:5174"]
+    ports: ['5174:5174']
     depends_on:
       api: { condition: service_healthy }
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:5174"]
+      test: ['CMD', 'wget', '-qO-', 'http://127.0.0.1:5174']
       interval: 10s
       retries: 5
 
@@ -65,11 +65,11 @@ services:
     command: npm run dev -w apps/pos -- --host 0.0.0.0 --port 5173
     environment:
       API_URL: http://api:3000 # Vite dev proxy target for /api
-    ports: ["5173:5173"]
+    ports: ['5173:5173']
     depends_on:
       api: { condition: service_healthy }
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:5173"]
+      test: ['CMD', 'wget', '-qO-', 'http://127.0.0.1:5173']
       interval: 10s
       retries: 5
 

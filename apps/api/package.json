@@ -4,15 +4,29 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "prisma": "node --env-file-if-exists=../../.env ../../node_modules/prisma/build/index.js",
+    "db:migrate": "npm run prisma -- migrate dev",
+    "db:seed": "npm run prisma -- db seed",
+    "db:reset": "npm run prisma -- migrate reset --force",
+    "db:test": "node --env-file-if-exists=../../.env scripts/db-test-reset.mjs"
   },
   "dependencies": {
+    "@prisma/client": "^6.19.3",
+    "bcryptjs": "^3.0.3",
     "express": "^5.1.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
     "@types/node": "^22.15.0",
+    "prisma": "^6.19.3",
     "tsx": "^4.20.0",
-    "typescript": "^5.8.0"
+    "typescript": "^5.8.0",
+    "vitest": "^5.1.0"
+  },
+  "prisma": {
+    "schema": "../../prisma/schema.prisma",
+    "seed": "tsx src/seed.ts"
   }
 }
