@@ -2,7 +2,7 @@
 import { useState, type FormEvent } from 'react';
 import { api, fieldErrors } from '../api';
 import { setShopTz } from '../format';
-import { renderReceipt, SAMPLE } from '../receipt';
+import { Receipt, SAMPLE } from '../receipt';
 import type { Settings } from '../types';
 import { Field, inp, useSession, useToast } from '../ui';
 
@@ -115,9 +115,7 @@ export function SettingsPage() {
             </span>
             <span className="badge plain">80 mm</span>
           </div>
-          <pre className="receipt" aria-label="Receipt preview">
-            {renderReceipt(f, SAMPLE)}
-          </pre>
+          <Receipt settings={f} sale={SAMPLE} />
         </div>
       </div>
     </div>

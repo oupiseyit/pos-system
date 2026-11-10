@@ -6,7 +6,6 @@ import { refresh, settings } from './catalog';
 import type { Line } from './cart';
 import { entries, flush } from './outbox';
 import { Attention } from './screens/Attention';
-import { Done } from './screens/Done';
 import type { Finished } from './screens/Pay';
 import { Pin } from './screens/Pin';
 import { Recent } from './screens/Recent';
@@ -14,7 +13,7 @@ import { Sell } from './screens/Sell';
 import { Setup } from './screens/Setup';
 import { K, read, useOnline, useStore } from './store';
 
-export type View = 'sell' | 'done' | 'recent' | 'attention';
+export type View = 'sell' | 'recent' | 'attention';
 export interface Cust {
   id: string;
   name: string;
@@ -72,16 +71,6 @@ function Main({ session }: { session: Session }) {
     };
   }, []);
 
-  if (view === 'done' && finished)
-    return (
-      <Done
-        sale={finished}
-        onNew={() => {
-          setFinished(null);
-          setView('sell');
-        }}
-      />
-    );
   if (view === 'recent') return <Recent session={session} go={setView} />;
   if (view === 'attention') return <Attention session={session} go={setView} />;
   return (
@@ -92,11 +81,12 @@ function Main({ session }: { session: Session }) {
       setLines={setLines}
       customer={customer}
       setCustomer={setCustomer}
+      finished={finished}
+      onNew={() => setFinished(null)}
       onFinished={(f) => {
         setLines([]);
         setCustomer(null);
         setFinished(f);
-        setView('done');
         syncNow();
       }}
     />

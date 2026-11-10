@@ -16,6 +16,7 @@ import {
 import { addProduct, discountCents, setDiscount, setQty, totals, type Line } from '../cart';
 import { peekReceiptNo } from '../outbox';
 import { K, useOnline, useStore, write } from '../store';
+import { Done } from './Done';
 import { Pay, type Finished } from './Pay';
 
 /** Tile/line icon from the category name (06 A3); anything unmatched gets a box. */
@@ -40,6 +41,9 @@ export function Sell(props: {
   customer: Cust | null;
   setCustomer: (c: Cust | null) => void;
   onFinished: (f: Finished) => void;
+  /** A6: the sale just completed, shown as the receipt slide-over */
+  finished: Finished | null;
+  onNew: () => void;
 }) {
   useStore();
   const { session, lines, setLines, customer } = props;
@@ -89,15 +93,16 @@ export function Sell(props: {
   };
 
   // The scan box keeps focus unless a dialog is open (06 A3)
+  const finished = props.finished;
   useEffect(() => {
-    if (!dialog && !menu) search.current?.focus();
-  }, [dialog, menu]);
+    if (!dialog && !menu && !finished) search.current?.focus();
+  }, [dialog, menu, finished]);
 
   // Keyboard: F2 search, F4 customer, F9 / Ctrl+Enter pay (Esc is handled by the dialogs)
   const canPay = lines.length > 0 && totalCents >= 0;
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (dialog) return;
+      if (dialog || finished) return;
       if (e.key === 'F2') {
         e.preventDefault();
         search.current?.focus();
@@ -111,7 +116,7 @@ export function Sell(props: {
     };
     addEventListener('keydown', onKey);
     return () => removeEventListener('keydown', onKey);
-  }, [dialog, canPay]);
+  }, [dialog, canPay, finished]);
 
   /** Enter after a scan: exact barcode or SKU adds it; otherwise the text just filters. */
   function scan() {
@@ -408,13 +413,17 @@ export function Sell(props: {
           onChange={(f) => setLines(f)}
         />
       )}
+      {finished && <Done sale={finished} onNew={props.onNew} />}
       {dialog === 'pay' && (
         <Pay
           session={session}
           lines={lines}
           customer={customer}
           onClose={() => setDialog(null)}
-          onFinished={props.onFinished}
+          onFinished={(f) => {
+            setDialog(null); // Sell stays mounted under the receipt slide-over, so close Pay here
+            props.onFinished(f);
+          }}
         />
       )}
     </div>

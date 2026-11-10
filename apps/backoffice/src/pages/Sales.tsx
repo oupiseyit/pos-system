@@ -1,9 +1,8 @@
 // B6 Sales — mockups/v2/b6-sales.html. Routes: #/sales, #/sales/:id
 import { useState } from 'react';
-import { createPortal } from 'react-dom';
 import { api, qs } from '../api';
 import { cents, dateTime, isoDay, methodLabel, money, moneyCents, time } from '../format';
-import { renderReceipt } from '../receipt';
+import { PrintSlip } from '../receipt';
 import type { Customer, Page, Sale, SaleSummary } from '../types';
 import {
   Dialog,
@@ -298,13 +297,7 @@ function SaleDetail({ id, onVoided }: { id: string; onVoided: () => void }) {
           </button>
         )}
       </div>
-      {/* Portal to <body> so the print CSS places it at the page's top-left, not inside the sticky panel */}
-      {createPortal(
-        <pre className="receipt print-only" aria-hidden="true">
-          {renderReceipt(settings, s)}
-        </pre>,
-        document.body,
-      )}
+      <PrintSlip settings={settings} sale={s} />
       {voiding && (
         <Dialog
           title={`Void ${s.receiptNo}?`}

@@ -98,37 +98,40 @@ Search by name or phone over the cached customers, and tap one to attach it. "Ne
 - Cash: tendered must be ≥ the amount. Quick buttons are exact, the next whole unit, and common notes.
 - **Complete:** builds the sale (UUID, receiptNo, totals), saves it to the outbox, opens A6 and triggers sync in the background.
 
-### A6. Receipt preview / print
-It opens after Complete and calls `window.print()` automatically. Buttons: **Print again** and **New sale** (Enter).
+### A6. Sale complete: receipt print-out
+After Complete, the receipt **slides down over the cart** like a slip coming out of the printer, on top of the dimmed sell screen, and `window.print()` runs automatically (once). Beside it: **Sale complete**, the change due, the receipt number and payments, then **New sale** (Enter) and **Print again**.
 
-80mm receipt layout (~42 chars per line in a monospace font, `@media print { @page { size: 80mm auto; margin: 0 } }`):
+The receipt is one shared design (`<Receipt>` in `apps/backoffice/src/receipt.tsx`) used here, in A7, in the back-office reprint (B6) and in the Settings preview (B10). It prints at 80mm (`@media print { @page { size: 80mm auto; margin: 0 } }`); on screen it has a torn-paper bottom edge.
 ```
-              MY SHOP
-     12 Street 271, Phnom Penh
-   Tel 012 345 678 · VAT 1234567
-------------------------------------------
-Receipt: T1-000124
-Date:    05/11/2026 16:30
-Cashier: Sokha
-Customer: Chan Dara
-------------------------------------------
-Coffee beans 250g
-  2 x 6.50                         13.00
-  Discount                         -1.00
-Water 500ml
-  6 x 0.50                          3.00
-------------------------------------------
-Subtotal                           16.00
-Discount                           -1.00
-Tax                                 1.50
-TOTAL                              16.50
-------------------------------------------
-Cash                               20.00
-Change                              3.50
-------------------------------------------
-           Thank you! Come again
+                 (M)
+               My Shop
+       12 Street 271, Phnom Penh
+     Tel 012 345 678 · VAT 1234567
+- - - - - - - - - - - - - - - - - - - - -
+T1-000124                05/11/2026 16:30
+Cashier                             Sokha
+Customer                        Chan Dara
+- - - - - - - - - - - - - - - - - - - - -
+2 × Coffee beans 250g               13.00
+    6.50 each            discount -1.00
+6 × Water 500ml                      3.00
+    0.50 each
+- - - - - - - - - - - - - - - - - - - - -
+Subtotal                            16.00
+Discount                            -1.00
+Tax                                  1.50
+TOTAL                              $16.50
+Cash                                20.00
+Change                               3.50
+- - - - - - - - - - - - - - - - - - - - -
+        ║▌║█║▌│║▌║█│║▌║║█║▌│║
+              T1-000124
+        Thank you! Come again
 ```
-A voided sale prints `*** VOID ***` under the header, with the void date and reason.
+- One line per item (`qty × name`, amount); a second line shows the unit price when qty > 1 and that line's discount, if any. The totals show one **Discount** line (the sum of line discounts) only when there is one.
+- **TOTAL** is in the shop currency (`$16.50` for USD).
+- The barcode is a real **Code 128** of the receipt number, so scanning a receipt types its number (e.g. into A7 or the back-office Sales search).
+- A voided sale prints a boxed `*** VOID ***` under the header, with the void date and reason.
 
 ### A7. Recent sales
 A list of today's sales on this till: receipt no, time, total, status, plus a "pending" tag for unsynced entries (shown from the outbox). Tap a sale to open its receipt and reprint it. There's a search box for receipt number. Managers see all cashiers' sales and a **Void** button (online only). Void needs a reason.

@@ -50,24 +50,25 @@
         </form>
         <div style="position:sticky;top:80px">
           <div class="between" style="margin-bottom:10px"><span class="t2" style="font-weight:550">Live preview</span><span class="badge plain">80 mm</span></div>
-          <pre class="receipt" id="preview"></pre>
+          <div class="receipt-paper" id="preview"><div class="receipt " aria-label="Receipt T1-000124"><div class="r-head"><span class="r-logo" aria-hidden="true">M</span><b class="r-shop">My Shop</b><div>12 Street 271, Phnom Penh</div><div>Tel 012 345 678 · VAT 1234567</div></div><hr/><div class="r-row"><span>T1-000124</span><span>05/11/2026 16:30</span></div><div class="r-row"><span>Cashier</span><span>Sokha</span></div><hr/><div class="r-item"><div class="r-row"><span>2 × Coffee beans 250g</span><span>13.00</span></div><div class="r-row r-sub"><span>6.50 each</span><span>discount -1.00</span></div></div><div class="r-item"><div class="r-row"><span>6 × Water 500ml</span><span>3.00</span></div><div class="r-row r-sub"><span>0.50 each</span><span></span></div></div><hr/><div class="r-row"><span>Subtotal</span><span>16.00</span></div><div class="r-row"><span>Discount</span><span>-1.00</span></div><div class="r-row"><span>Tax</span><span>1.50</span></div><div class="r-row r-total"><span>TOTAL</span><span>$16.50</span></div><div class="r-row"><span>Cash</span><span>20.00</span></div><div class="r-row"><span>Change</span><span>3.50</span></div><hr/><svg class="r-bars" viewBox="0 0 154 1" preserveAspectRatio="none" role="img" aria-label="Barcode T1-000124"><rect x="10" width="2" height="1"></rect><rect x="13" width="1" height="1"></rect><rect x="16" width="1" height="1"></rect><rect x="21" width="2" height="1"></rect><rect x="24" width="3" height="1"></rect><rect x="30" width="1" height="1"></rect><rect x="32" width="1" height="1"></rect><rect x="35" width="3" height="1"></rect><rect x="40" width="2" height="1"></rect><rect x="43" width="1" height="1"></rect><rect x="46" width="2" height="1"></rect><rect x="49" width="3" height="1"></rect><rect x="54" width="1" height="1"></rect><rect x="57" width="3" height="1"></rect><rect x="61" width="2" height="1"></rect><rect x="65" width="1" height="1"></rect><rect x="68" width="3" height="1"></rect><rect x="72" width="2" height="1"></rect><rect x="76" width="1" height="1"></rect><rect x="79" width="3" height="1"></rect><rect x="83" width="2" height="1"></rect><rect x="87" width="1" height="1"></rect><rect x="90" width="3" height="1"></rect><rect x="95" width="2" height="1"></rect><rect x="98" width="2" height="1"></rect><rect x="102" width="3" height="1"></rect><rect x="107" width="1" height="1"></rect><rect x="109" width="2" height="1"></rect><rect x="113" width="1" height="1"></rect><rect x="116" width="3" height="1"></rect><rect x="120" width="4" height="1"></rect><rect x="126" width="1" height="1"></rect><rect x="129" width="1" height="1"></rect><rect x="131" width="2" height="1"></rect><rect x="136" width="3" height="1"></rect><rect x="140" width="1" height="1"></rect><rect x="142" width="2" height="1"></rect></svg><div class="r-code">T1-000124</div><div class="r-foot">Thank you! Come again</div></div></div>
         </div>
       </div>
     </div>
   </div>
 </div>
 <script>
-  // Rebuilds the receipt from the form so the preview updates as you type.
-  const W = 42, $ = id => document.getElementById(id).value;
-  const center = s => s.split('\n').map(l => ' '.repeat(Math.max(0, (W - l.length) >> 1)) + l).join('\n');
-  const rule = '-'.repeat(W), lr = (a, b) => a + b.padStart(W - a.length);
+  // Updates the receipt preview from the form as you type (same layout as the app's <Receipt>).
+  const $ = (id) => document.getElementById(id).value;
+  const r = document.getElementById('preview');
   function render() {
-    document.getElementById('preview').textContent = [
-      center($('name').toUpperCase()), center($('addr')), center(`Tel ${$('tel')} · VAT ${$('vat')}`), rule,
-      'Receipt: T1-000124', 'Date:    05/11/2026 16:30', rule,
-      'Coffee beans 250g', lr('  2 x 6.50', '13.00'), rule,
-      lr('TOTAL', `${$('cur')} 13.00`), rule, center($('foot'))
-    ].join('\n');
+    r.querySelector('.r-shop').textContent = $('name');
+    r.querySelector('.r-logo').textContent = $('name').slice(0, 1).toUpperCase();
+    const [addr, tel] = r.querySelectorAll('.r-head > div');
+    addr.textContent = $('addr');
+    tel.textContent = [$('tel') && `Tel ${$('tel')}`, $('vat') && `VAT ${$('vat')}`].filter(Boolean).join(' · ');
+    r.querySelector('.r-total span:last-child').textContent =
+      new Intl.NumberFormat('en-US', { style: 'currency', currency: $('cur') }).format(16.5);
+    r.querySelector('.r-foot').textContent = $('foot');
   }
   document.getElementById('f').addEventListener('input', render);
   render();

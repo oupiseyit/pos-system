@@ -157,18 +157,3 @@
 .linkish:hover {
   text-decoration: underline;
 }
-
-/* Reprint: the receipt only exists for printing */
-.print-only {
-  position: absolute;
-  left: -9999px;
-  top: 0;
-}
-@media print {
-  .print-only {
-    left: 0;
-  }
-  .toast {
-    display: none;
-  }
-}

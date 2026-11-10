@@ -281,14 +281,47 @@ textarea.input { height: auto; padding: 9px 11px; resize: vertical; }
 .quick .btn { height: 44px; font-family: var(--mono); }
 .change { font: 700 26px var(--mono); color: var(--primary); }
 
-/* Receipt */
-.receipt { font: 12.5px/1.5 var(--mono); white-space: pre; color: #111; background: #fff; width: calc(42ch + 40px); padding: 24px 20px; margin: 0; border-radius: 4px; box-shadow: var(--sh-3); }
-.receipt.sm { font-size: 10px; box-shadow: var(--sh-2); }
+/* A6: after Complete, the receipt prints out over the sell screen */
+.printout { position: fixed; inset: 60px 0 0; z-index: 90; display: grid; grid-template-columns: 1fr 400px; background: rgba(245,246,248,.78); backdrop-filter: blur(3px); animation: fade .2s ease-out; }
+.printout .done-card { align-self: center; justify-self: center; display: grid; justify-items: center; gap: 6px; text-align: center; padding: 28px 36px; }
+.printout .done-card .due-change { font: 700 64px/1.05 var(--mono); letter-spacing: -.05em; color: var(--primary); }
+.printout .done-card .acts { display: grid; gap: 10px; width: 260px; margin-top: 18px; }
+.printout .slot { overflow: hidden auto; /* clips the slide-in at the top; long receipts scroll */ display: flex; justify-content: center; align-items: flex-start; padding: 0 12px 24px; }
+@keyframes fade { from { opacity: 0; } }
+
+/* Receipt (06 A6): one design on screen and on the 80mm printer */
+.receipt-paper { display: inline-block; filter: drop-shadow(0 18px 30px rgba(13,20,33,.16)) drop-shadow(0 3px 6px rgba(13,20,33,.08)); }
+.receipt-paper.sm { filter: drop-shadow(0 4px 10px rgba(13,20,33,.10)); }
+.receipt { --zig: .7em; font: 12.5px/1.45 var(--mono); color: #111; background: #fff; width: 25.5em; padding: 1.7em 1.6em calc(1.6em + var(--zig)); margin: 0; border-radius: 4px 4px 0 0;
+  /* torn-paper bottom edge */
+  -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / calc(2 * var(--zig)) 100%;
+          mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / calc(2 * var(--zig)) 100%; }
+.receipt.sm { font-size: 10px; }
+.receipt hr { border: 0; border-top: 1px dashed #b9bec7; margin: .8em 0; }
+.r-head { text-align: center; display: grid; justify-items: center; gap: .15em; color: #444; }
+.r-logo { width: 2.2em; height: 2.2em; border-radius: 50%; background: #111; color: #fff; display: grid; place-items: center; font: 700 1.05em var(--head); margin-bottom: .35em; }
+.r-shop { font: 700 1.35em var(--head); color: #111; letter-spacing: -.01em; }
+.r-row { display: flex; justify-content: space-between; gap: 1em; }
+.r-row > span:first-child { min-width: 0; overflow-wrap: anywhere; }
+.r-row > span:last-child { white-space: nowrap; }
+.r-sub { color: #666; font-size: .9em; padding-left: 1.6em; }
+.r-item + .r-item { margin-top: .25em; }
+.r-total { font-weight: 700; font-size: 1.3em; margin: .35em 0 .45em; }
+.r-void { text-align: center; margin-top: .8em; padding: .4em; border: 2px solid #111; }
+.r-bars { display: block; width: 100%; height: 3.6em; margin-top: .3em; fill: #111; }
+.r-code { text-align: center; font-size: .85em; letter-spacing: .2em; color: #444; margin-top: .25em; }
+.r-foot { text-align: center; font-weight: 700; margin-top: .9em; }
+/* "printing": the slip slides out of the printer */
+.printing { animation: print-out .9s cubic-bezier(.2, .7, .3, 1) both; }
+@keyframes print-out { from { transform: translateY(-104%); } }
+/* Printing: only the .print-slip copy (a direct child of <body>) goes to the 80mm printer */
+.print-slip { display: none; }
 @media print {
   @page { size: 80mm auto; margin: 0; }
-  body * { visibility: hidden; }
-  .receipt, .receipt * { visibility: visible; }
-  .receipt { position: absolute; left: 0; top: 0; box-shadow: none; width: 80mm; padding: 4mm; }
+  body > :not(.print-slip) { display: none !important; }
+  .print-slip { display: block; }
+  .print-slip .receipt-paper { filter: none; display: block; }
+  .print-slip .receipt { width: 80mm; padding: 4mm; font-size: 12px; border-radius: 0; -webkit-mask: none; mask: none; }
 }
 
 /* =================== Back office =================== */

@@ -1,7 +1,7 @@
 // A7 Recent sales — mockups/v2/a7-recent-sales.html. Today's sales on this till: server + not yet synced.
 import { useEffect, useState } from 'react';
 import { isoDay, money, time } from '../../../backoffice/src/format';
-import { renderReceipt } from '../../../backoffice/src/receipt';
+import { PrintSlip, Receipt } from '../../../backoffice/src/receipt';
 import { RANK, type Sale, type SaleSummary } from '../../../backoffice/src/types';
 import { Dialog, Field, useToast } from '../../../backoffice/src/ui';
 import { api, type Session } from '../api';
@@ -199,7 +199,7 @@ function Detail({ row, manager, onVoided }: { row: Row; manager: boolean; onVoid
     };
   }, [row.id, row.local, online, toast]);
 
-  const text = shop && (row.local ? renderReceipt(shop, entryReceipt(row.local)) : sale && renderReceipt(shop, sale));
+  const receipt = row.local ? entryReceipt(row.local) : sale;
   const canVoid = manager && online && !row.local && row.status === 'COMPLETED';
 
   async function doVoid() {
@@ -237,8 +237,11 @@ function Detail({ row, manager, onVoided }: { row: Row; manager: boolean; onVoid
           padding: 20,
         }}
       >
-        {text ? (
-          <pre className="receipt sm">{text}</pre>
+        {shop && receipt ? (
+          <>
+            <Receipt settings={shop} sale={receipt} small />
+            <PrintSlip settings={shop} sale={receipt} />
+          </>
         ) : (
           <p className="t3">{online ? 'Loading…' : 'The receipt needs a connection.'}</p>
         )}
@@ -247,7 +250,7 @@ function Detail({ row, manager, onVoided }: { row: Row; manager: boolean; onVoid
         className="cart-act"
         style={{ gridTemplateColumns: '1fr 1fr', background: 'var(--surface)', borderTop: '1px solid var(--border)' }}
       >
-        <button className="btn btn-lg" disabled={!text} onClick={() => print()}>
+        <button className="btn btn-lg" disabled={!shop || !receipt} onClick={() => print()}>
           <span className="ico s i-printer" />
           Reprint
         </button>
