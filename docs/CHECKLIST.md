@@ -140,7 +140,7 @@ Exit gate: Everything green
 - [x] Full CI: Postgres service → `npm ci` → typecheck → all tests → `npm audit --audit-level=high` → `docker build`.
 - [ ] Run the full 08 §5 manual release checklist on the Docker stack with real hardware.
 - [ ] Check every v1 story's acceptance criteria in 02.
-- [ ] Security pass against 07
+- [x] Security pass against 07
   - The CSP header is present.
   - No secrets are in the repo.
   - Auth is rate-limited.
