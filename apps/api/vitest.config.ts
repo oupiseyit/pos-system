@@ -10,7 +10,9 @@ try {
 
 const url = process.env.TEST_DATABASE_URL ?? process.env.DATABASE_URL?.replace(/\/[^/?]+(\?|$)/, '/pos_test$1') ?? '';
 // Tests truncate tables: refuse anything that isn't the test database
-if (!url.includes('pos_test')) throw new Error('Set TEST_DATABASE_URL (or DATABASE_URL) to reach Postgres');
+// Exact database name, not a substring (a user or host named pos_test must not pass)
+if (!URL.canParse(url) || new URL(url).pathname !== '/pos_test')
+  throw new Error('Set TEST_DATABASE_URL (or DATABASE_URL) to reach Postgres');
 process.env.TEST_DATABASE_URL = url;
 
 export default defineConfig({

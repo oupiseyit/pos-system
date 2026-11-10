@@ -3,7 +3,8 @@
 import { execSync } from 'node:child_process';
 
 const url = process.env.TEST_DATABASE_URL ?? process.env.DATABASE_URL?.replace(/\/[^/?]+(\?|$)/, '/pos_test$1');
-if (!url?.includes('pos_test')) throw new Error('Set TEST_DATABASE_URL (or DATABASE_URL) to reach Postgres');
+if (!url || !URL.canParse(url) || new URL(url).pathname !== '/pos_test')
+  throw new Error('Set TEST_DATABASE_URL (or DATABASE_URL) to reach Postgres');
 
 execSync('npx prisma migrate reset --force --skip-seed', {
   stdio: 'inherit',
