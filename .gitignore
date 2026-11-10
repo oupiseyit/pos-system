@@ -6,3 +6,7 @@ dist/
 .claude/settings.local.json
 .DS_Store
 graphify-out/
+
+# Playwright
+test-results/
+playwright-report/

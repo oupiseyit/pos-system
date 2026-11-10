@@ -10,7 +10,7 @@ export default tseslint.config(
   ...tseslint.configs.strict,
   // Express error handlers need an unused 4th arg; prefix unused params with _
   { rules: { '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }] } },
-  { files: ['apps/api/**/*.{ts,mjs}'], languageOptions: { globals: globals.node } },
+  { files: ['apps/api/**/*.{ts,mjs}', 'e2e/**', 'playwright.config.ts'], languageOptions: { globals: globals.node } },
   {
     files: ['apps/{pos,backoffice}/**/*.{ts,tsx}'],
     languageOptions: { globals: globals.browser },

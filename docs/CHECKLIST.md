@@ -121,7 +121,22 @@ Exit gate: A sale completes
 ## Phase 8 — Testing
 Exit gate: Everything green
 
-- [ ] Fill any gaps against 08: every listed test file exists and passes.
+- [x] Layer 1 — Unit tests (Vitest): totals, tax, discounts. 43 tests.
+  - `apps/api/src/totals.test.ts`: `computeTotals` — price × qty, tax 10 % on 6.50 × 2 − 1.00, tax rounded half-up per line, mixed tax rates, discount = line amount, empty cart, no floats.
+  - `apps/pos/src/cart.test.ts`: add / increment / remove, line discount as amount or %, never more than the line; pay rules: cash change, short cash, card cap, split, quick cash; the `POST /sales` body.
+  - `apps/pos/src/outbox.test.ts`: offline outbox (2xx / network error / 401 / 400 / 5xx, idempotent replay, no double POST) and receipt numbers `T1-000001`….
+  - `apps/pos/src/catalog.test.ts`: catalog delta sync and the till-side receipt.
+  - `apps/backoffice/src/logic.test.tsx`: money and dates in the shop timezone, receipt model (discount lines, VOID), Code 128 barcode.
+- [x] Layer 2 — Integration (Vitest + Supertest): API + real `pos_test` Postgres. 158 tests.
+  - `auth` (login, PIN lockout, rate limit) · `roles` (every endpoint, role below minimum → 403).
+  - `products` · `inventory` (receive, count, adjust) · `customers` · `users-settings`.
+  - `sales` (stock decrement, idempotent, totals / payments mismatch, 409 receipt no) · `void` (stock back, excluded from reports).
+  - `reports` (timezone day bucketing, CSV) · `invariants` (stockQty = Σ movements) · `openapi`.
+- [x] Layer 3 — E2E (Playwright): clicks through like a user, own stack on `pos_e2e`. 15 tests, `npm run e2e`.
+  - `e2e/pos.spec.ts`: device setup, PIN login, cash sale with change + auto-print, split payment with discount + customer, offline sale → sync, Recent sales, manager void.
+  - `e2e/backoffice.spec.ts`: sign-in rules, manager limits, category → product → receive stock, sale void, reports + CSV, customers, staff, settings (GMT+7).
+- [x] Fill any gaps against 08: every listed test file exists and passes.
+  - Component layer folded into cart.test.ts (rules) + Playwright (dialogs); 08 updated.
 - [ ] Full CI: Postgres service → `npm ci` → typecheck → all tests → `npm audit --audit-level=high` → `docker build`.
 - [ ] Run the full 08 §5 manual release checklist on the Docker stack with real hardware.
 - [ ] Check every v1 story's acceptance criteria in 02.

@@ -3,7 +3,7 @@
 ## 1. Principles
 - **Test where money and stock change.** `computeTotals`, `POST /sales`, voids, stock adjustments and the outbox carry most of the risk, so most of the tests go there.
 - **Integration over mocks.** API tests run against a real Postgres (the Compose service) because Prisma, transactions and constraints are part of the behaviour.
-- **One tool:** Vitest for the API and both React apps. There's no separate E2E framework in v1, and a manual checklist (§5) covers the browser + offline flow. Add Playwright once releases become frequent.
+- **Two tools:** Vitest for the API and both React apps, Playwright for end-to-end flows in a real browser. The manual checklist (§5) still covers what a browser can't fake: the scanner, the thermal printer and a real network cut.
 
 ## 2. Pyramid
 
@@ -11,8 +11,8 @@
 |---|---|---|---|
 | Unit | Vitest | Pure functions: `computeTotals`, money formatting, outbox state machine, receipt-number generator, report date-range helpers | Every save / CI |
 | API integration | Vitest + Supertest + Postgres `pos_test` | Route → DB, including auth and roles | CI, locally before push |
-| Component | Vitest + React Testing Library (jsdom) | Pay dialog rules, cart line editor | CI |
-| Manual E2E | Checklist (§5) | Real browser, scanner, printer, offline | Before each release |
+| E2E | Playwright (Chromium) | `e2e/pos.spec.ts`, `e2e/backoffice.spec.ts`: whole flows through Vite → API → Postgres `pos_e2e` | CI, locally before push |
+| Manual E2E | Checklist (§5) | Real till, scanner, printer, network | Before each release |
 
 ## 3. Unit tests
 
@@ -33,7 +33,13 @@
 - A 200 for an already-existing sale (an idempotent replay) is treated as success.
 - `nextReceiptNo()` gives `T1-000001`, `T1-000002`, … and survives a reload.
 
-### Pay dialog (component)
+### `apps/pos/src/catalog.test.ts`
+- `merge()` upserts by id, drops deactivated rows and sorts by name.
+- `refresh()`: the first sync reads every page from the epoch; the next asks only `updatedSince` the newest `updatedAt` seen and drops deactivated products.
+- `entryReceipt()` maps an outbox sale to the shared receipt, with change from tendered cash.
+
+### Pay dialog and line editor (`apps/pos/src/cart.test.ts` + `e2e/pos.spec.ts`)
+The rules live in pure functions in `cart.ts` (`payState()`, `discountCents()`), unit-tested here; Playwright covers the rendered dialogs. No jsdom/RTL layer: add one only if a component gains logic that isn't in `cart.ts`.
 - Complete is disabled until remaining = 0.
 - Cash tendered < amount shows an error.
 - A split of cash 10.00 + card 6.50 completes a 16.50 sale.
@@ -51,6 +57,14 @@ Setup: `TEST_DATABASE_URL` (default: `DATABASE_URL` with the database `pos_test`
 | `void.test.ts` | void restores stock with `RETURN` movements · second void → 409 · cashier → 403 · voided sale excluded from `/reports/daily` |
 | `reports.test.ts` | sales on both sides of midnight in `Setting.timezone` bucket into the right days · payment report sums cash/card · low-stock lists negatives first · CSV format returns `text/csv` |
 | `invariants.test.ts` | after a mixed scenario (receive, sales, void, adjust), every product's `stockQty = Σ qtyChange` |
+
+## 4a. E2E tests (Playwright)
+`npm run e2e` starts its own stack, so it never touches dev data or the dev servers: the API on :3100 against the `pos_e2e` database (wiped, migrated and seeded with the dev seed by `e2e/prepare-db.mjs`, which refuses any other database), the POS on :5183 and the back office on :5184. Only Postgres must be running (`docker compose up -d postgres`). Specs run one at a time on that shared database; each POS test is a new till with its own device code. `window.print` is stubbed to count calls. Traces of failures land in `test-results/` (`npx playwright show-trace …`).
+
+| File | Flows |
+|---|---|
+| `pos.spec.ts` | device setup is manager-only · wrong PIN counts down, Lock and keyboard PIN · cash sale: barcode scan ×2, tile, unknown barcode, ±qty, short cash refused, change, auto-print once, Enter → next receipt number, upload, Recent sales + reprint · split cash + card with a % line discount and a customer · offline: 2 sales queue, Recent shows them pending, reconnect uploads both · manager voids from Recent sales · cashier has no Void |
+| `backoffice.spec.ts` | wrong password, cashier refused, admin in, log out · manager has no Staff/Settings and is refused at `#/settings` · category → product → receive stock → movement row, duplicate SKU refused · find a sale, receipt, void with reason · every report opens, CSV downloads · add + search a customer · add a cashier with a PIN · settings: shop name, Asia/Phnom_Penh, footer, receipt preview |
 
 ## 5. Manual release checklist
 Run on a real till browser (Chrome), with a barcode scanner and an 80mm printer.
@@ -92,11 +106,12 @@ Run on a real till browser (Chrome), with a barcode scanner and an 80mm printer.
 ```bash
 docker compose up -d db                      # Postgres for dev + tests
 npm test -w apps/api                         # unit + integration (uses pos_test)
-npm test -w apps/pos                         # outbox + components
+npm test -w apps/pos                         # outbox, cart/pay rules, catalog
 npm test -w apps/backoffice
-npm run typecheck --workspaces               # tsc --noEmit
+npm run typecheck                            # tsc --noEmit, all apps + e2e
+npm run e2e                                  # Playwright; first time: npx playwright install chromium
 ```
-CI (GitHub Actions, on every push/PR): a Postgres 16 service container → `npm ci` → typecheck → tests → `npm audit --audit-level=high` → `docker build`.
+CI (GitHub Actions, on every push/PR): a Postgres 16 service container → `npm ci` → typecheck → tests → Playwright E2E → `npm audit --audit-level=high` → `docker build`.
 
 ## 8. Definition of done (per feature)
 - The acceptance criteria in [02-user-stories.md](02-user-stories.md) are met.

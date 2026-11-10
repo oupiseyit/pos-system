@@ -2,20 +2,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { add, discard, entries, flush, nextReceiptNo, peekReceiptNo, retry, type SaleBody } from './outbox';
 import { K, write } from './store';
-
-function memoryStorage(): Storage {
-  const m = new Map<string, string>();
-  return {
-    get length() {
-      return m.size;
-    },
-    clear: () => m.clear(),
-    getItem: (k) => m.get(k) ?? null,
-    key: (i) => [...m.keys()][i] ?? null,
-    removeItem: (k) => void m.delete(k),
-    setItem: (k, v) => void m.set(k, String(v)),
-  };
-}
+import { memoryStorage } from './test-storage';
 
 const sale = (n: number): SaleBody => ({
   id: `00000000-0000-4000-8000-00000000000${n}`,
