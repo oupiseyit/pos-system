@@ -24,15 +24,15 @@ inventoryRouter.post('/receive', async (req, res) => {
   const movements = await prisma.$transaction(async (tx) => {
     const out = [];
     for (const it of items) {
-      await tx.product.update({
+      const { stockQty } = await tx.product.update({
         where: { id: it.productId },
         data: { stockQty: { increment: it.qty }, ...(it.cost && { cost: it.cost }) },
       });
-      out.push(
-        await tx.stockMovement.create({
-          data: { productId: it.productId, qtyChange: it.qty, reason: 'RECEIVE', userId: req.user.id, note },
-        }),
-      );
+      const m = await tx.stockMovement.create({
+        data: { productId: it.productId, qtyChange: it.qty, reason: 'RECEIVE', userId: req.user.id, note },
+      });
+      // Stock right after this line, so the UI can show "old → new" without guessing
+      out.push({ ...m, stockAfter: stockQty });
     }
     return out;
   });

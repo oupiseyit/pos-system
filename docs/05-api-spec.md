@@ -118,7 +118,7 @@ Body: any create field. `stockQty` is **not accepted**; use inventory endpoints.
   "items": [ { "productId": "…", "qty": 24, "cost": "3.90" } ] }
 ```
 `qty > 0`, and `cost` is optional (it updates `Product.cost`). In one transaction, each line writes a `RECEIVE` movement and increases `stockQty`.
-`201 { "movements": [StockMovement] }`
+`201 { "movements": [StockMovement + "stockAfter"] }`, where `stockAfter` is the product's stock right after that line.
 
 ### `POST /inventory/adjust`
 `{ "productId": "…", "countedQty": 8, "note": "Monthly count" }`. `note` is required.

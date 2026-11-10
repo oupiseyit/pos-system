@@ -96,15 +96,17 @@ function Receive({ initial }: { initial: Product | null }) {
 
   async function save(e: FormEvent) {
     e.preventDefault();
+    // A half-filled row (qty without a product, or a product without a whole qty > 0) is never dropped silently
+    const bad = lines.findIndex((l) => (l.product || l.qty.trim()) && !(l.product && /^[1-9]\d*$/.test(l.qty.trim())));
+    if (bad >= 0) return toast(`Row ${bad + 1}: pick a product and enter a whole quantity above 0`);
     setBusy(true);
     try {
-      await api('/inventory/receive', 'POST', {
+      const r = await api<{ movements: { qtyChange: number; stockAfter: number }[] }>('/inventory/receive', 'POST', {
         note,
         items: ready.map((l) => ({ productId: l.product?.id, qty: Number(l.qty), ...(l.cost && { cost: l.cost }) })),
       });
-      setSummary(
-        ready.map((l) => `${l.product?.sku} ${l.product?.stockQty} → ${(l.product?.stockQty ?? 0) + Number(l.qty)}`),
-      );
+      // Server stock after each line (a concurrent sale or the same SKU twice can't skew it)
+      setSummary(r.movements.map((m, i) => `${ready[i].product?.sku} ${m.stockAfter - m.qtyChange} → ${m.stockAfter}`));
       setLines([blank()]);
       setNote('');
       toast('Delivery saved', 'ok');
@@ -227,13 +229,13 @@ function Count({ initial }: { initial: Product | null }) {
     if (!product) return;
     setBusy(true);
     try {
-      const r = await api<{ movement: unknown }>('/inventory/adjust', 'POST', {
+      const r = await api<{ movement: { qtyChange: number } | null }>('/inventory/adjust', 'POST', {
         productId: product.id,
         countedQty: Number(counted),
         note,
       });
       toast(
-        r.movement ? `Recorded ${signed(change ?? 0)} for ${product.name}` : 'Count matches; nothing recorded',
+        r.movement ? `Recorded ${signed(r.movement.qtyChange)} for ${product.name}` : 'Count matches; nothing recorded',
         'ok',
       );
       setProduct(await api<Product>(`/products/${product.id}`));

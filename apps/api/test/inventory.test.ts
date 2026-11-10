@@ -25,12 +25,14 @@ describe('inventory', () => {
         items: [
           { productId: a.id, qty: 24, cost: '3.90' },
           { productId: b.id, qty: 6 },
+          { productId: a.id, qty: 4 }, // same product twice: each line reports its own stock after
         ],
       });
     expect(res.status).toBe(201);
-    expect(res.body.movements).toHaveLength(2);
+    expect(res.body.movements).toHaveLength(3);
+    expect(res.body.movements.map((m: { stockAfter: number }) => m.stockAfter)).toEqual([26, 6, 30]);
     expect(res.body.movements[0]).toMatchObject({ reason: 'RECEIVE', qtyChange: 24, note: 'Invoice #4411' });
-    expect([await stock(a.id), await stock(b.id)]).toEqual([26, 6]);
+    expect([await stock(a.id), await stock(b.id)]).toEqual([30, 6]);
     expect((await prisma.product.findUniqueOrThrow({ where: { id: a.id } })).cost.toFixed(2)).toBe('3.90');
   });
 
