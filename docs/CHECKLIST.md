@@ -137,7 +137,7 @@ Exit gate: Everything green
   - `e2e/backoffice.spec.ts`: sign-in rules, manager limits, category → product → receive stock, sale void, reports + CSV, customers, staff, settings (GMT+7).
 - [x] Fill any gaps against 08: every listed test file exists and passes.
   - Component layer folded into cart.test.ts (rules) + Playwright (dialogs); 08 updated.
-- [ ] Full CI: Postgres service → `npm ci` → typecheck → all tests → `npm audit --audit-level=high` → `docker build`.
+- [x] Full CI: Postgres service → `npm ci` → typecheck → all tests → `npm audit --audit-level=high` → `docker build`.
 - [ ] Run the full 08 §5 manual release checklist on the Docker stack with real hardware.
 - [ ] Check every v1 story's acceptance criteria in 02.
 - [ ] Security pass against 07
