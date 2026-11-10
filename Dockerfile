@@ -26,4 +26,4 @@ COPY --from=build /app/apps/pos/dist apps/api/public/pos
 COPY --from=build /app/apps/backoffice/dist apps/api/public/admin
 USER node
 EXPOSE 3000
-CMD ["sh", "-c", "npx prisma migrate deploy --schema prisma/schema.prisma && node apps/api/dist/index.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy --schema prisma/schema.prisma && exec node apps/api/dist/index.js"]
