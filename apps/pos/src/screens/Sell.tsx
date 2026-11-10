@@ -366,7 +366,10 @@ export function Sell(props: {
             </div>
             <div className="between total">
               <span>Total</span>
-              <span>{fmtTotal(t.total)}</span>
+              {/* key = value: a new total remounts the span, replaying the bump animation (none for an empty cart) */}
+              <span key={t.total} className={totalCents ? 'bump' : undefined} aria-live="polite">
+                {fmtTotal(t.total)}
+              </span>
             </div>
           </div>
           <div className="cart-act">

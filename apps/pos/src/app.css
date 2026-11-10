@@ -1,5 +1,24 @@
 /* Styles the POS mockups kept inline in each screen's <style>; tokens come from mockups/v2/styles.css. */
 
+/* A3: the Total bumps when it changes (styles.css turns it off for prefers-reduced-motion) */
+.sum .total .bump {
+  display: inline-block;
+  transform-origin: right center;
+  animation: total-bump 0.38s cubic-bezier(0.2, 0.8, 0.3, 1.2);
+}
+@keyframes total-bump {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.1);
+    color: var(--primary);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 /* A6 */
 .done {
   flex: 1;
