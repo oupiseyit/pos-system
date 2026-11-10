@@ -39,8 +39,6 @@ npm run db:seed         # admin from .env + dev data (cashier PIN 1234)
 
 Source is mounted into the containers, so code changes hot-reload. There are no images to build.
 
-**Trying the API:** open the Swagger UI and call `POST /auth/pin` with `{ "email": "manager@shop.local", "pin": "1234" }` (seeded dev staff; `cashier@shop.local` works too). Then paste the returned `token` into **Authorize**. The admin logs in with `POST /auth/login`, using the email and password from `.env`. Swagger lists every endpoint with request bodies generated from the API's zod schemas. [05-api-spec.md](docs/05-api-spec.md) describes behaviour and response shapes.
-
 ### Option B: only Postgres in Docker, apps on the host
 ```bash
 docker compose up -d postgres
@@ -49,6 +47,63 @@ npm run db:seed
 npm run dev             # api :3000 · pos :5173 · backoffice :5174
 ```
 Don't run this alongside Option A: they use the same ports.
+
+## Using the API with Swagger
+
+Swagger UI lets you call every API endpoint from the browser. It's available in dev only and is turned off when `NODE_ENV=production`.
+
+**1. Open it.** With the stack running and seeded (Option A or B above), go to http://localhost:3000/api/docs. The back-office proxy works too: http://localhost:5174/api/docs.
+
+**2. Get a token.** Open **Auth → `POST /auth/pin`**, click **Try it out**, enter a body and click **Execute**:
+
+```json
+{ "email": "manager@shop.local", "pin": "1234" }
+```
+
+Copy the `token` value from the response. Pick the login that matches what you want to test:
+
+| Login | Endpoint | Body | Can use |
+|---|---|---|---|
+| Cashier | `POST /auth/pin` | `{ "email": "cashier@shop.local", "pin": "1234" }` | selling, own sales today, customers search/create |
+| Manager | `POST /auth/pin` | `{ "email": "manager@shop.local", "pin": "1234" }` | + products, inventory, all sales, voids, reports |
+| Admin | `POST /auth/login` | `{ "email": "<SEED_ADMIN_EMAIL>", "password": "<SEED_ADMIN_PASSWORD>" }` from `.env` | + users and settings |
+
+**3. Authorize.** Click **Authorize** (top right), paste the token on its own without the word `Bearer`, then click **Authorize** and **Close**. Every request now carries the token. Each endpoint's description shows its minimum role. Calling one above your role returns `403`.
+
+**4. Call endpoints.** Open one, click **Try it out**, fill in parameters or the body, then **Execute**. Some useful first calls:
+- `GET /auth/me`: check who you're logged in as. Its `id` is the `cashierId` for a sale.
+- `GET /products`: product ids, prices and tax rates.
+- `GET /reports/daily?from=2026-11-01&to=2026-11-30`: add `format=csv` to get a CSV download.
+
+**Example: record a sale.** Two "Water 500ml" from the seed (0.50 each, 10 % tax). Use the product's `id` from `GET /products`, your own id from `GET /auth/me`, and a new UUID for `id` (run `node -e "console.log(crypto.randomUUID())"`):
+
+```json
+{
+  "id": "<new uuid>",
+  "receiptNo": "T1-000001",
+  "deviceCode": "T1",
+  "cashierId": "<your user id>",
+  "createdAt": "2026-11-10T09:30:00.000Z",
+  "items": [
+    { "productId": "<Water 500ml id>", "nameSnapshot": "Water 500ml", "unitPrice": "0.50", "qty": 2, "discount": "0.00", "taxRate": "10.00" }
+  ],
+  "totals": { "subtotal": "1.00", "discount": "0.00", "tax": "0.10", "total": "1.10" },
+  "payments": [{ "method": "CASH", "amount": "1.10", "tendered": "2.00" }]
+}
+```
+
+The first execute returns `201`. Running it again with the same `id` returns `200` and changes nothing (the duplicate check). Running it with a new `id` but the same `receiptNo` returns `409`.
+
+**Things that commonly trip people up:**
+- **Money is always a string** (`"6.50"`), never a number. A number returns `400`.
+- **`totals` must match the server's maths**, which rounds tax per line, half-up. If it doesn't, the `400 Totals mismatch` response shows the expected values in `details`. Payments must add up exactly to `total`.
+- **Errors** look like `{ "error": "...", "details": { ... } }`. For validation errors, `details` lists the problem per field.
+- **`401`** means the token is missing or expired (tokens last 12 h), or the user was deactivated. Log in again and re-authorize.
+- **`429`** means more than 10 login/PIN attempts in a minute. Wait a minute.
+- **`423 Locked`** means 5 wrong PINs locked the account for 15 min. An admin can unlock it with `PATCH /users/{id}` and `{ "unlock": true }`.
+- Swagger calls hit your real **dev** database. Reset it with `npm run db:reset`.
+
+The raw OpenAPI 3.1 document is at http://localhost:3000/api/openapi.json, and you can import it into Postman or Insomnia. Request bodies and parameters are generated from the same zod schemas the API validates with, so they always match the code. Response shapes and business rules are in [05-api-spec.md](docs/05-api-spec.md).
 
 ## Rebuilding Docker
 
