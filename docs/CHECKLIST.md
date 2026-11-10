@@ -70,20 +70,20 @@ Exit gate: Migrated + seeded
 ## Phase 5 — API
 Exit gate: Endpoints tested
 
-- [ ] `src/auth.ts`
+- [x] `src/auth.ts`
   - bcrypt and JWT.
   - `requireAuth` re-loads the user on each request.
   - `requireRole` uses the rank map.
   - Rate limit on `/auth/*`, plus `helmet`.
-- [ ] `src/totals.ts`: `computeTotals` — decimal strings in, cents internally, tax rounded half-up per line.
-- [ ] Every endpoint in 05
+- [x] `src/totals.ts`: `computeTotals` — decimal strings in, cents internally, tax rounded half-up per line.
+- [x] Every endpoint in 05
   - auth (with PIN lockout)
   - users, categories, products (`updatedSince`)
   - inventory, customers
   - sales (all 7 steps, idempotent on the UUID), void
   - reports (timezone bucketing, CSV)
   - settings, health
-- [ ] zod schemas on every body and query, using the error shape and status codes from 05 §1.
+- [x] zod schemas on every body and query, using the error shape and status codes from 05 §1.
 
 ## Phase 6 — Back office
 Exit gate: Admin flow works

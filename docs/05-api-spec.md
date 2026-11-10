@@ -7,8 +7,9 @@
 - **Roles:** "Role" below is the minimum role. Rank is `CASHIER < MANAGER < ADMIN`.
 - **Money:** decimal strings with exactly 2 places (`"price": "12.50"`), never JSON numbers, so no float rounding. Requests also accept up to 2 decimal places (`"12.5"`). Tax rates are percent strings (`"10.00"` = 10 %).
 - **Dates:** ISO-8601 UTC strings (`2026-11-05T09:30:00.000Z`). Report date params `from`/`to` are shop-local dates `YYYY-MM-DD`, both inclusive.
-- **Ids:** UUID strings.
+- **Ids:** UUID strings. A malformed id in a path or body is a `400`.
 - **Pagination:** `?page=1&limit=50` (max 200). The response is `{ "data": [...], "page": 1, "limit": 50, "total": 123 }`.
+- **Quantities:** integers up to 1,000,000 (`qty`, `countedQty`, `reorderLevel`). Larger values are a `400`.
 - **Errors:** `{ "error": "Human readable message", "details": { ... } }`
 
 | Status | When |
@@ -19,9 +20,9 @@
 | 401 | Missing/invalid/expired token, or bad credentials |
 | 403 | Authenticated but role too low |
 | 404 | Not found |
-| 409 | Unique conflict (SKU, barcode, email, phone, receiptNo) or an operation not allowed in the current state |
+| 409 | Unique conflict (SKU, barcode, email, phone, receiptNo, with `details.field`) or an operation not allowed in the current state |
 | 423 | Account locked (PIN attempts) |
-| 429 | Rate limited (auth endpoints) |
+| 429 | Rate limited (`POST /auth/login` and `POST /auth/pin`) |
 | 500 | Server error (generic message, logged server-side) |
 
 Objects below show fields. Timestamps `createdAt`/`updatedAt` are returned on all entities and omitted from the examples for brevity.
@@ -43,11 +44,11 @@ Body: `{ "email": "owner@shop.com", "password": "••••••" }`
 ```json
 { "token": "eyJ…", "user": { "id": "…", "name": "Dara", "email": "owner@shop.com", "role": "ADMIN" } }
 ```
-Errors: `401` invalid credentials or inactive user · `429` more than 10 attempts per minute per IP.
+Errors: `401` invalid credentials or inactive user · `429` more than 10 attempts per minute per IP (shared with `/auth/pin`; `/auth/me` is not limited).
 
 ### `POST /auth/pin` — public
 Body: `{ "email": "cashier@shop.com", "pin": "1234" }`
-`200` same shape as login. Errors: `401` wrong PIN (increments `failedPinAttempts`) · `423 { "error": "Locked", "details": { "lockedUntil": "…" } }` after 5 failures · `429`.
+`200` same shape as login. Errors: `401` wrong PIN (increments `failedPinAttempts`) · `423 { "error": "Locked", "details": { "lockedUntil": "…" } }` on the 5th consecutive failure and on every attempt until `lockedUntil` passes (the counter restarts after a lock) · `429`. A successful PIN resets the counter.
 
 ### `GET /auth/me` — CASHIER
 `200 { "id", "name", "email", "role" }`
@@ -122,7 +123,7 @@ Body: any create field. `stockQty` is **not accepted**; use inventory endpoints.
 The server computes `qtyChange = countedQty − stockQty`. If it's 0, nothing is written and `200 { "movement": null }` is returned. Otherwise it returns `201 { "movement": StockMovement }`.
 
 ### `GET /inventory/movements`
-Query: `productId`, `reason`, `from`, `to`, `page`, `limit`. Results are newest first.
+Query: `productId`, `reason`, `from`, `to` (shop-local dates, inclusive), `page`, `limit`. Results are newest first, paginated.
 Item: `{ "id", "productId", "productName", "qtyChange", "reason", "saleId", "receiptNo", "userId", "userName", "note", "createdAt" }`
 
 ---
@@ -191,17 +192,18 @@ In one transaction it sets `status = VOIDED`, `voidedById`, `voidedAt` and `void
 ---
 
 ## 10. Reports — MANAGER
-Every report takes `from` and `to` (shop-local dates, required except for low-stock and inventory-value). Days are bucketed in `Setting.timezone`, and `VOIDED` sales are excluded. Add `?format=csv` to any report for `text/csv` output.
+Every report takes `from` and `to` (shop-local dates, required except for low-stock and inventory-value). Days are bucketed in `Setting.timezone`, and `VOIDED` sales are excluded. Add `?format=csv` to any report for `text/csv` output (`format` accepts only `json` or `csv`).
 
 | Path | Row shape |
 |---|---|
-| `GET /reports/daily` | `{ date, salesCount, subtotal, discount, tax, total }` + a `totals` row |
+| `GET /reports/daily` | `{ data: [{ date, salesCount, subtotal, discount, tax, total }], totals: { salesCount, subtotal, discount, tax, total } }`. CSV ends with a `TOTAL` row |
 | `GET /reports/products` | `{ productId, sku, name, qty, net, tax, total, cost, margin }` sorted by `total` desc. `?categoryId=` optional |
 | `GET /reports/cashiers` | `{ cashierId, name, salesCount, total, voidCount }` |
 | `GET /reports/payments` | `{ method, count, amount }`, and for `CASH` also `tendered`, `change` |
 | `GET /reports/low-stock` | `{ productId, sku, name, stockQty, reorderLevel }` where `stockQty ≤ reorderLevel` and the product is active, negative first |
 | `GET /reports/inventory-value` | `{ items: [{ productId, sku, name, stockQty, cost, value }], totalValue }` (negative stock counts as 0) |
 
+Other reports respond `{ data: [rows] }` (inventory-value as shown). `from` after `to` → `400`.
 Margin uses the product's **current** cost (cost isn't snapshotted per sale in v1).
 
 ---

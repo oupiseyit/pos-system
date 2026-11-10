@@ -50,7 +50,7 @@ export const requireRole = (min: Role) => (req, res, next) =>
 - **Token storage:** localStorage in both apps, which XSS could read. That risk is mitigated by the strict CSP and the absence of third-party scripts (§5). Cookies were rejected because the POS must replay the outbox with a bearer token, and that would add CSRF handling.
 - **Deactivation/role change:** `requireAuth` loads the user on each request (one indexed lookup) and rejects with 401 if they're inactive. A role change also takes effect immediately because the role is read from the DB, not from the token.
 - **Offline:** an expired token doesn't stop selling. Sync pauses (401) until the next PIN login. Logging in needs the server, because no credential hashes are stored on the device.
-- **Rate limit:** `express-rate-limit` on `/auth/*`, 10 requests/min per IP.
+- **Rate limit:** `express-rate-limit` on `POST /auth/login` and `POST /auth/pin`, 10 requests/min per IP. In production the API trusts exactly one proxy hop (Caddy) for the client IP, and nowhere else trusts `X-Forwarded-For`, so the header can't be spoofed to get around the limit.
 - **First admin:** created by the seed from env vars, with the password changed on first login (documented in [09](09-deployment.md)).
 
 ## 4. Data integrity controls

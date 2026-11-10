@@ -39,7 +39,7 @@
 - A split of cash 10.00 + card 6.50 completes a 16.50 sale.
 
 ## 4. API integration tests
-Setup: `DATABASE_URL=postgres://…/pos_test`. `beforeAll` runs `prisma migrate reset --force --skip-seed`, and each test file seeds what it needs with helpers in `test/fixtures.ts` (`makeUser(role)`, `makeProduct()`, `tokenFor(user)`).
+Setup: `TEST_DATABASE_URL` (default: `DATABASE_URL` with the database `pos_test`; `vitest.config.ts` refuses any other database). Vitest's global setup runs `prisma migrate deploy` once. Files run one at a time, and each starts with `resetDb()` (TRUNCATE) and seeds what it needs with helpers in `test/fixtures.ts` (`makeUser(role)`, `makeProduct()`, `tokenFor(user)`, `saleBody()`).
 
 | File | Cases |
 |---|---|
