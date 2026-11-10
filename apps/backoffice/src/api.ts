@@ -82,7 +82,7 @@ export async function downloadCsv(path: string, filename: string) {
   a.href = URL.createObjectURL(blob);
   a.download = filename;
   a.click();
-  URL.revokeObjectURL(a.href);
+  setTimeout(() => URL.revokeObjectURL(a.href), 0); // revoking synchronously can cancel the download
 }
 
 /** Field errors from a 400 (zod `details`) or a 409 (`details.field`). */

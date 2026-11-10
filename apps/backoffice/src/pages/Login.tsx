@@ -19,6 +19,7 @@ export function Login({ onToken }: { onToken: () => Promise<string | null> }) {
       if (refused) setError(refused);
     } catch (err) {
       // Generic on 401 so we never say which half was wrong
+      setToken(null); // never leave a half-signed-in token behind (e.g. /settings failed)
       setError(err instanceof ApiError && err.status === 401 ? 'Invalid email or password' : (err as Error).message);
     } finally {
       setBusy(false);

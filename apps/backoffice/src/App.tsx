@@ -1,6 +1,6 @@
 // App shell (06 Part B): login gate, role-based nav, top bar, routes.
 import { useCallback, useEffect, useState, type ReactNode } from 'react';
-import { api, getToken, setOnUnauthorized, setToken } from './api';
+import { api, ApiError, getToken, setOnUnauthorized, setToken } from './api';
 import { setShopTz } from './format';
 import { Categories } from './pages/Categories';
 import { Customers } from './pages/Customers';
@@ -89,7 +89,8 @@ export function App() {
     if (!getToken()) return;
     loadSession()
       .then((s) => typeof s !== 'string' && setSession(s))
-      .catch(() => setToken(null))
+      // Only a rejected token signs out; a network blip or a 500 leaves the token for the next try
+      .catch((e) => e instanceof ApiError && e.status === 401 && setToken(null))
       .finally(() => setChecking(false));
   }, []);
 
