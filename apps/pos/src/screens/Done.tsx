@@ -17,8 +17,11 @@ export function Done({ sale, onNew }: { sale: Finished; onNew: () => void }) {
     return () => clearTimeout(id);
   }, []);
   useEffect(() => {
+    // The Enter that completed the sale in the Pay dialog is still bubbling to window when this
+    // mounts; only a later key press may start the next sale (else no receipt is printed).
+    const mounted = performance.now();
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Enter') {
+      if (e.key === 'Enter' && e.timeStamp > mounted) {
         e.preventDefault();
         onNew();
       }
