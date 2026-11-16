@@ -17,7 +17,8 @@
 
 # Adminer (DB web UI). Basic auth in front of Adminer's own DB login.
 # Hash: docker run --rm caddy:2-alpine caddy hash-password --plaintext '<pw>'
-{$ADMINER_DOMAIN} {
+# ponytail: unset ADMINER_DOMAIN falls back to an unresolvable host so Caddy still starts (site unreachable).
+{$ADMINER_DOMAIN:http://adminer.invalid} {
 	basic_auth {
 		{$ADMINER_USER} {$ADMINER_HASH}
 	}
