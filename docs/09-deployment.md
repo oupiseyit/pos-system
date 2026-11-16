@@ -44,6 +44,9 @@ sudo ufw allow OpenSSH && sudo ufw allow 80,443/tcp && sudo ufw enable
 | `SEED_ADMIN_EMAIL` | `owner@shop.com` | First admin (seed only) |
 | `SEED_ADMIN_PASSWORD` | *(temporary)* | Change it after first login |
 | `BACKUP_PASSPHRASE` | *(random)* | Encrypts nightly dumps |
+| `ADMINER_DOMAIN` | `db.example.com` | Adminer (DB web UI) site address; needs its own DNS A record |
+| `ADMINER_USER` | `admin` | Caddy basic-auth user in front of Adminer |
+| `ADMINER_HASH` | `'$2a$14$…'` | bcrypt of the basic-auth password, **single-quoted** (`$` signs). `docker run --rm caddy:2-alpine caddy hash-password --plaintext '<pw>'` |
 
 ## 4. Build artefacts
 

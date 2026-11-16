@@ -33,13 +33,10 @@ services:
       - caddy_data:/data
     depends_on: [api]
 
-  # DB web UI, on demand only: `docker compose -f docker-compose.prod.yml --profile tools up -d adminer`,
-  # then from your laptop `ssh -L 8081:127.0.0.1:8081 <user>@<server>` → http://localhost:8081.
-  # Bound to the server's localhost (8080 is lotto's); never route it through Caddy.
+  # DB web UI at https://$ADMINER_DOMAIN, behind Caddy basic auth (Caddyfile). No ports: only Caddy reaches it.
   adminer:
     image: adminer:4
-    profiles: [tools]
-    ports: ['127.0.0.1:8081:8080']
+    restart: unless-stopped
     environment: { ADMINER_DEFAULT_SERVER: db }
     depends_on: { db: { condition: service_healthy } }
 

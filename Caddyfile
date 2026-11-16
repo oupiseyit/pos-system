@@ -14,3 +14,12 @@
 		header_down Content-Security-Policy ";?\s*upgrade-insecure-requests" ""
 	}
 }
+
+# Adminer (DB web UI). Basic auth in front of Adminer's own DB login.
+# Hash: docker run --rm caddy:2-alpine caddy hash-password --plaintext '<pw>'
+{$ADMINER_DOMAIN} {
+	basic_auth {
+		{$ADMINER_USER} {$ADMINER_HASH}
+	}
+	reverse_proxy adminer:8080
+}
