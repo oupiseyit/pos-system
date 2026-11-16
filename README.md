@@ -48,6 +48,21 @@ npm run dev             # api :3000 · pos :5173 · backoffice :5174
 ```
 Don't run this alongside Option A: they use the same ports.
 
+## Logins (local dev)
+
+Created by `npm run db:seed`. Passwords come from your `.env`. The defaults shown are the `.env.example` values; if you changed them, use yours.
+
+| Account | Username | Password | PIN (POS) | Role |
+|---|---|---|---|---|
+| Owner | `SEED_ADMIN_EMAIL` (default `owner@shop.com`) | `SEED_ADMIN_PASSWORD` (default `change-me`) | — | Admin |
+| Manager | `manager@shop.local` | same as `SEED_ADMIN_PASSWORD` | `1234` | Manager |
+| Cashier | `cashier@shop.local` | same as `SEED_ADMIN_PASSWORD` | `1234` | Cashier |
+| Database (Adminer, server `postgres`) | `POSTGRES_USER` (default `pos`) | `POSTGRES_PASSWORD` (default `change-me`) | — | db `POSTGRES_DB` (default `pos`) |
+
+Production uses its own `.env` on the server. Never put those passwords in this file.
+
+To add real managers and cashiers, see [Creating managers and cashiers](docs/staff-accounts.md).
+
 ## Routes
 
 ### Apps (local dev)
